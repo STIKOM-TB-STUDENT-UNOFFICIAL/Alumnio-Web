@@ -1,10 +1,20 @@
 import { AiOutlineContainer, AiOutlineDatabase } from "react-icons/ai"
-import icon from "../assets/icon.png"
-import { CustomSelect } from "../libs/components/atoms/custom-select"
-import { Input } from "../libs/components/atoms/input"
-import Button from "../libs/components/atoms/button"
+import icon from "@/assets/icon.png"
+import Button from "@/libs/components/atoms/button"
+import { InputWithError } from "@/libs/components/molecules/input-with-error"
+import { useForm } from "react-hook-form"
+import { LoginSchema } from "@/schema/login-schema"
+import { zodResolver } from "@hookform/resolvers/zod"
+import type { z } from "zod"
+import { CustomSelectWithError } from "@/libs/components/molecules/custom-select-with-error"
 
 export default function Index(): React.ReactNode{
+    const { 
+        handleSubmit, 
+        register, 
+        formState : { errors } 
+    } = useForm<z.infer<typeof LoginSchema>>({ resolver: zodResolver(LoginSchema)})
+
     return (
         <div className="min-h-[100vh] max-w-[1280px] w-full">
             <div className="flex flex-col justify-center items-center min-h-[400px]">
@@ -47,21 +57,38 @@ export default function Index(): React.ReactNode{
                     <h2 className="text-2xl font-semibold">Selamat Datang Kembali</h2>
                     <h6 className="text-md">Masuk untuk mengakses portal alumni Anda</h6>
                     <h6 className="mt-5 mb-2">Masuk Sebagai</h6>
-                    <CustomSelect
-                        data={[
-                            {
-                                display: "Administrator",
-                                value: 0
-                            },
-                            {
-                                display: "Alumni",
-                                value: 1
-                            }
-                        ]}
-                    />
-                    <Input type="text" label="NIM" className="mt-5 w-full" placeholder="XXXXXX" />
-                    <Input type="password" label="Password" className="mt-5 w-full" />
-                    <Button className="mt-5">Sign In</Button>
+                    <form onSubmit={handleSubmit((data) => console.log(data))}>
+                        <CustomSelectWithError
+                            data={[
+                                {
+                                    display: "Administrator",
+                                    value: 0
+                                },
+                                {
+                                    display: "Alumni",
+                                    value: 1
+                                }
+                            ]}
+                            {...register("role")}
+                            error={errors.role?.message}
+                        />
+                        <InputWithError 
+                            type="text" 
+                            label="NIM atau Username"
+                            className="mt-5 w-full"
+                            placeholder="XXXXXX"
+                            {...register("username")}
+                            error={errors.username?.message}
+                        />
+                        <InputWithError
+                            type="password"
+                            label="Password"
+                            className="mt-5 w-full"
+                            {...register("password")}
+                            error={errors.password?.message}
+                        />
+                        <Button className="mt-5 w-full">Sign In</Button>
+                    </form>
                 </div>
             </div>
         </div>

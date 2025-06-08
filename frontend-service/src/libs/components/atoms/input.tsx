@@ -1,42 +1,63 @@
-import { useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type DetailedHTMLProps, type ElementType, type InputHTMLAttributes, type ReactNode } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
-export type TCustomInputCallback = (value: string | number) => void
-
-export type TCustomInput = {
-    onChange?: TCustomInputCallback,
-    className?: string,
+export type TCustomInput = Omit<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, "type"> & {
     label?: string,
-    placeholder?: string,
-    type: "text"|"password"|"email"
+    type: "text"|"password"|"email",
+    Icon?: ElementType
 }
 
 export function Input(
-    {...rest}
+    {type = "text", className = "", Icon, ...rest}
     : TCustomInput
 ): ReactNode{
     const ref = useRef<HTMLInputElement>(null)
+    const [focus, setFocus] = useState(false)
     const [show, setShow] = useState(false)
 
+    useEffect(() => {
+        const handleClick = (event: MouseEvent) => {
+            if(ref.current && !ref.current.contains(event.target as Node)){
+                setFocus(false)
+            }
+        }
+    
+        document.addEventListener("mousedown", handleClick)
+
+        return () => document.removeEventListener('mousedown', handleClick)
+    }, [])
+
     return (
-        <div className={`${rest.className}`}>
+        <div className={`${className}`}>
             <h6 
                 className="cursor-pointer font-semibold"
                 onClick={() => ref.current?.focus()}
             >{rest.label}</h6>
-            <div className="flex w-full">
+            <div 
+                className={`flex w-full bg-white dark:bg-[#3b3b45] border 
+                border-blue-50 dark:border-[#313139] rounded-md ${focus ? "ring ring-blue-400 dark:ring-[#dfdfe4]" : ""}`}
+            >
+                {Icon ? (
+                    <div className="flex items-center justify-center px-2">
+                        <Icon />
+                    </div>
+                ) : (<></>)}
                 <input 
-                    type={rest.type == "password" ? show ? "text" : rest.type : rest.type} 
+                    type={type == "password" ? show ? "text" : type : type} 
                     ref={ref}
-                    className="outline-none focus:ring focus:ring-blue-400 w-full
-                                focus:dark:ring-[#dfdfe4] px-2 py-1 rounded-md
-                                bg-white dark:bg-[#3b3b45] border border-blue-50 dark:border-[#dfdfe4]"
+                    name={rest.name}
+                    className="outline-none w-full px-2 py-1 rounded-md"
                     placeholder={rest.placeholder}
+                    onChange={rest.onChange}
+                    onFocus={() => setFocus(true)}
+                    
+                    {...rest}
                 />
-                {rest.type == "password" ? (
-                    <button className="bg-white dark:bg-[#3b3b45] border border-blue-50 mx-1
-                                        dark:border-[#dfdfe4] px-2 py-1 rounded-md cursor-pointer"
+                {type == "password" ? (
+                    <button className="bg-white dark:bg-[#3b3b45] border border-blue-50 ml-1
+                                        dark:border-[#313139] px-2 py-1 rounded-sm cursor-pointer active:bg"
                         onClick={() => setShow(!show)}
+                        type="button"
                     >
                         {!show ? (
                             <AiOutlineEye />

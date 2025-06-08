@@ -7,9 +7,7 @@ import "./style.css"
 const files = import.meta.glob("./app/**/(page|layout).tsx")
 const errorFiles = lazy(() => import("./error-files.tsx"))
 
-const router = createBrowserRouter([{
-  ...getPagesRoute(files, errorFiles) as RouteObject
-}])
+const router = createBrowserRouter(getPagesRoute(files, errorFiles) as RouteObject[])
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import icon from "../../../assets/icon.png"
 import SwitchModeToggle from "../atoms/switch-theme";
+import { FaArrowRightFromBracket } from "react-icons/fa6";
 
 export default function Navbar(): ReactNode {
     return (
@@ -14,8 +15,13 @@ export default function Navbar(): ReactNode {
                         Alumnio Web
                     </a>
                 </div>
-                <div className="flex">
+                <div className="flex gap-2">
                     <SwitchModeToggle />
+                    <button
+                        className="text-sm px-2 py-2 rounded-md hover:bg-blue-50 hover:dark:bg-[#3b3b45] cursor-pointer"
+                    >
+                        <FaArrowRightFromBracket />
+                    </button>
                 </div>
             </div>
         </nav>

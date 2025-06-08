@@ -1,166 +1,82 @@
-import { lazy } from "react"
-import type { RouteObject } from "react-router-dom"
+import { lazy, type LazyExoticComponent, type ReactNode } from "react";
+import { type RouteObject } from "react-router-dom";
 
 export interface PageModule {
-    default: () => React.ReactNode
+  default: () => React.ReactNode;
 }
 
-interface CustomRouteObject extends Omit<RouteObject, "handle" | "children"> {
-    handle?: {
-        type: "layout"|"page"|undefined
+function normalizePath(filePath: string): string {
+    return filePath
+        .replace("./app", "")
+        .replace("../pages", "")
+        .replace(/\[\.\.\..*\]/g, "*")
+        .replace(/\[(.*?)\]/g, ":$1")
+        .replace(/\/(page|layout)\.(tsx|jsx)$/, "")
+        .replace(/\/$/, "/") || "/";
+}
+
+export function getPagesRoute(
+  files: Record<string, () => Promise<unknown>>,
+  ErrorFiles: LazyExoticComponent<() => React.ReactNode>
+): RouteObject[] {
+  const routes: RouteObject[] = [];
+  const pages: { path: string; component: LazyExoticComponent<() => ReactNode> }[] = [];
+  const layouts: { path: string; component: LazyExoticComponent<() => ReactNode> }[] = [];
+
+  for (const filePath in files) {
+    const component = lazy(files[filePath] as () => Promise<PageModule>);
+    const path = normalizePath(filePath);
+
+    if (filePath.endsWith("layout.tsx")) {
+      layouts.push({ path, component });
+    } else if (filePath.endsWith("page.tsx")) {
+      pages.push({ path, component });
     }
-    children?: CustomRouteObject[]
-}
+  }
 
-const separator: string = "\\"
+  layouts.sort((a, b) => b.path.length - a.path.length);
 
-    export function getPagesRoute(
-        files: Record<string, () => Promise<unknown>>,
-        ErrorFiles: React.LazyExoticComponent<() => React.ReactNode>
-    ){
-    const routes: CustomRouteObject = {
-        path: "/",
-        children: []
-    }
-    Object.entries(files).forEach(([filePath, importer]) => {
-        const segmentPath = filePathToUrlPathSegment(filePath)
-        const page = lazy(importer as () => Promise<PageModule>)
+  const processedPages = new Set<string>();
 
-        insertRoute(segmentPath, page, routes)
-    })
+  for (const layout of layouts) {
+    const layoutChildren: RouteObject[] = [];
 
-    routes.children?.push({
-        path: "*",
-        element: <ErrorFiles />,
-        handle: {
-            type: "page"
-        },
-        children: []
-    })
+    for (const page of pages) {
+      if (processedPages.has(page.path)) continue;
 
+      if (page.path.startsWith(layout.path)) {
+        const relativePath = page.path.substring(layout.path.length).replace(/^\//, "");
 
-    return routes
-}
-
-function insertRoute(
-    segments: string[],
-    Page: React.LazyExoticComponent<() => React.ReactNode>,
-    current: CustomRouteObject,
-    index = 0
-) {
-    if(index > segments.length - 1){
-        return
+        layoutChildren.push({
+          index: relativePath === "",
+          path: relativePath === "" ? undefined : relativePath,
+          element: <page.component />,
+        });
+        processedPages.add(page.path);
+      }
     }
     
-    const thisSegment = segments[index].includes(separator) ? 
-                        segments[index].split(separator)[0] : 
-                        segments[index]
-    const thisType = segments[index].includes(separator) ? 
-                        segments[index].split(separator)[1] : 
-                        null
+    if (layoutChildren.length > 0) {
+      routes.push({
+        path: layout.path,
+        element: <layout.component />,
+        children: layoutChildren,
+      });
+    }
+  }
+  
+  for (const page of pages) {
+      if(processedPages.has(page.path)) continue;
+      routes.push({
+          path: page.path,
+          element: <page.component />
+      })
+  }
 
-    if(thisType && thisType == "layout" && thisSegment == current.path){
-        current.path = thisSegment
-        current.children = current.children ? current.children : []
-        current.element = <Page />
-        current.handle = {
-            type: "layout"
-        }
-    }
-    else if(thisType && thisType == "page" && current.handle?.type == "layout" && thisSegment == current.path){
-        current.children?.push({
-            index: true,
-            element: <Page />,
-            handle: {
-                type: "page"
-            }
-        })
-    }
-    else if(thisType && thisType == "page" && thisSegment == current.path){
-        current.path = thisSegment
-        current.children = current.children ? current.children : []
-        current.element = <Page />
-        current.handle = {
-            type: "page"
-        }
-    }
-    else if(thisSegment.startsWith("_")){
-        return
-    }
-    else {
-        if(!current.children) return
-        const indexOfChildren = current.children.findIndex(
-            (v) => 
-                v.path == (segments[index + 1].includes(separator) ? 
-                    segments[index + 1].split(separator)[0] : 
-                    segments[index + 1]
-                )
-            )
-        if(indexOfChildren != -1){
-            insertRoute(segments, Page, current.children[indexOfChildren], index + 1)
-        }
-        else{
-            current.children?.push({
-                path: segments[index + 1].includes(separator) ? 
-                      segments[index + 1].split(separator)[0] : 
-                      segments[index + 1],
-                children: []
-            })
-            insertRoute(segments, Page, current.children[current.children.length - 1], index + 1)
-        }
-    }
-}
+  routes.push({
+      path: "*",
+      element: <ErrorFiles />
+  })
 
-function filePathToUrlPathSegment(
-    path: string
-): string[] {
-    const segments = path
-            .replace("/app", "")
-            .split("/")
-            .map((segment) => {
-                if(segment.startsWith(".")) return "/"
-                if(segment.startsWith("[")) {
-                    if(segment.includes("...")) return "*"
-                    return segment.replace("[", ":").replace("]", "")
-                }
-                return segment
-            })
-
-    return segmentParser(segments[0], segments)
-}
-
-function transform(
-    previousSegment: string, 
-    segment: string
-) : string {
-    return `${previousSegment}${separator}${segment.split(".")[0]}`
-}
-
-function segmentParser(
-    segment: string,
-    segments: string[],
-    segmentEntries: string[] = [],
-    index: number = 0
-) : string[] {
-    if(index > segments.length){
-        throw new Error("Error: Segments")
-    }
-    if(index === segments.length - 1){
-        segmentEntries.push(transform(segmentEntries.pop() as string, segment))
-        return segmentEntries
-    }
-
-    if(!segment.startsWith(":")){
-        segmentEntries.push(segment)
-    }
-    else{
-        segmentEntries.push(`${segmentEntries.pop()}/${segment}`)
-    }
-
-    return segmentParser(
-        segments[index+1],
-        segments,
-        segmentEntries,
-        index+1
-    )
+  return routes;
 }

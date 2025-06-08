@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ChangeEvent, type DetailedHTMLProps, type InputHTMLAttributes, type ReactNode } from "react";
 import { AiOutlineCaretDown } from "react-icons/ai";
 
 export type TCustomSelectCallback = (value: string | number) => void
@@ -8,10 +8,8 @@ export type TCustomSelectData = {
     value: string | number
 }
 
-export type TCustomSelect = {
-    onChange?: TCustomSelectCallback,
-    className?: string,
-    data: TCustomSelectData[]
+export type TCustomSelect = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> & {
+    data: TCustomSelectData[],
 }
 
 export function CustomSelect(
@@ -45,7 +43,7 @@ export function CustomSelect(
     return (
         <div className={`text-gray-600 dark:text-[#dfdfe4] bg-transparent ${rest.className}`}>
             <div 
-                className={`bg-white dark:bg-[#3b3b45] border dark:border-[#dfdfe4] border-blue-50 
+                className={`bg-white dark:bg-[#3b3b45] border dark:border-[#313139] border-blue-50 
                             rounded-md flex justify-between
                             px-2 py-1 font-semibold cursor-pointer
                             ${focus? "ring ring-blue-400 dark:ring-[#dfdfe4]" : ""}`}
@@ -55,22 +53,27 @@ export function CustomSelect(
                 {selected ? selected : "Select"}
                 <AiOutlineCaretDown />
             </div>
-            <div className={`relative pt-1 ${collapse? "hidden" : ""}`}>  
+            <input type="hidden" value={selected ? selected : ""} name={rest.name}/>
+            <div className={`relative pt-1 animate-fade-in ${collapse? "hidden" : ""}`}>  
                 <div 
                     className="absolute bg-white dark:bg-[#3b3b45] 
-                                rounded-md 
+                                rounded-md
                                 px-2 py-1 w-full font-semibold cursor-pointer shadow-md"
                 >
-                    {data.map((v) => (
+                    {data.map((v, i) => (
                         <div 
                             className="hover:bg-blue-50 hover:dark:bg-[#4a4a58] rounded-sm px-2 py-1"
                             onClick={() => {
-                                if(rest.onChange){
-                                    rest.onChange(v.value)
-                                }
+                                rest.onChange?.({
+                                    target: {
+                                        value: v.value as string,
+                                        name: rest.name as string
+                                    }
+                                } as ChangeEvent<HTMLInputElement>)
                                 setSelected(v.display)
                                 toggleCollapse()
                             }}
+                            key={i}
                         >
                             <h6>{v.display}</h6>
                         </div>

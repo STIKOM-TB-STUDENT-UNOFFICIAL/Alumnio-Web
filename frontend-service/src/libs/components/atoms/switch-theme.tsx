@@ -22,7 +22,8 @@ export default function SwitchModeToggle (): ReactNode {
             html.style.colorScheme = "light"
             setLocalStorageValue("dark-theme", "0")
         }
-    }, [darkMode]); 
+    }, [darkMode]);
+    
     return (
         <button
             onClick={() => setDarkMode(!darkMode)}
