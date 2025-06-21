@@ -1,10 +1,23 @@
 import { serve } from '@hono/node-server'
-import { Hono } from 'hono'
+import { type Context, Hono } from 'hono'
 import { swaggerUI } from '@hono/swagger-ui'
-import { authRoute } from '@/routes/auth-route.ts'
+import { 
+  authRoute, 
+  userRoute,
+  majorRoute
+} from '@/routes/index.ts'
 import { openAPISpecs } from 'hono-openapi'
+import { cors } from 'hono/cors'
+import dotenv from "dotenv"
+import type { HTTPResponseError } from 'hono/types'
+import { generateMeta } from './utils/generate-meta.ts'
 
+dotenv.config()
+
+const port = process.env.PORT || 4000
 const app = new Hono()
+
+app.use("*", cors())
 
 app.get('/', (c) => {
   return c.json({
@@ -12,7 +25,11 @@ app.get('/', (c) => {
   })
 })
 
+// FOR APP ROUTE
 app.route("/auth", authRoute)
+app.route("/users", userRoute)
+app.route("/majors", majorRoute)
+// END ROUTE
 
 app.use('/ui', swaggerUI({ url: '/docs' }))
 
@@ -26,15 +43,23 @@ app.get(
         description: 'Greeting API',
       },
       servers: [
-        { url: 'http://localhost:3000', description: 'Local Server' },
+        { url: `http://localhost:${port}`, description: 'Local Server' },
       ],
     },
   })
 )
 
+// ERROR HANDLING
+app.onError((err: Error | HTTPResponseError, c: Context) => {
+  return c.json({
+    meta: generateMeta("FAILED", 400, err.message),
+    data: []
+  })
+})
+
 serve({
   fetch: app.fetch,
-  port: 4000,
+  port: port as number,
   hostname: "0.0.0.0"
 }, (info) => {
   console.log(`Server is running on http://localhost:${info.port}`)

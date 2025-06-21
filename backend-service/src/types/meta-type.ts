@@ -1,5 +1,7 @@
+export type TMetaStatus = "SUCCESS" | "FAILED"
+
 export type TMeta = {
-    status: "SUCCESS" | "FAILED",
+    status: TMetaStatus,
     message: string,
     code: number
 }

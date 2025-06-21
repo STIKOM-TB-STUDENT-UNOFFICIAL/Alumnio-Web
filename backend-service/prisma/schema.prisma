@@ -25,16 +25,17 @@ model User {
 }
 
 model UserInformation {
-  id              Int    @id @default(autoincrement()) @map("id_user_information")
-  userId          Int    @unique
+  id              Int     @id @default(autoincrement()) @map("id_user_information")
+  userId          Int     @unique
   fullname        String
-  email           String @default("")
-  phone           String @default("")
-  address         String @db.Text()
-  bio             String @default("")
-  classOf         String @map("class_of")
-  majorId         Int    @unique @map("major_id")
-  curriculumVitae String @default("") @map("curriculum_vitae")
+  email           String  @default("")
+  phone           String  @default("")
+  address         String  @db.Text()
+  bio             String  @default("")
+  classOf         String  @map("class_of")
+  majorId         Int     @unique @map("major_id")
+  linkedinUrl     String? @map("linkedin_url")
+  curriculumVitae String?  @default("") @map("curriculum_vitae")
 
   major Major? @relation(fields: [majorId], references: [id])
   user  User?  @relation(fields: [userId], references: [id])
