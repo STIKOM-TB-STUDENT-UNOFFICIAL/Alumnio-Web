@@ -1,4 +1,5 @@
-import { AuthSchema, AuthSchemaResponse } from "@/schemas/auth-schema.ts"
+import { getAuthSession, postAuthHandler } from "@/handlers/auth-handler.ts"
+import { AuthResponseSchema, AuthSchema, AuthSessionSchema } from "@/schemas/auth-schema.ts"
 import { Hono } from "hono"
 import { describeRoute } from "hono-openapi"
 import {
@@ -17,12 +18,29 @@ authRoute.post('/',
                 description: "Successfully authentication",
                 content: {
                     "application/json": {
-                        schema: resolver(AuthSchemaResponse)        
+                        schema: resolver(AuthResponseSchema)        
                     }
                 }
             },
         }
     }),
     validator("json", AuthSchema),
-    (c) => c.text('hello auth')
+    postAuthHandler
+)
+.get('/',
+    describeRoute({
+        description: "Get session information",
+        tags: ["Auth"],
+        responses: {
+            200: {
+                description: "Successfully get session information",
+                content: {
+                    "application/json": {
+                        schema: resolver(AuthSessionSchema)
+                    }
+                }
+            }
+        }
+    }),
+    getAuthSession
 )

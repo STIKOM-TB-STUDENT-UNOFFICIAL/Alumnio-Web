@@ -1,4 +1,5 @@
 import { prisma } from "@/libs/db/index.ts";
+import type { TAuthUser } from "@/types/auth-type.ts";
 import type { TUser, TUserWithInformation } from "@/types/user-type.ts";
 import { passwordHash } from "@/utils/bcrypt.ts";
 
@@ -6,6 +7,23 @@ export async function findAllUser(){
     return await prisma.user.findMany({
         include: {
             UserInformation: true
+        }
+    })
+}
+
+export async function findUserForAuth(
+    user: TAuthUser
+){
+    return await prisma.user.findFirst({
+        where: {
+            ...user
+        },
+        include: {
+            UserInformation: {
+                select: {
+                    fullname: true
+                }
+            }
         }
     })
 }

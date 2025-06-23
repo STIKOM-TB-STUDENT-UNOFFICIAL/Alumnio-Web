@@ -10,5 +10,11 @@ export type TAuthResponse = {
 export type TTokenPayload = {
     role: number,
     username: string,
-    
+    fullName: string
+}
+
+export type TAuthUser = {
+    username: string,
+    password?: string,
+    role: number
 }

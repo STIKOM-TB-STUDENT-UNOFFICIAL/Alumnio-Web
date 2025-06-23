@@ -13,7 +13,11 @@ export const AuthSchema = z.object({
     }).min(8, "Password length not valid")
 })
 
-export const AuthSchemaResponse = z.object({
+export const AuthSessionSchema = AuthSchema.extend({
+    password: z.undefined()
+})
+
+export const AuthResponseSchema = z.object({
     meta: MetaSchema,
     data: z.union([
         z.object({

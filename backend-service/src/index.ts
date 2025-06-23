@@ -11,6 +11,7 @@ import { cors } from 'hono/cors'
 import dotenv from "dotenv"
 import type { HTTPResponseError } from 'hono/types'
 import { generateMeta } from './utils/generate-meta.ts'
+import { HTTPException } from 'hono/http-exception'
 
 dotenv.config()
 
@@ -52,7 +53,11 @@ app.get(
 // ERROR HANDLING
 app.onError((err: Error | HTTPResponseError, c: Context) => {
   return c.json({
-    meta: generateMeta("FAILED", 400, err.message),
+    meta: generateMeta(
+      "FAILED", 
+      err instanceof HTTPException ? err.getResponse().status : 500, 
+      err.message
+    ),
     data: []
   })
 })
