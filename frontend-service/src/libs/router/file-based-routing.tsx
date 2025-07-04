@@ -1,3 +1,4 @@
+import { Middleware } from "@/middleware";
 import { lazy, type LazyExoticComponent, type ReactNode } from "react";
 import { type RouteObject } from "react-router-dom";
 
@@ -61,6 +62,7 @@ export function getPagesRoute(
         path: layout.path,
         element: <layout.component />,
         children: layoutChildren,
+        loader: Middleware
       });
     }
   }
@@ -69,13 +71,15 @@ export function getPagesRoute(
       if(processedPages.has(page.path)) continue;
       routes.push({
           path: page.path,
-          element: <page.component />
+          element: <page.component />,
+          loader: Middleware
       })
   }
 
   routes.push({
       path: "*",
-      element: <ErrorFiles />
+      element: <ErrorFiles />,
+      loader: Middleware
   })
 
   return routes;

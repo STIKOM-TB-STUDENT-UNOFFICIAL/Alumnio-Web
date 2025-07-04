@@ -1,9 +1,13 @@
-import type { ReactNode } from "react";
+import { useContext, type ReactNode } from "react";
 import icon from "../../../assets/icon.png"
 import SwitchModeToggle from "../atoms/switch-theme";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
+import { AuthContext } from "@/libs/context/auth-context";
+import { logOutService } from "@/services/auth-service";
 
 export default function Navbar(): ReactNode {
+    const { session } = useContext(AuthContext)
+
     return (
         <nav className="w-full sticky top-0 border-b border-b-blue-50 dark:border-b-[#313139]
                         px-10 py-3 flex justify-center dark:bg-[#2b2b33] bg-white">
@@ -17,11 +21,16 @@ export default function Navbar(): ReactNode {
                 </div>
                 <div className="flex gap-2">
                     <SwitchModeToggle />
-                    <button
-                        className="text-sm px-2 py-2 rounded-md hover:bg-blue-50 hover:dark:bg-[#3b3b45] cursor-pointer"
-                    >
-                        <FaArrowRightFromBracket />
-                    </button>
+                    {session != "" ? (
+                        <button
+                            className="text-sm px-2 py-2 rounded-md hover:bg-blue-50 hover:dark:bg-[#3b3b45] cursor-pointer"
+                            onClick={() => {
+                                logOutService()
+                            }}
+                        >
+                            <FaArrowRightFromBracket />
+                        </button>
+                    ) : (<></>)}
                 </div>
             </div>
         </nav>

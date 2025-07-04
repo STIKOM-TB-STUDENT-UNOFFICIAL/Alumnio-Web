@@ -7,6 +7,8 @@ import { LoginSchema } from "@/schema/login-schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import type { z } from "zod"
 import { CustomSelectWithError } from "@/libs/components/molecules/custom-select-with-error"
+import { SessionRole } from "@/utils/session"
+import { signInService } from "@/services/auth-service"
 
 export default function Index(): React.ReactNode{
     const { 
@@ -57,16 +59,16 @@ export default function Index(): React.ReactNode{
                     <h2 className="text-2xl font-semibold">Selamat Datang Kembali</h2>
                     <h6 className="text-md">Masuk untuk mengakses portal alumni Anda</h6>
                     <h6 className="mt-5 mb-2">Masuk Sebagai</h6>
-                    <form onSubmit={handleSubmit((data) => console.log(data))}>
+                    <form onSubmit={handleSubmit(signInService)}>
                         <CustomSelectWithError
                             data={[
                                 {
                                     display: "Administrator",
-                                    value: 0
+                                    value: SessionRole.ADMINISTRATOR
                                 },
                                 {
                                     display: "Alumni",
-                                    value: 1
+                                    value: SessionRole.ALUMNI
                                 }
                             ]}
                             {...register("role")}

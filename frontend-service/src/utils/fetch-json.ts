@@ -1,13 +1,16 @@
-export async function fetchJson<T, Q>(url: string, method: string, body?: Q): Promise<T | Error> {
+export async function fetchJson<T, Q>(url: string, method: string, headers?: object, body?: Q): Promise<T> {
     try{
         const res = await fetch(url, {
             method,
-            body: JSON.stringify(body)
+            body: body ? JSON.stringify(body ?? "") : undefined,
+            headers: {
+                ...headers
+            }
         })
 
         return await res.json() as T
     }
     catch(e: unknown){
-        return e as Error
+        throw e as Error
     }
 }

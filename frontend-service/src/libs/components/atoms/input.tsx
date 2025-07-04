@@ -3,7 +3,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 export type TCustomInput = Omit<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, "type"> & {
     label?: string,
-    type: "text"|"password"|"email",
+    type: "text"|"password"|"email"|"date"|"checkbox",
     Icon?: ElementType
 }
 
