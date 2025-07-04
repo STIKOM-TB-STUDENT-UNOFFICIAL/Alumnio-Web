@@ -1,7 +1,7 @@
 import { findUserForAuth } from "@/repositories/user-repository.ts";
 import type { TTokenPayload, TAuthUser } from "@/types/auth-type.ts";
 import { passwordCompare } from "@/utils/bcrypt.ts";
-import { jwtDecode, jwtVerify } from "@/utils/jwt.ts";
+import { jwtVerify } from "@/utils/jwt.ts";
 import { HTTPException } from "hono/http-exception";
 
 export async function AuthService(userData: TAuthUser) {
@@ -20,7 +20,6 @@ export async function AuthService(userData: TAuthUser) {
 }
 
 export async function AuthGetSessionService(token: string){
-    await jwtVerify(token)
-    const information = jwtDecode<TTokenPayload>(token)
+    const information = await jwtVerify<TTokenPayload>(token)
     return information
 }

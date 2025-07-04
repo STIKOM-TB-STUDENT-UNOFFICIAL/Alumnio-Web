@@ -8,8 +8,8 @@ export async function jwtSign(payload: TTokenPayload){
     }, process.env.JWT_KEY ?? "nakano", "HS256")
 }
 
-export async function jwtVerify(token: string){
-    return await verify(token, process.env.JWT_KEY ?? "nakano", "HS256")
+export async function jwtVerify<T>(token: string): Promise<T> {
+    return await verify(token, process.env.JWT_KEY ?? "nakano", "HS256") as T
 }
 
 export function jwtDecode<T>(token: string): T {

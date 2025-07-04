@@ -14,7 +14,8 @@ export async function postAuthHandler(c: Context){
             token: await jwtSign({
                 username: user.username,
                 role: user.role,
-                fullName: user.UserInformation?.fullname ?? ""
+                fullName: user.UserInformation?.fullname ?? "",
+                userId: user.id
             })
         }
     }

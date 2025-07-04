@@ -1,10 +1,29 @@
 import { prisma } from "@/libs/db/index.ts";
+import { Access } from "@/middleware/authorization.ts";
 import type { TAuthUser } from "@/types/auth-type.ts";
-import type { TUser, TUserWithInformation } from "@/types/user-type.ts";
+import type { TUser, TUserWithInformation, TUserWithInformationUpdateable } from "@/types/user-type.ts";
 import { passwordHash } from "@/utils/bcrypt.ts";
 
 export async function findAllUser(){
     return await prisma.user.findMany({
+        include: {
+            UserInformation: {
+                include:{
+                    major: true
+                }
+            }
+        },
+        where: {
+            role: Access.ALUMNI
+        }
+    })
+}
+
+export async function findUserById(id: number){
+    return await prisma.user.findFirst({
+        where: {
+            id
+        },
         include: {
             UserInformation: true
         }
@@ -43,6 +62,21 @@ export async function insertNewUser(user: TUser){
                     bio: (user.UserInformation as TUserWithInformation).bio,
                     classOf: (user.UserInformation as TUserWithInformation).classOf,
                     majorId: (user.UserInformation as TUserWithInformation).majorId,
+                }
+            }
+        }
+    })
+}
+
+export async function patchUserInformation(userId: number, userInformation: TUserWithInformationUpdateable){
+    return await prisma.user.update({
+        where: {
+            id: userId
+        },
+        data: {
+            UserInformation: {
+                update: {
+                    ...userInformation
                 }
             }
         }

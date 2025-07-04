@@ -1,7 +1,8 @@
 export type TAuth = {
     role: number,
     username: string,
-    password: string
+    password: string,
+    userId: number
 }
 
 export type TSessionData = {

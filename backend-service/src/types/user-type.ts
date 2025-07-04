@@ -19,6 +19,15 @@ export type TUserWithInformation = {
     curriculumVitae: string
 }
 
+export type TUserWithInformationUpdateable =  {
+    fullname: string,
+    email: string,
+    phone: string,
+    address: string,
+    bio: string,
+    linkedinUrl?: string | null,
+}
+
 export type TUser = {
     id?: string,
     username: string,

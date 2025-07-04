@@ -8,6 +8,7 @@ export type TAuthResponse = {
 }
 
 export type TTokenPayload = {
+    userId: number,
     role: number,
     username: string,
     fullName: string

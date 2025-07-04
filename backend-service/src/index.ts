@@ -12,6 +12,7 @@ import dotenv from "dotenv"
 import type { HTTPResponseError } from 'hono/types'
 import { generateMeta } from './utils/generate-meta.ts'
 import { HTTPException } from 'hono/http-exception'
+import type { StatusCode } from 'hono/utils/http-status'
 
 dotenv.config()
 
@@ -52,6 +53,7 @@ app.get(
 
 // ERROR HANDLING
 app.onError((err: Error | HTTPResponseError, c: Context) => {
+  c.status((err instanceof HTTPException ? err.getResponse().status : 500) as StatusCode)
   return c.json({
     meta: generateMeta(
       "FAILED", 

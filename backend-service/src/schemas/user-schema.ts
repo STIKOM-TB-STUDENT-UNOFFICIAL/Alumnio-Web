@@ -40,6 +40,14 @@ export const UserRegisterSchema = UserSchema.extend({
     })
 })
 
+export const UserInformationModifySchema = UserWithInformationSchema.extend({
+    id: z.undefined(),
+    userId: z.undefined(),
+    classOf: z.undefined(),
+    majorId: z.undefined(),
+    curriculumVitae: z.undefined()
+})
+
 export const UserResponseSchema = z.object({
     meta: MetaSchema,
     data: z.array(UserSchema)
