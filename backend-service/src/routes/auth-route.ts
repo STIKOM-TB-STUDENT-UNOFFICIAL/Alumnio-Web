@@ -1,5 +1,5 @@
 import { getAuthSession, postAuthHandler } from "@/handlers/auth-handler.ts"
-import { AuthResponseSchema, AuthSchema, AuthSessionSchema } from "@/schemas/auth-schema.ts"
+import { AuthResponseSchema, AuthSchema, AuthSessionSchema, NewPasswordSchema } from "@/schemas/auth-schema.ts"
 import { Hono } from "hono"
 import { describeRoute } from "hono-openapi"
 import {
@@ -43,4 +43,21 @@ authRoute.post('/',
         }
     }),
     getAuthSession
+)
+.patch('/',
+    describeRoute({
+        description: "Change password",
+        tags: ["Auth"],
+        responses: {
+            200: {
+                description: "Successfully change password",
+                content: {
+                    "application/json": {
+                        schema: resolver(NewPasswordSchema)
+                    }
+                }
+            }
+        }
+    }),
+    (c) => c.json({})
 )

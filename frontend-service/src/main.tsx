@@ -14,7 +14,7 @@ const router = createBrowserRouter(getPagesRoute(files, errorFiles) as RouteObje
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <SessionContext>
-      <Toaster />
+      <Toaster position='top-center'/>
       <RouterProvider router={router} />
     </SessionContext>
   </StrictMode>,

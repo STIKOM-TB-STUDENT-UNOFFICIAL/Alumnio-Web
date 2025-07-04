@@ -26,3 +26,8 @@ export const AuthResponseSchema = z.object({
         z.array(z.any())
     ])
 })
+
+export const NewPasswordSchema = z.object({
+    meta: MetaSchema,
+    data: z.array(z.any())
+})

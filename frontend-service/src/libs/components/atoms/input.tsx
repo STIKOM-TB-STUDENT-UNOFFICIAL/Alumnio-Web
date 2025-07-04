@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type DetailedHTMLProps, type ElementType, type InputHTMLAttributes, type ReactNode } from "react";
+import { useRef, useState, type DetailedHTMLProps, type ElementType, type InputHTMLAttributes, type ReactNode } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 export type TCustomInput = Omit<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, "type"> & {
@@ -12,21 +12,7 @@ export function Input(
     : TCustomInput
 ): ReactNode{
     const ref = useRef<HTMLInputElement>(null)
-    const [focus, setFocus] = useState(false)
     const [show, setShow] = useState(false)
-
-    useEffect(() => {
-        const handleClick = (event: MouseEvent) => {
-            if(ref.current && !ref.current.contains(event.target as Node)){
-                setFocus(false)
-            }
-        }
-    
-        document.addEventListener("mousedown", handleClick)
-
-        return () => document.removeEventListener('mousedown', handleClick)
-    }, [])
-
     return (
         <div className={`${className}`}>
             <h6 
@@ -35,7 +21,7 @@ export function Input(
             >{rest.label}</h6>
             <div 
                 className={`flex w-full bg-white dark:bg-[#3b3b45] border 
-                border-blue-50 dark:border-[#313139] rounded-md ${focus ? "ring ring-blue-400 dark:ring-[#dfdfe4]" : ""}`}
+                border-blue-50 dark:border-[#313139] rounded-md focus-within:ring focus-within:ring-blue-400 dark:focus-within:ring dark:focus-within:ring-[#dfdfe4]`}
             >
                 {Icon ? (
                     <div className="flex items-center justify-center px-2">
@@ -49,7 +35,6 @@ export function Input(
                     className="outline-none w-full px-2 py-1 rounded-md"
                     placeholder={rest.placeholder}
                     onChange={rest.onChange}
-                    onFocus={() => setFocus(true)}
                     
                     {...rest}
                 />

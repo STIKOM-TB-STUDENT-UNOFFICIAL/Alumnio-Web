@@ -12,7 +12,6 @@ export async function validationSession(token: string){
                 "Authorization": `Bearer ${token}`
             }
         )
-        console.log(sessionValidator)
         if(typeof(sessionValidator.success) == "boolean"){
             return false
         }
@@ -30,7 +29,6 @@ export async function validationSession(token: string){
 export async function signInService(authData: TAuth){
     try{
         const auth = await fetchJson<TAuthentication, TAuth>(baseUrl("/auth"), "POST", {"Content-Type": "application/json"}, authData)
-        console.log(auth)
         if(typeof(auth.success) == "boolean"){
             throw new Error()
         }

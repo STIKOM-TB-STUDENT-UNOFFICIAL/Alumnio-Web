@@ -1,15 +1,53 @@
-import type { ReactNode } from "react";
-import profile from "@/assets/481932188_17898877434116514_6989620279172715534_n.webp"
+import { useEffect, useState, type ReactNode } from "react";
+import profilepict from "@/assets/481932188_17898877434116514_6989620279172715534_n.webp"
 import { InputWithError } from "../molecules/input-with-error";
+import { loadProfileService } from "@/services/load-profile-service";
+import { getSession } from "@/utils/session";
+import type { TUserProfile } from "@/types/user-profile";
+import { useForm } from "react-hook-form";
+import { UserProfileSchema } from "@/schema/user-profile-schema";
+import type z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { patchProfileService } from "@/services/patch-profile-service";
+import { PasswordUpdateForm } from "./password-update-form";
 
 export function ProfileForm(): ReactNode {
+    const [ profile, setProfile ] = useState({
+        fullname: "",
+        email: "",
+        phone: "",
+        address: "",
+        bio: "",
+        linkedinUrl: ""
+    } as TUserProfile)
+    const [ load, setLoad ] = useState(false)
+    const {
+        handleSubmit,
+        register,
+        formState: { errors },
+        reset
+    } = useForm<z.infer<typeof UserProfileSchema>>({ resolver: zodResolver(UserProfileSchema) })
+
+    useEffect(() => {
+        const userProfile = loadProfileService(getSession() as string)
+        userProfile.then((v) => {
+            setProfile({
+                ...(v as TUserProfile)
+            })
+        })
+    }, [])
+
+    useEffect(() => {
+        reset(profile)
+    }, [profile, reset])
+    
     return (
         <div className="w-full border dark:border-[#232325] border-blue-50 p-5 rounded-lg my-5">
             <h4 className="text-2xl font-semibold">Informasi Pribadi</h4>
             <h6 className="text-sm">Ubah informasi pribadi anda</h6>
             <div className="flex items-center">
                 <img 
-                    src={profile}
+                    src={profilepict}
                     alt="Profile Pict"
                     className="w-[100px] h-[100px] object-cover rounded-full my-5"
                 />
@@ -17,33 +55,52 @@ export function ProfileForm(): ReactNode {
                     Ubah Gambar
                 </button>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 grid-flow-row-dense gap-5">
-                <div className="block">
-                    <h6 className="mb-2">Full Name</h6>
-                    <InputWithError type={"text"} />
+            <form onSubmit={handleSubmit(async (v) => {
+                setLoad(true)
+                await patchProfileService(getSession() as string, v)
+                setLoad(false)
+            })}>
+                <div className="grid grid-cols-1 lg:grid-cols-2 grid-flow-row-dense gap-5">
+                    <InputWithError 
+                        type={"text"} 
+                        label="Full Name"
+                        error={errors.fullname?.message}
+                        {...register("fullname")}
+                        />
+                    <InputWithError 
+                        type={"email"} 
+                        label="Email" 
+                        error={errors.email?.message}
+                        {...register("email")}
+                        />
+                    <InputWithError
+                        type={"text"}
+                        label="Phone"
+                        error={errors.phone?.message}
+                        {...register("phone")}
+                        />
+                    <InputWithError 
+                        type={"text"}
+                        label="Address"
+                        {...register("address")}
+                    />
+                    <InputWithError 
+                        type={"text"} 
+                        label="Linkedin"
+                        {...register("linkedinUrl")}
+                    />
                 </div>
-                <div className="block">
-                    <h6 className="mb-2">Email</h6>
-                    <InputWithError type={"text"} />
-                </div>
-                <div className="block">
-                    <h6 className="mb-2">Phone</h6>
-                    <InputWithError type={"text"} />
-                </div>
-                <div className="block">
-                    <h6 className="mb-2">Address</h6>
-                    <InputWithError type={"text"} />
-                </div>
-                <div className="block">
-                    <h6 className="mb-2">Linkedin</h6>
-                    <InputWithError type={"text"} />
-                </div>
-            </div>
-            <h6 className="mb-2 mt-5">Bio</h6>
-            <InputWithError type={"text"} />
-            <button className="dark:bg-blue-900 bg-blue-400 p-3 rounded-lg cursor-pointer my-5 ">
-                Simpan
-            </button>
+                <InputWithError 
+                    type={"text"}
+                    label="Bio"
+                    className="mt-4"
+                    {...register("bio")}
+                />
+                <button className="dark:bg-blue-900 bg-blue-400 p-3 rounded-lg cursor-pointer my-5 " disabled={load}>
+                    Perbarui
+                </button>
+            </form>
+            <PasswordUpdateForm />
         </div>
     )
 }
