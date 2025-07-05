@@ -33,7 +33,7 @@ model UserInformation {
   address         String  @db.Text()
   bio             String  @default("")
   classOf         String  @map("class_of")
-  majorId         Int     @unique @map("major_id")
+  majorId         Int     @map("major_id")
   linkedinUrl     String? @map("linkedin_url")
   curriculumVitae String?  @default("") @map("curriculum_vitae")
 
