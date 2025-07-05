@@ -19,7 +19,8 @@ CREATE TABLE "user_informations" (
     "bio" TEXT NOT NULL DEFAULT '',
     "class_of" TEXT NOT NULL,
     "major_id" INTEGER NOT NULL,
-    "curriculum_vitae" TEXT NOT NULL DEFAULT '',
+    "linkedin_url" TEXT,
+    "curriculum_vitae" TEXT DEFAULT '',
 
     CONSTRAINT "user_informations_pkey" PRIMARY KEY ("id_user_information")
 );
