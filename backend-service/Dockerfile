@@ -5,6 +5,7 @@ WORKDIR /app
 COPY .env.docker /app/.env
 COPY . .
 
+RUN rm -rf dist
 RUN npm install
 RUN npx prisma generate
 RUN npx prisma migrate deploy
