@@ -3,8 +3,8 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: 172.120.0.0/16
-          gateway: 172.120.0.1
+        - subnet: 172.130.0.0/16
+          gateway: 172.130.0.1
 
 services:
   backend-service:
@@ -21,7 +21,7 @@ services:
 
     networks:
       mysk-network:
-        ipv4_address: 172.120.0.2
+        ipv4_address: 172.130.0.2
 
   frontend-service:
     build: 
@@ -36,7 +36,7 @@ services:
 
     networks:
       mysk-network:
-        ipv4_address: 172.120.0.3
+        ipv4_address: 172.130.0.3
 
   reverse-proxy:
     build:
@@ -55,4 +55,4 @@ services:
     
     networks:
       mysk-network:
-        ipv4_address: 172.120.0.4
+        ipv4_address: 172.130.0.4
