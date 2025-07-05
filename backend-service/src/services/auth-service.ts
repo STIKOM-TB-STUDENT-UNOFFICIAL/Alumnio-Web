@@ -1,7 +1,7 @@
-import { findUserForAuth } from "@/repositories/user-repository.ts";
-import type { TTokenPayload, TAuthUser } from "@/types/auth-type.ts";
-import { passwordCompare } from "@/utils/bcrypt.ts";
-import { jwtVerify } from "@/utils/jwt.ts";
+import { findUserForAuth } from "@/repositories/user-repository";
+import type { TTokenPayload, TAuthUser } from "@/types/auth-type";
+import { passwordCompare } from "@/utils/bcrypt";
+import { jwtVerify } from "@/utils/jwt";
 import { HTTPException } from "hono/http-exception";
 
 export async function AuthService(userData: TAuthUser) {

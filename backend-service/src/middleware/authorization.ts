@@ -1,5 +1,5 @@
-import { type TTokenPayload } from "@/types/auth-type.ts"
-import { jwtVerify } from "@/utils/jwt.ts"
+import { type TTokenPayload } from "@/types/auth-type"
+import { jwtVerify } from "@/utils/jwt"
 import type { Context, Next } from "hono"
 import { HTTPException } from "hono/http-exception"
 

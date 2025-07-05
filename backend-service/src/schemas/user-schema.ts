@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { MetaSchema } from "./meta-schemas.ts";
+import { MetaSchema } from "./meta-schemas";
 
 export const UserWithInformationSchema = z.object({
     id: z.optional(z.number()),

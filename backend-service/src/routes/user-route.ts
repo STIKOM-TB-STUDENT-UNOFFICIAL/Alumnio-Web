@@ -1,6 +1,6 @@
-import { getUsers, patchUser, postUsers } from "@/handlers/user-handler.ts"
-import { Access, Authorization } from "@/middleware/authorization.ts"
-import { CreateUserSchema, UserInformationModifySchema, UserRegisterSchema, UserResponseSchema } from "@/schemas/user-schema.ts"
+import { getUsers, patchUser, postUsers } from "@/handlers/user-handler"
+import { Access, Authorization } from "@/middleware/authorization"
+import { CreateUserSchema, UserInformationModifySchema, UserRegisterSchema, UserResponseSchema } from "@/schemas/user-schema"
 import { Hono } from "hono"
 import { describeRoute } from "hono-openapi"
 import {

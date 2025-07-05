@@ -1,4 +1,4 @@
-import { findAllUser, insertNewUser, patchUserInformation } from "@/repositories/user-repository.ts";
+import { findAllUser, insertNewUser, patchUserInformation } from "@/repositories/user-repository";
 import type { TUser, TUserWithInformationUpdateable } from "@/types/user-type.ts";
 
 export async function findAllUserService(){

@@ -1,8 +1,8 @@
-import { prisma } from "@/libs/db/index.ts";
-import { Access } from "@/middleware/authorization.ts";
-import type { TAuthUser } from "@/types/auth-type.ts";
-import type { TUser, TUserWithInformation, TUserWithInformationUpdateable } from "@/types/user-type.ts";
-import { passwordHash } from "@/utils/bcrypt.ts";
+import { prisma } from "@/libs/db/index";
+import { Access } from "@/middleware/authorization";
+import type { TAuthUser } from "@/types/auth-type";
+import type { TUser, TUserWithInformation, TUserWithInformationUpdateable } from "@/types/user-type";
+import { passwordHash } from "@/utils/bcrypt";
 
 export async function findAllUser(){
     return await prisma.user.findMany({

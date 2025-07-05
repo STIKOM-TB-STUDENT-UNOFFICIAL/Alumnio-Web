@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { MetaSchema } from "./meta-schemas.ts";
+import { MetaSchema } from "./meta-schemas";
 
 export const MajorSchema = z.object({
     id: z.number().optional(),

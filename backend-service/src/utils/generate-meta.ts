@@ -1,4 +1,4 @@
-import type { TMeta, TMetaStatus } from "@/types/meta-type.ts";
+import type { TMeta, TMetaStatus } from "@/types/meta-type";
 
 export function generateMeta(status: TMetaStatus, code: number, message: string): TMeta {
     return {

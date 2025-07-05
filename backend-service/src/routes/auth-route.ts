@@ -1,5 +1,5 @@
-import { getAuthSession, postAuthHandler } from "@/handlers/auth-handler.ts"
-import { AuthResponseSchema, AuthSchema, AuthSessionSchema, NewPasswordSchema } from "@/schemas/auth-schema.ts"
+import { getAuthSession, postAuthHandler } from "@/handlers/auth-handler"
+import { AuthResponseSchema, AuthSchema, AuthSessionSchema, NewPasswordSchema } from "@/schemas/auth-schema"
 import { Hono } from "hono"
 import { describeRoute } from "hono-openapi"
 import {
