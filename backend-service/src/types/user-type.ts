@@ -1,4 +1,4 @@
-import type { TMeta } from "./meta-type"
+import type { TMeta } from "./meta-type.ts"
 
 export type TUserResponse<T> = {
     meta: TMeta,

@@ -1,6 +1,6 @@
-import { getAllMajorService } from "@/services/major-service";
-import type { TMajorResponse } from "@/types/major-type";
-import { generateMeta } from "@/utils/generate-meta";
+import { getAllMajorService } from "@/services/major-service.ts";
+import type { TMajorResponse } from "@/types/major-type.ts";
+import { generateMeta } from "@/utils/generate-meta.ts";
 import type { Context } from "hono";
 import { HTTPException } from "hono/http-exception";
 

@@ -1,4 +1,4 @@
-import type { TTokenPayload } from '@/types/auth-type'
+import type { TTokenPayload } from '@/types/auth-type.ts'
 import { decode, sign, verify } from 'hono/jwt'
 
 export async function jwtSign(payload: TTokenPayload){

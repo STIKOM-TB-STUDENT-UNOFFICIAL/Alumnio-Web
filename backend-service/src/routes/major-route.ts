@@ -1,5 +1,5 @@
-import { getAllMajor } from "@/handlers/major-handler"
-import { MajorResponseSchema } from "@/schemas/major-schema"
+import { getAllMajor } from "@/handlers/major-handler.ts"
+import { MajorResponseSchema } from "@/schemas/major-schema.ts"
 import { Hono } from "hono"
 import { describeRoute } from "hono-openapi"
 import { resolver } from "hono-openapi/zod"

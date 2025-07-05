@@ -1,4 +1,4 @@
-import * as bcrypt from "bcrypt"
+import bcrypt from "bcrypt"
 
 const saltRound: number = (parseInt(process.env.SALT_OR_ROUNDS ?? "1") ?? 1) 
 

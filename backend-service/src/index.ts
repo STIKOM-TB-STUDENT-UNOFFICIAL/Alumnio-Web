@@ -5,12 +5,12 @@ import {
   authRoute, 
   userRoute,
   majorRoute
-} from '@/routes/index'
+} from '@/routes/index.ts'
 import { openAPISpecs } from 'hono-openapi'
 import { cors } from 'hono/cors'
-import * as dotenv from "dotenv"
+import dotenv from "dotenv"
 import type { HTTPResponseError } from 'hono/types'
-import { generateMeta } from './utils/generate-meta'
+import { generateMeta } from './utils/generate-meta.ts'
 import { HTTPException } from 'hono/http-exception'
 import type { StatusCode } from 'hono/utils/http-status'
 

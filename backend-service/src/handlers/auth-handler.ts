@@ -1,8 +1,8 @@
-import { AuthGetSessionService, AuthService } from "@/services/auth-service";
+import { AuthGetSessionService, AuthService } from "@/services/auth-service.ts";
 import type { TAuthResponse } from "@/types/auth-type.ts";
 import type { TUserResponse } from "@/types/user-type.ts";
-import { generateMeta } from "@/utils/generate-meta";
-import { jwtSign } from "@/utils/jwt";
+import { generateMeta } from "@/utils/generate-meta.ts";
+import { jwtSign } from "@/utils/jwt.ts";
 import type { Context } from "hono";
 
 export async function postAuthHandler(c: Context){

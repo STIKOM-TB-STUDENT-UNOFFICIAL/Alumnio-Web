@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { MetaSchema } from "./meta-schemas"
+import { MetaSchema } from "./meta-schemas.ts"
 
 export const AuthSchema = z.object({
     role: z.number({
