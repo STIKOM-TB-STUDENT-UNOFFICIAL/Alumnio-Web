@@ -27,3 +27,11 @@ export type TAuthentication = TValidation & {
         token: string
     }
 }
+
+export type TResetPasswordResponse = TValidation & {
+    data: []
+}
+
+export type TResetPassword = {
+    password: string
+}

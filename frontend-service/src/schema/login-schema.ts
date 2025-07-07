@@ -11,3 +11,9 @@ export const LoginSchema = z.object({
         required_error: "Masukkan Password terlebih dahulu"
     }).min(8, "Minimal password adalah 8 karakter")
 })
+
+export const NewPasswordSchema = z.object({
+    password: z.string({
+        required_error: "Masukkan Password terlebih dahulu"
+    }).min(8, "Minimal password adalah 8 karakter")
+})

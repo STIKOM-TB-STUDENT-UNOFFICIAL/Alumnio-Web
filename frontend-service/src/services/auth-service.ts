@@ -1,7 +1,7 @@
-import { type TAuth, type TAuthentication, type TValidation } from "@/types/auth-types"
+import { type TAuth, type TAuthentication, type TResetPassword, type TResetPasswordResponse, type TValidation } from "@/types/auth-types"
 import { baseUrl } from "@/utils/base-url"
 import { fetchJson } from "@/utils/fetch-json"
-import { sessionDestroy, SessionRole, setSession } from "@/utils/session"
+import { getSession, sessionDestroy, SessionRole, setSession } from "@/utils/session"
 import { toast } from "sonner"
 
 export async function validationSession(token: string){
@@ -43,6 +43,32 @@ export async function signInService(authData: TAuth){
         toast("Gagal login")
     }
 }
+
+export async function newPasswordService(password: TResetPassword){
+    try{
+        const auth = await fetchJson<TResetPasswordResponse, TResetPassword>(
+            baseUrl("/auth"), 
+            "PATCH", 
+            {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${getSession()}`
+            }, 
+            password
+        )
+        if(typeof(auth.success) == "boolean"){
+            throw new Error()
+        }
+        if(auth.meta.status == "FAILED"){
+            throw new Error()
+        }
+        toast("Berhasil Mengganti Password")
+    }
+    catch (e){
+        toast("Gagal Mengganti Password")
+        console.log(e)
+    }
+}
+
 
 export async function logOutService(){
     sessionDestroy()

@@ -27,7 +27,11 @@ export const AuthResponseSchema = z.object({
     ])
 })
 
-export const NewPasswordSchema = z.object({
+export const NewPasswordResponseSchema = z.object({
     meta: MetaSchema,
     data: z.array(z.any())
+})
+
+export const NewPasswordSchema = z.object({
+    password: z.string({required_error: "Required new password"}).min(8, "Password length not valid")
 })

@@ -82,3 +82,17 @@ export async function patchUserInformation(userId: number, userInformation: TUse
         }
     })
 }
+
+export async function patchUser(userId: number, data: {
+    id?: number,
+    username?: string,
+    password?: string,
+    role?: number
+}){
+    return await prisma.user.update({
+        where: {
+            id: userId
+        },
+        data
+    })
+}

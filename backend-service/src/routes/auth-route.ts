@@ -1,5 +1,6 @@
-import { getAuthSession, postAuthHandler } from "@/handlers/auth-handler.ts"
-import { AuthResponseSchema, AuthSchema, AuthSessionSchema, NewPasswordSchema } from "@/schemas/auth-schema.ts"
+import { changePasswordHandler, getAuthSession, postAuthHandler } from "@/handlers/auth-handler.ts"
+import { Access, Authorization } from "@/middleware/authorization.ts"
+import { AuthResponseSchema, AuthSchema, AuthSessionSchema, NewPasswordResponseSchema, NewPasswordSchema } from "@/schemas/auth-schema.ts"
 import { Hono } from "hono"
 import { describeRoute } from "hono-openapi"
 import {
@@ -45,6 +46,7 @@ authRoute.post('/',
     getAuthSession
 )
 .patch('/',
+    Authorization([Access.ALUMNI, Access.ADMINISTRATOR]),
     describeRoute({
         description: "Change password",
         tags: ["Auth"],
@@ -53,11 +55,12 @@ authRoute.post('/',
                 description: "Successfully change password",
                 content: {
                     "application/json": {
-                        schema: resolver(NewPasswordSchema)
+                        schema: resolver(NewPasswordResponseSchema)
                     }
                 }
             }
         }
     }),
-    (c) => c.json({})
+    validator("json", NewPasswordSchema),
+    changePasswordHandler
 )
