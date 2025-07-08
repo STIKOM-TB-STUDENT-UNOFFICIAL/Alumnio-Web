@@ -16,7 +16,7 @@ export async function loadWorkHistoriesService(token: string): Promise<TWork[] |
         return userProfile.data
     }
     catch{
-        toast("Gagal memuat informasi profile")
+        toast("Gagal memuat informasi riwayat pekerjaan")
         return
     }
 }

@@ -1,4 +1,4 @@
-import { getWorkHistoriesService } from "@/services/work-service.ts";
+import { getWorkHistoriesService, postWorkHistoriesService } from "@/services/work-service.ts";
 import type { TTokenPayload } from "@/types/auth-type.ts";
 import type { TWorkResponse } from "@/types/work-type.ts";
 import { generateMeta } from "@/utils/generate-meta.ts";
@@ -14,6 +14,25 @@ export async function getWorkHistory(c: Context){
         const response: TWorkResponse<typeof workHistory> = {
             meta: generateMeta("SUCCESS", 200, "Successfuly get all work histories"),
             data: workHistory
+        }
+
+        return c.json(response)
+    }
+    catch{
+        new HTTPException(400, { message: "Bad Request" })
+    }
+}
+
+export async function postWorkHistory(c: Context){
+    try{
+        const sessionData = jwtDecode<TTokenPayload>(c.req.header("Authorization")?.split(" ")[1] as string)
+        const { workHistories } = await c.req.json()
+        
+        await postWorkHistoriesService(sessionData.userId, workHistories)
+
+        const response: TWorkResponse<[]> = {
+            meta: generateMeta("SUCCESS", 200, "Successfuly post work histories"),
+            data: []
         }
 
         return c.json(response)

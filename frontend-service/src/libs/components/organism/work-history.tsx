@@ -7,6 +7,7 @@ import { getTodayDateString } from "@/utils/get-today";
 import { toast } from "sonner";
 import { loadWorkHistoriesService } from "@/services/load-work-histories-service";
 import { getSession } from "@/utils/session";
+import { postWorkHistoriesService } from "@/services/post-work-histories-service";
 
 export function WorkHistory(): ReactNode {
     const [history, setHistory] = useState<TWork[]>([]);
@@ -15,7 +16,6 @@ export function WorkHistory(): ReactNode {
         const userProfile = loadWorkHistoriesService(getSession() as string)
         userProfile.then((v) => {
             setHistory(v as TWork[])
-            console.log(history)
         })
     }, [])
 
@@ -80,7 +80,8 @@ export function WorkHistory(): ReactNode {
                                 const hstr = [...history]
                                 hstr[i] = {
                                     ...hstr[i],
-                                    company: e.target.value
+                                    company: e.target.value,
+                                    status: hstr[i].status != "NEW" ? "MODIFIED" : "NEW"
                                 }
                                 setHistory(hstr)
                             }}
@@ -93,7 +94,8 @@ export function WorkHistory(): ReactNode {
                                 const hstr = [...history]
                                 hstr[i] = {
                                     ...hstr[i],
-                                    title: e.target.value
+                                    title: e.target.value,
+                                    status: hstr[i].status != "NEW" ? "MODIFIED" : "NEW"
                                 }
                                 setHistory(hstr)
                             }}
@@ -101,12 +103,13 @@ export function WorkHistory(): ReactNode {
                         <InputWithError 
                             type={"date"} 
                             label="Start Date"
-                            value={v.startDate}
+                            value={v.startDate ? v.startDate.split("T")[0] : ""}
                             onChange={(e) => {
                                 const hstr = [...history]
                                 hstr[i] = {
                                     ...hstr[i],
-                                    startDate: e.target.value
+                                    startDate: e.target.value,
+                                    status: hstr[i].status != "NEW" ? "MODIFIED" : "NEW"
                                 }
                                 setHistory(hstr)
                             }}
@@ -115,13 +118,14 @@ export function WorkHistory(): ReactNode {
                             <InputWithError 
                                 label="End Date" 
                                 type={"date"} 
-                                value={v.endDate ?? ""} 
+                                value={v.endDate ? v.endDate.split("T")[0] : ""} 
                                 disabled={v.endDate == null ? true : false}
                                 onChange={(e) => {
                                     const hstr = [...history]
                                     hstr[i] = {
                                         ...hstr[i],
-                                        endDate: e.target.value
+                                        endDate: e.target.value,
+                                        status: hstr[i].status != "NEW" ? "MODIFIED" : "NEW"
                                     }
                                     setHistory(hstr)
                                 }}
@@ -136,13 +140,15 @@ export function WorkHistory(): ReactNode {
                                         if(v.endDate == null){
                                             hstr[i] = {
                                                 ...hstr[i],
-                                                endDate: getTodayDateString()
+                                                endDate: getTodayDateString(),
+                                                status: hstr[i].status != "NEW" ? "MODIFIED" : "NEW"
                                             }
                                         }
                                         else{
                                             hstr[i] = {
                                                 ...hstr[i],
-                                                endDate: null
+                                                endDate: null,
+                                                status: hstr[i].status != "NEW" ? "MODIFIED" : "NEW"
                                             }
                                         }
                                         setHistory(hstr)
@@ -159,8 +165,11 @@ export function WorkHistory(): ReactNode {
             ))}
             <button
                 className="dark:bg-blue-900 w-full bg-blue-400 px-4 py-1 rounded-lg cursor-pointer my-5 flex justify-center items-center gap-3"
-                onClick={() => {
+                onClick={async () => {
                     console.log(history)
+                    await postWorkHistoriesService(getSession() as string, history)
+                    const userProfile = await loadWorkHistoriesService(getSession() as string)
+                    setHistory(userProfile as TWork[])
                 }}
             >
                 <AiFillSave />

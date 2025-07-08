@@ -1,4 +1,4 @@
-import { getWorkHistory } from "@/handlers/work-handler.ts";
+import { getWorkHistory, postWorkHistory } from "@/handlers/work-handler.ts";
 import { Access, Authorization } from "@/middleware/authorization.ts";
 import { WorkSchemaResponse } from "@/schemas/work-schema.ts";
 import { Hono } from "hono";
@@ -31,7 +31,6 @@ workRoute
     getWorkHistory
 )
 .post(
-    '/',
     Authorization([Access.ALUMNI]),
-    (c) => c.json({})
+    postWorkHistory
 )
