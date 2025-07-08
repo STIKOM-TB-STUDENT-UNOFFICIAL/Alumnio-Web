@@ -3,7 +3,7 @@ import profilepict from "@/assets/481932188_17898877434116514_698962027917271553
 import { InputWithError } from "../molecules/input-with-error";
 import { loadProfileService } from "@/services/load-profile-service";
 import { getSession } from "@/utils/session";
-import type { TUserProfile } from "@/types/user-profile";
+import type { TUserProfile } from "@/types/user-profile-types";
 import { useForm } from "react-hook-form";
 import { UserProfileSchema } from "@/schema/user-profile-schema";
 import type z from "zod";
@@ -15,7 +15,7 @@ import { ProfilePictUploads } from "./profile-pict-uploads";
 import { baseUrl } from "@/utils/base-url";
 
 export function ProfileForm(): ReactNode {
-    const [ profile, setProfile ] = useState({
+    const [ profile, setProfile ] = useState<TUserProfile>({
         fullname: "",
         email: "",
         phone: "",
@@ -23,7 +23,7 @@ export function ProfileForm(): ReactNode {
         bio: "",
         linkedinUrl: "",
         profilePict: ""
-    } as TUserProfile)
+    })
     const [ load, setLoad ] = useState(false)
     const [modalShow, setModalShow] = useState(false)
     const {

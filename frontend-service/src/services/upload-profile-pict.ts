@@ -5,6 +5,7 @@ import { toast } from "sonner";
 
 export async function uploadProfilePict(file: File){
     try{
+        toast("Mengupload foto profile")
         const formData = new FormData()
         formData.append("image", file)
 

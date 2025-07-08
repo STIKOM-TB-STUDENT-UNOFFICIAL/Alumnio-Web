@@ -1,4 +1,4 @@
-import type { TUserProfile } from "@/types/user-profile";
+import type { TUserProfile } from "@/types/user-profile-types";
 import { baseUrl } from "@/utils/base-url";
 import { fetchJson } from "@/utils/fetch-json";
 import { toast } from "sonner";

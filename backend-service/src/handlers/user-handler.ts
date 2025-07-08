@@ -5,8 +5,6 @@ import type { TTokenPayload } from "@/types/auth-type.ts";
 import type { TUser, TUserResponse, TUserWithInformation } from "@/types/user-type.ts";
 import { generateMeta } from "@/utils/generate-meta.ts";
 import { jwtDecode } from "@/utils/jwt.ts";
-import type { File } from "buffer";
-import { writeFileSync } from "fs";
 import type { Context } from "hono";
 import { HTTPException } from "hono/http-exception";
 
