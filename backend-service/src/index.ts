@@ -1,4 +1,5 @@
 import { serve } from '@hono/node-server'
+import { serveStatic } from '@hono/node-server/serve-static'
 import { type Context, Hono } from 'hono'
 import { swaggerUI } from '@hono/swagger-ui'
 import { 
@@ -13,11 +14,14 @@ import type { HTTPResponseError } from 'hono/types'
 import { generateMeta } from './utils/generate-meta.ts'
 import { HTTPException } from 'hono/http-exception'
 import type { StatusCode } from 'hono/utils/http-status'
+import { setupUploadsDir } from './check-uploads-dir.ts'
 
 dotenv.config()
 
 const port = process.env.PORT || 4000
 const app = new Hono()
+
+setupUploadsDir()
 
 app.use("*", cors())
 
@@ -26,6 +30,10 @@ app.get('/', (c) => {
     message: "Alumnio API, see /ui for documentation"
   })
 })
+
+app.use('/uploads/*', serveStatic({
+  root: './'
+}))
 
 // FOR APP ROUTE
 app.route("/auth", authRoute)

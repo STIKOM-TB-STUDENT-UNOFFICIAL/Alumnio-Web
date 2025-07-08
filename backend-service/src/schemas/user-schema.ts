@@ -57,3 +57,7 @@ export const CreateUserSchema = z.object({
     meta: MetaSchema,
     data: z.array(z.unknown())
 })
+
+export const FileUploadSchema = z.object({
+    image: z.instanceof(File)
+})

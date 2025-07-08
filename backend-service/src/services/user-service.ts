@@ -1,5 +1,8 @@
-import { findAllUser, insertNewUser, patchUserInformation } from "@/repositories/user-repository.ts";
+import { findAllUser, hasProfilePict, insertNewUser, patchUserInformation, updateProfilePict } from "@/repositories/user-repository.ts";
 import type { TUser, TUserWithInformationUpdateable } from "@/types/user-type.ts";
+import { getExtension } from "@/utils/get-extension.ts";
+import { generateUuid } from "@/utils/uuid.ts";
+import { rmSync, writeFileSync } from "fs";
 
 export async function findAllUserService(){
     return await findAllUser()
@@ -15,4 +18,16 @@ export async function newUserService(user: TUser){
 
 export async function patchUserService(userId: number, userInformation: TUserWithInformationUpdateable){
     return await patchUserInformation(userId, userInformation)
+}
+
+export async function uploadProfilePictService(userId: number, image: globalThis.File){
+    const previousProfilePict = await hasProfilePict(userId)
+    if(previousProfilePict){
+        rmSync(`./uploads/images/${previousProfilePict}`)
+    }
+    const extension = getExtension((image as File).name)
+    const newName = generateUuid()
+    const path = `./uploads/images/${newName}.${extension}`
+    writeFileSync(path, new Uint8Array(await (image as File).arrayBuffer()))
+    await updateProfilePict(userId, `${newName}.${extension}`)
 }

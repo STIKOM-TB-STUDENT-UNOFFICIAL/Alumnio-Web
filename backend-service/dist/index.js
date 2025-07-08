@@ -1,4 +1,5 @@
 import { serve } from '@hono/node-server';
+import { serveStatic } from '@hono/node-server/serve-static';
 import { Hono } from 'hono';
 import { swaggerUI } from '@hono/swagger-ui';
 import { PrismaClient } from '@prisma/client';
@@ -127,6 +128,14 @@ async function patchUserInformation(userId, userInformation) {
     }
   });
 }
+async function patchUser(userId, data) {
+  return await prisma.user.update({
+    where: {
+      id: userId
+    },
+    data
+  });
+}
 async function AuthService(userData) {
   const user = await findUserForAuth({
     ...userData,
@@ -143,6 +152,13 @@ async function AuthService(userData) {
 async function AuthGetSessionService(token) {
   const information = await jwtVerify(token);
   return information;
+}
+
+// src/services/change-password-service.ts
+async function changePasswordService(userId, newPassword) {
+  return await patchUser(userId, {
+    password: passwordHash(newPassword)
+  });
 }
 
 // src/utils/generate-meta.ts
@@ -178,6 +194,16 @@ async function getAuthSession(c) {
   };
   return c.json(response);
 }
+async function changePasswordHandler(c) {
+  const information = await AuthGetSessionService(c.req.header("Authorization")?.split(" ")[1] ?? "");
+  const { password } = await c.req.json();
+  await changePasswordService(information.userId, password);
+  const response = {
+    meta: generateMeta("SUCCESS", 200, "Success change user password"),
+    data: []
+  };
+  return c.json(response);
+}
 var MetaSchema = z.object({
   status: z.enum(["SUCCESS", "FAILED"]),
   message: z.string(),
@@ -208,9 +234,12 @@ var AuthResponseSchema = z.object({
     z.array(z.any())
   ])
 });
-var NewPasswordSchema = z.object({
+var NewPasswordResponseSchema = z.object({
   meta: MetaSchema,
   data: z.array(z.any())
+});
+var NewPasswordSchema = z.object({
+  password: z.string({ required_error: "Required new password" }).min(8, "Password length not valid")
 });
 var authRoute = new Hono();
 authRoute.post(
@@ -250,6 +279,7 @@ authRoute.post(
   getAuthSession
 ).patch(
   "/",
+  Authorization([Access.ALUMNI, Access.ADMINISTRATOR]),
   describeRoute({
     description: "Change password",
     tags: ["Auth"],
@@ -258,13 +288,14 @@ authRoute.post(
         description: "Successfully change password",
         content: {
           "application/json": {
-            schema: resolver(NewPasswordSchema)
+            schema: resolver(NewPasswordResponseSchema)
           }
         }
       }
     }
   }),
-  (c) => c.json({})
+  validator("json", NewPasswordSchema),
+  changePasswordHandler
 );
 
 // src/services/user-service.ts
@@ -300,7 +331,7 @@ async function postUsers(c) {
     throw new HTTPException(400, { message: e.message, cause: e });
   }
 }
-async function patchUser(c) {
+async function patchUser2(c) {
   try {
     const formData = await c.req.json();
     const sessionData = jwtDecode(c.req.header("Authorization")?.split(" ")[1]);
@@ -309,6 +340,14 @@ async function patchUser(c) {
       meta: generateMeta("SUCCESS", 200, "Successfully modify user information"),
       data: []
     });
+  } catch (e) {
+    throw new HTTPException(400, { message: e.message, cause: e });
+  }
+}
+async function uploadFile(c) {
+  try {
+    console.log(await c.req.parseBody());
+    return c.json({});
   } catch (e) {
     throw new HTTPException(400, { message: e.message, cause: e });
   }
@@ -364,6 +403,9 @@ var CreateUserSchema = z.object({
   meta: MetaSchema,
   data: z.array(z.unknown())
 });
+var FileUploadSchema = z.object({
+  image: z.instanceof(File)
+});
 var userRoute = new Hono();
 userRoute.get(
   "/",
@@ -417,7 +459,26 @@ userRoute.get(
     }
   }),
   validator("json", UserInformationModifySchema),
-  patchUser
+  patchUser2
+).post(
+  "/upload",
+  Authorization([Access.ALUMNI, Access.ADMINISTRATOR]),
+  describeRoute({
+    description: "Modify user information",
+    tags: ["Users"],
+    responses: {
+      200: {
+        description: "Successfuly upload image profile",
+        content: {
+          "application/json": {
+            schema: resolver(CreateUserSchema)
+          }
+        }
+      }
+    }
+  }),
+  validator("form", FileUploadSchema),
+  uploadFile
 );
 
 // src/repositories/majors-repository.ts
@@ -480,6 +541,9 @@ app.get("/", (c) => {
     message: "Alumnio API, see /ui for documentation"
   });
 });
+app.use("/static/*", serveStatic({
+  root: "./"
+}));
 app.route("/auth", authRoute);
 app.route("/users", userRoute);
 app.route("/majors", majorRoute);

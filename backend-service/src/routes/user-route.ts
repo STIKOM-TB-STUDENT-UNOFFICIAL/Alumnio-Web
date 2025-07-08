@@ -1,6 +1,6 @@
-import { getUsers, patchUser, postUsers } from "@/handlers/user-handler.ts"
+import { getUsers, patchUser, postUsers, uploadProfilePict } from "@/handlers/user-handler.ts"
 import { Access, Authorization } from "@/middleware/authorization.ts"
-import { CreateUserSchema, UserInformationModifySchema, UserRegisterSchema, UserResponseSchema } from "@/schemas/user-schema.ts"
+import { CreateUserSchema, FileUploadSchema, UserInformationModifySchema, UserRegisterSchema, UserResponseSchema } from "@/schemas/user-schema.ts"
 import { Hono } from "hono"
 import { describeRoute } from "hono-openapi"
 import {
@@ -65,4 +65,24 @@ userRoute
     }),
     validator("json", UserInformationModifySchema),
     patchUser
+)
+.post(
+    "/upload", 
+    Authorization([Access.ALUMNI, Access.ADMINISTRATOR]),
+    describeRoute({
+        description: "Modify user information",
+        tags: ["Users"],
+        responses: {
+            200: {
+                description: "Successfuly upload image profile",
+                content: {
+                    "application/json": {
+                        schema: resolver(CreateUserSchema)
+                    }
+                }
+            }
+        }
+    }),
+    validator("form", FileUploadSchema),
+    uploadProfilePict
 )

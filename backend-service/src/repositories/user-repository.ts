@@ -96,3 +96,26 @@ export async function patchUser(userId: number, data: {
         data
     })
 }
+
+export async function hasProfilePict(userId: number){
+    const user = await prisma.userInformation.findFirst({
+        where: {
+            userId
+        }
+    })
+    if(user?.profilePict != ""){
+        return user?.profilePict
+    }
+    return false
+}
+
+export async function updateProfilePict(userId: number, fileName: string){
+    return await prisma.userInformation.update({
+        where: {
+            userId
+        },
+        data: {
+            profilePict: fileName
+        }
+    })
+}
