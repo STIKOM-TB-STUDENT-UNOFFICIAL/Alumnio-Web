@@ -10,6 +10,9 @@ import type z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { patchProfileService } from "@/services/patch-profile-service";
 import { PasswordUpdateForm } from "./password-update-form";
+import { Modals } from "../molecules/modals";
+import { ProfilePictUploads } from "./profile-pict-uploads";
+import { baseUrl } from "@/utils/base-url";
 
 export function ProfileForm(): ReactNode {
     const [ profile, setProfile ] = useState({
@@ -18,9 +21,11 @@ export function ProfileForm(): ReactNode {
         phone: "",
         address: "",
         bio: "",
-        linkedinUrl: ""
+        linkedinUrl: "",
+        profilePict: ""
     } as TUserProfile)
     const [ load, setLoad ] = useState(false)
+    const [modalShow, setModalShow] = useState(false)
     const {
         handleSubmit,
         register,
@@ -43,15 +48,41 @@ export function ProfileForm(): ReactNode {
     
     return (
         <div className="w-full border dark:border-[#232325] border-blue-50 p-5 rounded-lg my-5">
+            <Modals 
+                show={modalShow} 
+                control={setModalShow}
+                title="Upload Profile Pict"
+            >
+                <ProfilePictUploads 
+                    control={setModalShow}
+                    callback={() => {
+                        const userProfile = loadProfileService(getSession() as string)
+                        userProfile.then((v) => {
+                            setProfile({
+                                ...(v as TUserProfile)
+                            })
+                        })
+                    }}
+                />
+            </Modals>
             <h4 className="text-2xl font-semibold">Informasi Pribadi</h4>
             <h6 className="text-sm">Ubah informasi pribadi anda</h6>
             <div className="flex items-center">
                 <img 
-                    src={profilepict}
+                    src={
+                        profile.profilePict ? 
+                        profile.profilePict != "" ? 
+                        baseUrl(`/uploads/images/${profile.profilePict}`)  : 
+                        profilepict : 
+                        profilepict
+                    }
                     alt="Profile Pict"
                     className="w-[100px] h-[100px] object-cover rounded-full my-5"
                 />
-                <button className="border dark:border-[#232325] border-blue-50 p-3 rounded-lg cursor-pointer mx-4 dark:hover:bg-[#232325] hover:bg-blue-50 ">
+                <button 
+                    className="border dark:border-[#232325] border-blue-50 p-3 rounded-lg cursor-pointer mx-4 dark:hover:bg-[#232325] hover:bg-blue-50"
+                    onClick={() => setModalShow(true)}
+                >
                     Ubah Gambar
                 </button>
             </div>

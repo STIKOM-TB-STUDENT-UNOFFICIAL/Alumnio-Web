@@ -4,7 +4,8 @@ export type TUserProfile =  {
     phone: string,
     address: string,
     bio: string,
-    linkedinUrl?: string
+    linkedinUrl?: string,
+    profilePict?: string
 }
 
 export type TUserProfileResponse = {

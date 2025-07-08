@@ -9,6 +9,8 @@ import bcrypt from 'bcrypt';
 import { z } from 'zod';
 import { describeRoute, openAPISpecs } from 'hono-openapi';
 import { resolver, validator } from 'hono-openapi/zod';
+import * as uuid from 'uuid';
+import { existsSync, mkdirSync, rmSync, writeFileSync } from 'fs';
 import { cors } from 'hono/cors';
 import dotenv from 'dotenv';
 
@@ -134,6 +136,27 @@ async function patchUser(userId, data) {
       id: userId
     },
     data
+  });
+}
+async function hasProfilePict(userId) {
+  const user = await prisma.userInformation.findFirst({
+    where: {
+      userId
+    }
+  });
+  if (user?.profilePict != "") {
+    return user?.profilePict;
+  }
+  return false;
+}
+async function updateProfilePict(userId, fileName) {
+  return await prisma.userInformation.update({
+    where: {
+      userId
+    },
+    data: {
+      profilePict: fileName
+    }
   });
 }
 async function AuthService(userData) {
@@ -298,12 +321,31 @@ authRoute.post(
   changePasswordHandler
 );
 
-// src/services/user-service.ts
+// src/utils/get-extension.ts
+function getExtension(fileName) {
+  const splitting = fileName.split(".");
+  const extension = splitting[splitting.length - 1];
+  return extension;
+}
+function generateUuid() {
+  return uuid.v4();
+}
 async function findAllUserService() {
   return await findAllUser();
 }
 async function newUserService(user) {
   return await insertNewUser(user);
+}
+async function uploadProfilePictService(userId, image) {
+  const previousProfilePict = await hasProfilePict(userId);
+  if (previousProfilePict) {
+    rmSync(`./uploads/images/${previousProfilePict}`);
+  }
+  const extension = getExtension(image.name);
+  const newName = generateUuid();
+  const path = `./uploads/images/${newName}.${extension}`;
+  writeFileSync(path, new Uint8Array(await image.arrayBuffer()));
+  await updateProfilePict(userId, `${newName}.${extension}`);
 }
 async function getUsers(c) {
   try {
@@ -344,10 +386,19 @@ async function patchUser2(c) {
     throw new HTTPException(400, { message: e.message, cause: e });
   }
 }
-async function uploadFile(c) {
+async function uploadProfilePict(c) {
   try {
-    console.log(await c.req.parseBody());
-    return c.json({});
+    const { image } = await c.req.parseBody();
+    const sessionData = jwtDecode(c.req.header("Authorization")?.split(" ")[1]);
+    if (!(image instanceof globalThis.File)) {
+      throw new HTTPException(400, { message: "Bad request, should file" });
+    }
+    await uploadProfilePictService(sessionData.userId, image);
+    const response = {
+      meta: generateMeta("SUCCESS", 200, "Successfuly upload profile image"),
+      data: []
+    };
+    return c.json(response);
   } catch (e) {
     throw new HTTPException(400, { message: e.message, cause: e });
   }
@@ -478,7 +529,7 @@ userRoute.get(
     }
   }),
   validator("form", FileUploadSchema),
-  uploadFile
+  uploadProfilePict
 );
 
 // src/repositories/majors-repository.ts
@@ -532,16 +583,30 @@ majorRoute.get(
   }),
   getAllMajor
 );
+function setupUploadsDir() {
+  if (!existsSync("./uploads")) {
+    mkdirSync("./uploads");
+  }
+  if (!existsSync("./uploads/images")) {
+    mkdirSync("./uploads/images");
+  }
+  if (!existsSync("./uploads/documents")) {
+    mkdirSync("./uploads/documents");
+  }
+}
+
+// src/index.ts
 dotenv.config();
 var port = process.env.PORT || 4e3;
 var app = new Hono();
+setupUploadsDir();
 app.use("*", cors());
 app.get("/", (c) => {
   return c.json({
     message: "Alumnio API, see /ui for documentation"
   });
 });
-app.use("/static/*", serveStatic({
+app.use("/uploads/*", serveStatic({
   root: "./"
 }));
 app.route("/auth", authRoute);
