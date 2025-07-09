@@ -1,8 +1,21 @@
 import { Input } from "@/libs/components/atoms/input";
-import type { ReactNode } from "react";
+import { AlumniCard } from "@/libs/components/organism/alumni-card";
+import { loadUsersService } from "@/services/load-users-service";
+import type { TUserInformation } from "@/types/user-profile-types";
+import { getSession } from "@/utils/session";
+import { useEffect, useState, type ReactNode } from "react";
 import { AiOutlineSearch, AiOutlineUserAdd } from "react-icons/ai";
 
 export default function Index(): ReactNode {
+    const [profiles, setProfiles] = useState<TUserInformation[]>([] as TUserInformation[])
+
+    useEffect(() => {
+        const userProfile = loadUsersService(getSession() as string)
+        userProfile.then((v) => {
+            setProfiles(v as TUserInformation[])
+        })
+    }, [])
+
     return (
         <div className="min-h-[100vh] max-w-[1280px] w-full">
             <div className="flex justify-between mt-10">
@@ -27,6 +40,9 @@ export default function Index(): ReactNode {
                 className="mt-5 lg:*:w-[400px]"
                 placeholder="Cari alumni berdasarkan nama dan nim"
             />
+            {profiles.map((v) => (
+                <AlumniCard profile={v} />
+            ))}
         </div>
     )
 }

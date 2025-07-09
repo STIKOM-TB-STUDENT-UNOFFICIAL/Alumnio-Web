@@ -9,6 +9,8 @@ import { loadWorkHistoriesService } from "@/services/load-work-histories-service
 import { getSession } from "@/utils/session";
 import { postWorkHistoriesService } from "@/services/post-work-histories-service";
 
+const today = new Date().toISOString().split("T")[0];
+
 export function WorkHistory(): ReactNode {
     const [history, setHistory] = useState<TWork[]>([]);
 
@@ -113,6 +115,8 @@ export function WorkHistory(): ReactNode {
                                 }
                                 setHistory(hstr)
                             }}
+                            error={v.endDate ? new Date(v.startDate) > new Date(v.endDate) ? "Warning: Invalid set" : undefined : undefined}
+                            max={today}
                         />
                         <div className="block">
                             <InputWithError 
@@ -129,6 +133,7 @@ export function WorkHistory(): ReactNode {
                                     }
                                     setHistory(hstr)
                                 }}
+                                max={today}
                             />
                             <div className="flex items-center gap-1">
                                 <input 

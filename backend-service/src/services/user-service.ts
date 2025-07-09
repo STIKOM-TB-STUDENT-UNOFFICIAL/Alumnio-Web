@@ -1,14 +1,19 @@
-import { findAllUser, hasProfilePict, insertNewUser, patchUserInformation, updateProfilePict } from "@/repositories/user-repository.ts";
+import { findAllUser, findUserById, hasProfilePict, insertNewUser, patchUserInformation, updateProfilePict } from "@/repositories/user-repository.ts";
 import type { TUser, TUserWithInformationUpdateable } from "@/types/user-type.ts";
 import { getExtension } from "@/utils/get-extension.ts";
 import { generateUuid } from "@/utils/uuid.ts";
 import { rmSync, writeFileSync } from "fs";
 
 export async function findAllUserService(){
-    return await findAllUser()
+    return (await findAllUser()).map(({password, role, ...rest}) => {
+        return {
+            ...rest,
+            WorkHistory: rest.WorkHistory.map(({id, userId, ...rst}) => rst)
+        }
+    })
 }
 
-export async function findUserById(id: number){
+export async function findUserByIdService(id: number){
     return await findUserById(id)
 }
 

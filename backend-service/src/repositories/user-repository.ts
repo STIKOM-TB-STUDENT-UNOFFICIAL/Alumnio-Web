@@ -11,6 +11,11 @@ export async function findAllUser(){
                 include:{
                     major: true
                 }
+            },
+            WorkHistory: {
+                orderBy: {
+                    endDate: "desc"
+                }
             }
         },
         where: {
