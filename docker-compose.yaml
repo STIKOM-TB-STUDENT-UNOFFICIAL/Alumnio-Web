@@ -1,5 +1,5 @@
 networks:
-  mysk-network:
+  alumnio-network:
     ipam:
       driver: default
       config:
