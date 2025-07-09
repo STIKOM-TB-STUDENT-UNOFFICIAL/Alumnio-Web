@@ -28,7 +28,12 @@ export async function patchUserService(userId: number, userInformation: TUserWit
 export async function uploadProfilePictService(userId: number, image: globalThis.File){
     const previousProfilePict = await hasProfilePict(userId)
     if(previousProfilePict){
-        rmSync(`./uploads/images/${previousProfilePict}`)
+        try{
+            rmSync(`./uploads/images/${previousProfilePict}`)
+        }
+        catch(e: unknown){
+            console.log(`Error : ${(e as Error).message}`)
+        }
     }
     const extension = getExtension((image as File).name)
     const newName = generateUuid()
