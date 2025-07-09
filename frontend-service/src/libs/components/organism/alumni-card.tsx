@@ -4,6 +4,7 @@ import { AiOutlineFileText, AiOutlineMail, AiOutlinePhone, AiOutlinePicture } fr
 import { FaBriefcase, FaMapMarkerAlt } from "react-icons/fa";
 import type { TUserInformation } from "@/types/user-profile-types";
 import { getDateFormat } from "@/utils/get-date-format";
+import { baseUrl } from "@/utils/base-url";
 
 export function AlumniCard({
     profile
@@ -25,7 +26,13 @@ export function AlumniCard({
             >
                 <div className="flex gap-5">
                     <img 
-                        src={profilepict} 
+                        src={
+                            profile.UserInformation.profilePict ? 
+                            profile.UserInformation.profilePict != "" ? 
+                            baseUrl(`/uploads/images/${profile.UserInformation.profilePict}`)  : 
+                            profilepict : 
+                            profilepict
+                        } 
                         alt={"Profile Pict"}
                         className="w-[100px] h-[100px] object-center rounded-full"
                     />
