@@ -1,5 +1,5 @@
 networks:
-  mysk-network:
+  alumnio-network:
     ipam:
       driver: default
       config:
@@ -16,8 +16,7 @@ services:
     restart: always
 
     volumes:
-      - /var/mysk/files:/app/public/files
-      - /var/mysk/img:/app/public/img
+      - /var/alumnio/uploads:/app/uploads
 
     networks:
       mysk-network:
