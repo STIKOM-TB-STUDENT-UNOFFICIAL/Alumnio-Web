@@ -8,13 +8,20 @@ import { AiOutlineSearch, AiOutlineUserAdd } from "react-icons/ai";
 
 export default function Index(): ReactNode {
     const [profiles, setProfiles] = useState<TUserInformation[]>([] as TUserInformation[])
+    const [q, setQ] = useState("")
+
+    async function loadUserProfile(query: string) {
+        const userProfile = await loadUsersService(getSession() as string, query)
+        setProfiles(userProfile as TUserInformation[])
+    }
 
     useEffect(() => {
-        const userProfile = loadUsersService(getSession() as string)
-        userProfile.then((v) => {
-            setProfiles(v as TUserInformation[])
-        })
+        loadUserProfile(q)
     }, [])
+
+    useEffect(() => {
+        loadUserProfile(q)
+    }, [q])
 
     return (
         <div className="min-h-[100vh] max-w-[1280px] w-full">
@@ -39,9 +46,13 @@ export default function Index(): ReactNode {
                 Icon={AiOutlineSearch}
                 className="mt-5 lg:*:w-[400px]"
                 placeholder="Cari alumni berdasarkan nama dan nim"
+                onChange={(e) => {
+                    setQ(e.target.value)
+                }}
+                value={q}
             />
-            {profiles.map((v) => (
-                <AlumniCard profile={v} />
+            {profiles.map((v, i) => (
+                <AlumniCard profile={v} key={i} />
             ))}
         </div>
     )

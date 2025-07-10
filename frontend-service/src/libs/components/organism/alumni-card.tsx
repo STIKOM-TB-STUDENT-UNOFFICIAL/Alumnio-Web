@@ -7,10 +7,12 @@ import { getDateFormat } from "@/utils/get-date-format";
 import { baseUrl } from "@/utils/base-url";
 
 export function AlumniCard({
-    profile
+    profile,
+    key
 }:
 {
-    profile: TUserInformation
+    profile: TUserInformation,
+    key: number
 }): ReactNode{
     const [hidden, setHidden] = useState(true)
 
@@ -18,6 +20,7 @@ export function AlumniCard({
         <div 
             className="flex flex-col my-5 w-full border dark:border-[#232325] border-blue-50 
                         rounded-lg overflow-hidden shadow-sm"
+            key={key}
         >
             <div className="flex flex-col lg:flex-row lg:justify-between gap-5 lg:gap-2 p-10    
                         lg:items-center w-full hover:dark:bg-[#313139] hover:bg-[#ebf3ff]
@@ -37,13 +40,13 @@ export function AlumniCard({
                         className="w-[100px] h-[100px] object-center rounded-full"
                     />
                     <div className="block">
-                        <h2 className="text-xl font-bold">{profile.UserInformation.fullname}</h2>
+                        <h2 className="text-xl font-bold">{profile.UserInformation.fullname} ({profile.username})</h2>
                         <h2 className="text-md">{
                             profile.WorkHistory.length > 0 ? 
                             profile.WorkHistory[0].title : 
                             "Unemployed"} {
                             profile.WorkHistory[0] ? 
-                            `at ${profile.WorkHistory[0].company}` : 
+                            `di ${profile.WorkHistory[0].company}` : 
                             ""}</h2>
                         <div className="flex my-1 gap-2 lg:flex-row flex-col">
                             <div className="rounded-full border dark:border-[#232325] border-blue-50 px-2 py-1

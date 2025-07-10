@@ -4,7 +4,11 @@ import type { TAuthUser } from "@/types/auth-type.ts";
 import type { TUser, TUserWithInformation, TUserWithInformationUpdateable } from "@/types/user-type.ts";
 import { passwordHash } from "@/utils/bcrypt.ts";
 
-export async function findAllUser(){
+export async function findAllUser(
+    q: string | undefined,
+    take: number,
+    skip: number
+){
     return await prisma.user.findMany({
         include: {
             UserInformation: {
@@ -19,8 +23,24 @@ export async function findAllUser(){
             }
         },
         where: {
-            role: Access.ALUMNI
-        }
+            role: Access.ALUMNI,
+            OR: [
+                {
+                    username: {
+                        contains: q ? q : ""
+                    }
+                },
+                {
+                    UserInformation: {
+                        fullname: {
+                            contains: q ? q : ""
+                        }
+                    }
+                }
+            ]
+        },
+        take,
+        skip
     })
 }
 

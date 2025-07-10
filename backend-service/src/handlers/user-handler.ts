@@ -11,7 +11,10 @@ import { HTTPException } from "hono/http-exception";
 export async function getUsers(c: Context){
     try{
         const sessionData = jwtDecode<TTokenPayload>(c.req.header("Authorization")?.split(" ")[1] as string)
-        const users = sessionData.role == Access.ADMINISTRATOR ? await findAllUserService() : await findUserByIdService(sessionData.userId)
+        const { skip, take, q } = c.req.query()
+        const users = sessionData.role == Access.ADMINISTRATOR ? 
+                    await findAllUserService(q, take ? parseInt(take) : 5, skip ? parseInt(skip) : 0) : 
+                    await findUserByIdService(sessionData.userId)
         const response: TUserResponse<typeof users> = {
             meta: generateMeta("SUCCESS", 200, "Successfuly get all users"),
             data: users

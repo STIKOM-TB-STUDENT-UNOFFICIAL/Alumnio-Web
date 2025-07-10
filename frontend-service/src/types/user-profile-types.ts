@@ -16,6 +16,7 @@ export type TMajor = {
 }
 
 export type TUserInformation = {
+    username: string,
     UserInformation: TUserProfile & {
         classOf: string,
         major: {
