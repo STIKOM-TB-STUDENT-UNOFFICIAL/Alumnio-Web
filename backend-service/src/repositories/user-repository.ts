@@ -33,7 +33,8 @@ export async function findAllUser(
                 {
                     UserInformation: {
                         fullname: {
-                            contains: q ? q : ""
+                            contains: q ? q : "",
+                            mode: "insensitive"
                         }
                     }
                 }
