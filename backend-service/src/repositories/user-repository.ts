@@ -32,9 +32,47 @@ export async function findAllUser(
                 },
                 {
                     UserInformation: {
-                        fullname: {
-                            contains: q ? q : "",
-                            mode: "insensitive"
+                        OR: [
+                            {
+                                fullname: {
+                                    contains: q ? q : "",
+                                    mode: "insensitive"
+                                }
+                            },
+                            {
+                                classOf: {
+                                    contains: q ? q : "",
+                                    mode: "insensitive"
+                                }
+                            },
+                            {
+                                major: {
+                                    majorName: {
+                                        contains: q ? q : "",
+                                        mode: "insensitive"
+                                    }
+                                }
+                            },
+                        ]
+                    }
+                },
+                {
+                    WorkHistory: {
+                        some: {
+                            OR: [
+                                {
+                                    title: {
+                                        contains: q ? q : "",
+                                        mode: "insensitive"
+                                    }
+                                },
+                                {
+                                    company: {
+                                        contains: q ? q : "",
+                                        mode: "insensitive"
+                                    }
+                                }
+                            ]
                         }
                     }
                 }

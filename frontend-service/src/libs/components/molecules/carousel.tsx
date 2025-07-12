@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { AiFillLeftCircle, AiFillRightCircle } from "react-icons/ai";
 import { IoTrashOutline } from "react-icons/io5";
+import { DragAndDropFiles } from "../atoms/drag-drop";
 
 export type TAttachments = {
     imageUrl: string
@@ -31,7 +32,7 @@ export function Carousel(
     return (
         <div className="relative overflow-hidden w-full ">
             <div 
-                className="flex transition-transform duration-500 ease-in-out"
+                className="flex transition-transform duration-500 ease-in-out mb-4 items-center"
                 style={{ transform: `translateX(-${current * 100}%)`}}
             >
                 {attachments.map((v, i) => (
@@ -45,10 +46,8 @@ export function Carousel(
                         </button>
                     </div>
                 ))}
-                <div className="min-w-full">
-                    <div className="w-full flex flex-col justify-center items-center h-full">
-                        <input type="file" />
-                    </div>
+                <div className="min-w-[100%]">
+                    <DragAndDropFiles />
                 </div>
             </div>
             <button

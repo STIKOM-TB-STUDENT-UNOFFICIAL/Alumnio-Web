@@ -56,7 +56,7 @@ export function PortfolioForm(): ReactNode {
                 {portfolio.map((v, i) => (
                     <div className="w-full border dark:border-[#232325] border-blue-50 p-5 rounded-lg my-5">
                         <div className="w-full flex justify-between items-center">
-                            <h5 className="border dark:border-[#232325] border-blue-50 px-2 py-1 rounded-lg text-sm">
+                            <h5 className="border dark:border-[#232325] border-blue-50 px-2 py-1 rounded-lg text-sm mb-4">
                                 Portfolio #{i + 1}
                             </h5>
                             <button className="cursor-pointer">

@@ -1,13 +1,22 @@
-import { useRef, useState } from "react"
+import { useRef, useState, type JSX } from "react"
 
 export function DragAndDropFiles(
     {
         file,
-        setFile
+        setFile,
+        Icon,
+        IconClass = "",
+        IconSize = 15,
+        label,
+        ...rest
     }
     :
-    {
+    React.HTMLAttributes<HTMLDivElement> & {
+        Icon?: JSX.ElementType,
+        IconClass?: string,
+        IconSize?: number,
         file?: File | null,
+        label?: string,
         setFile?: React.Dispatch<React.SetStateAction<File | null>>
     }
 ){
@@ -16,9 +25,9 @@ export function DragAndDropFiles(
     return (
         <div
             className={`border border-dashed cursor-pointer transition duration-300 
-                        ease-in-out flex flex-col justify-center items-center rounded-sm
-                        min-w-[300px] min-h-[300px]
-                        p-6 w-full ${isDrag ? "border-blue-400" : ""}`}
+                        ease-in-out flex flex-col justify-center items-center rounded-md
+                        min-w-[100%]
+                        p-6 w-full ${isDrag ? "border-blue-400" : ""} ${rest.className}`}
             onClick={() => {
                 inputRef.current?.click()
             }}
@@ -41,6 +50,13 @@ export function DragAndDropFiles(
                 setIsDrag(false)
             }}
         >
+            { Icon? (
+                <Icon 
+                    className={IconClass}
+                    size={IconSize}
+                />
+            ) : (<></>)}
+            <h3 className="text-xl font-bold mb-5">{label? label : ""}</h3>
             <input
                 type="file"
                 ref={inputRef}
@@ -53,6 +69,9 @@ export function DragAndDropFiles(
                 }}
             />
             {file ? file.name : "No File Selected"}
+            <button className="w-full mt-3 dark:bg-blue-900 bg-blue-400 p-3 rounded-lg cursor-pointer">
+                Choose
+            </button>
         </div>
     )
 }
