@@ -183,3 +183,14 @@ export async function updateProfilePict(userId: number, fileName: string){
         }
     })
 }
+
+export async function updateCv(userId: number, fileName: string){
+    return await prisma.userInformation.update({
+        where: {
+            userId
+        },
+        data: {
+            curriculumVitae: fileName
+        }
+    })
+}

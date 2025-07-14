@@ -77,7 +77,10 @@ export function ProfileForm(): ReactNode {
                         profilepict
                     }
                     alt="Profile Pict"
-                    className="w-[100px] h-[100px] object-cover rounded-full my-5"
+                    className="w-[100px] h-[100px] rounded-full my-5 object-cover"
+                    style={{
+                        imageRendering: "auto"
+                    }}
                 />
                 <button 
                     className="border dark:border-[#232325] border-blue-50 p-3 rounded-lg cursor-pointer mx-4 dark:hover:bg-[#232325] hover:bg-blue-50"

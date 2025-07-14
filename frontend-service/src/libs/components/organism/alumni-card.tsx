@@ -37,7 +37,7 @@ export function AlumniCard({
                             profilepict
                         } 
                         alt={"Profile Pict"}
-                        className="w-[100px] h-[100px] object-center rounded-full"
+                        className="w-[100px] h-[100px] object-cover rounded-full"
                     />
                     <div className="block">
                         <h2 className="text-xl font-bold">{profile.UserInformation.fullname} ({profile.username})</h2>

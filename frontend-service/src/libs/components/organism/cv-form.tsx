@@ -1,10 +1,26 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { DragAndDropFiles } from "../atoms/drag-drop";
 import { AiOutlineFileText } from "react-icons/ai";
 import { toast } from "sonner";
+import { loadCvService } from "@/services/load-cv-service";
+import { getSession } from "@/utils/session";
+import { uploadCvService } from "@/services/upload-cv-service";
+import { baseUrl } from "@/utils/base-url";
 
 export function CVForm(): ReactNode {
     const [file, setFile] = useState<File | null>(null)
+    const [cv, setCV] = useState<string>("")
+
+    async function loadCv(){
+        const cvFile = await loadCvService(getSession() as string)
+        if(cv != undefined){
+            setCV(cvFile as string)
+        }
+    }
+
+    useEffect(() => {
+        loadCv()
+    }, [])
 
     return (
         <div className="w-full border dark:border-[#232325] border-blue-50 p-5 rounded-lg my-5">
@@ -21,36 +37,39 @@ export function CVForm(): ReactNode {
             />
             <button
                 className="w-full mt-3 dark:bg-blue-900 bg-blue-400 p-3 rounded-lg cursor-pointer"
-                onClick={() => {
+                onClick={async () => {
                     if(!file){
                         return toast("Tidak ada file yang dipilih")
                     }
+                    await uploadCvService(file)
+                    setFile(null)
+                    loadCv()
                 }}
             >
                 Perbarui CV
             </button>
             <h4 className="font-semibold my-5">Current CV</h4>
             <div className="w-full border dark:border-[#232325] border-blue-50 p-5 rounded-lg my-5">
-                <div className="flex justify-between">
+                { cv ? (
+                    <div className="flex flex-col lg:flex-row lg:justify-between gap-4">
                     <div className="flex gap-2 items-center">
                         <AiOutlineFileText size={30} />
-                        <h3 className="font-semibold">John_Doe.pdf</h3>
+                        <h3 className="font-semibold">{cv}</h3>
                     </div>
-                    <div className="flex gap-4">
-                        <button className="border dark:border-[#232325] border-blue-50 px-2 py-1 dark:bg-[#2b2b33] bg-white
-                                        rounded-md flex gap-3 items-center hover:dark:bg-[#34343f] hover:bg-[#e3edfd] cursor-pointer
-                                        transition duration-200"
-                        >
-                            Preview
-                        </button>
-                        <button className="border dark:border-[#232325] border-blue-50 px-2 py-1 dark:bg-[#2b2b33] bg-white
-                                        rounded-md flex gap-3 items-center hover:dark:bg-[#34343f] hover:bg-[#e3edfd] cursor-pointer
-                                        transition duration-200"
-                        >
+                    <a href={baseUrl(`/uploads/documents/${cv}`)} target="_blank" className="border dark:border-[#232325] border-blue-50 px-2 py-1 dark:bg-[#2b2b33] bg-white
+                                    rounded-md flex gap-3 items-center hover:dark:bg-[#34343f] hover:bg-[#e3edfd] cursor-pointer
+                                    transition duration-200 text-center"
+                    >
+                        <h4 className="text-center w-full">
                             Download
-                        </button>
-                    </div>
+                        </h4>
+                    </a>
                 </div>
+                ) : (
+                    <h3 className="text-center">
+                        Anda belum pernah upload CV
+                    </h3>
+                ) }
             </div>
         </div>
     )

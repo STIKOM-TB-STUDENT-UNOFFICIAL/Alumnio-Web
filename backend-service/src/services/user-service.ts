@@ -2,7 +2,7 @@ import { findAllUser, findUserById, hasProfilePict, insertNewUser, patchUserInfo
 import type { TUser, TUserWithInformationUpdateable } from "@/types/user-type.ts";
 import { getExtension } from "@/utils/get-extension.ts";
 import { generateUuid } from "@/utils/uuid.ts";
-import { rmSync, writeFileSync } from "fs";
+import { unlinkSync, writeFileSync } from "fs";
 
 export async function findAllUserService(q: string, take: number, skip: number){
     return (await findAllUser(
@@ -33,7 +33,7 @@ export async function uploadProfilePictService(userId: number, image: globalThis
     const previousProfilePict = await hasProfilePict(userId)
     if(previousProfilePict){
         try{
-            rmSync(`./uploads/images/${previousProfilePict}`)
+            unlinkSync(`./uploads/images/${previousProfilePict}`)
         }
         catch(e: unknown){
             console.log(`Error : ${(e as Error).message}`)

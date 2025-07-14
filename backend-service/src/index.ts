@@ -16,6 +16,7 @@ import { HTTPException } from 'hono/http-exception'
 import type { StatusCode } from 'hono/utils/http-status'
 import { setupUploadsDir } from './check-uploads-dir.ts'
 import { workRoute } from './routes/work-history.ts'
+import { cvRoute } from './routes/cv-route.ts'
 
 dotenv.config()
 
@@ -41,6 +42,7 @@ app.route("/auth", authRoute)
 app.route("/users", userRoute)
 app.route("/majors", majorRoute)
 app.route("/work-histories", workRoute)
+app.route("/cv", cvRoute)
 // END ROUTE
 
 app.use('/ui', swaggerUI({ url: '/docs' }))
