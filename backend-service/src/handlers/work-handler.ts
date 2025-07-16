@@ -19,7 +19,7 @@ export async function getWorkHistory(c: Context){
         return c.json(response)
     }
     catch{
-        new HTTPException(400, { message: "Bad Request" })
+        throw new HTTPException(400, { message: "Bad Request" })
     }
 }
 
@@ -38,6 +38,6 @@ export async function postWorkHistory(c: Context){
         return c.json(response)
     }
     catch{
-        new HTTPException(400, { message: "Bad Request" })
+        throw new HTTPException(400, { message: "Bad Request" })
     }
 }

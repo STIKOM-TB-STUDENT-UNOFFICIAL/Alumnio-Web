@@ -20,6 +20,7 @@ model User {
   role            Int
   WorkHistory     WorkHistory[]
   UserInformation UserInformation?
+  Portofolio      Portfolio[]
 
   @@map("users")
 }
@@ -67,10 +68,12 @@ model WorkHistory {
 
 model Portfolio {
   id                  Int                   @id @default(autoincrement()) @map("id_portfolio")
+  userId              Int                   @map("user_id")
   title               String
   description         String
   demoUrl             String?               @map("demo_url")
   sourceCode          String?               @map("source_code")
+  user                User @relation(fields: [userId], references: [id])
   PortfolioStack      PortfolioStack[]
   PortfolioAttachment PortfolioAttachment[]
 
