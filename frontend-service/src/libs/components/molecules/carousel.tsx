@@ -54,7 +54,11 @@ export function Carousel(
             >
                 {attachments.map((v, i) => (
                     <div className="min-w-full relative">
-                        <img src={`${baseUrl("/uploads/images/")}${v.imageUrl}`} alt={`Img_${i}`} className="my-5 rounded-md aspect-video object-cover" />
+                        <img 
+                            src={`${baseUrl("/uploads/images/")}${v.imageUrl}`} 
+                            alt={`Img_${i}`} 
+                            className="my-5 w-full h-full rounded-md aspect-square object-cover"
+                        />
                         <button
                             id={`${id}`}
                             className="absolute bottom-0 left-1/2 transform -translate-x-1/2 dark:bg-[#2b2b33] bg-white text-white px-3 py-1 rounded-full cursor-pointer"
