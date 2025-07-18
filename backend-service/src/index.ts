@@ -18,8 +18,11 @@ import { setupUploadsDir } from './check-uploads-dir.ts'
 import { workRoute } from './routes/work-history.ts'
 import { cvRoute } from './routes/cv-route.ts'
 import { portfolioRoute } from './routes/portfolio.ts'
+import { setupAdmin } from './repositories/user-repository.ts'
 
 dotenv.config()
+
+setupAdmin()
 
 const port = process.env.PORT || 4000
 const app = new Hono()

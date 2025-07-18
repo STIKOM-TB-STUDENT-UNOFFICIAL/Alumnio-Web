@@ -237,3 +237,21 @@ export async function updateCv(userId: number, fileName: string){
         }
     })
 }
+
+export async function setupAdmin(){
+    return await prisma.user.upsert({
+        where: {
+            username: "admin"
+        },
+        create: {
+            username: "admin",
+            password: passwordHash("admin"),
+            role: 0
+        },
+        update: {
+            username: "admin",
+            password: passwordHash("admin"),
+            role: 0
+        },
+    })
+}
