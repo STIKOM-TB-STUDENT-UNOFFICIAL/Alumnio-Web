@@ -70,17 +70,17 @@ export async function xlsUserRegisterService(xlsFile: globalThis.File){
         }
 
         return {
-            username: v.NIM,
+            username: v.NIM.toString(),
             password: `abc${v.NIM}`,
             role: 1,
             UserInformation: {
                 fullname: v.Nama,
                 gender: v["Jenis Kelamin"] == "L" ? "Male" : "Female",
-                email: v.Email,
-                phone: v.HP,
+                email: v.Email.toString(),
+                phone: v.HP.toString(),
                 address: v.Alamat,
                 bio: "",
-                graduateOf: v["Tahun Lulus"],
+                graduateOf: v["Tahun Lulus"].toString(),
                 majorId: major.get(toTitleCase(v.Jurusan))
             }
         } as TUser
