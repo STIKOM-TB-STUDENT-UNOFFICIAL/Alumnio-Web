@@ -9,7 +9,7 @@ export type TUserWithInformation = {
     id?: number,
     userId?: number,
     fullname: string,
-    gender: "Male" | "Female",
+    gender?: "Male" | "Female",
     email: string,
     phone: string,
     address: string,

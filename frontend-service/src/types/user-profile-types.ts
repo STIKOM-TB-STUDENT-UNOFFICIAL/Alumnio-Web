@@ -8,7 +8,7 @@ export type TUserProfile =  {
     bio: string,
     linkedinUrl?: string,
     profilePict?: string,
-    gender: "Male" | "Female",
+    gender?: "Male" | "Female",
 }
 
 export type TMajor = {
