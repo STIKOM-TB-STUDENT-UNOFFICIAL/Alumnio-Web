@@ -245,12 +245,12 @@ export async function setupAdmin(){
         },
         create: {
             username: "admin",
-            password: passwordHash("admin"),
+            password: passwordHash("admin1234"),
             role: 0
         },
         update: {
             username: "admin",
-            password: passwordHash("admin"),
+            password: passwordHash("admin1234"),
             role: 0
         },
     })
