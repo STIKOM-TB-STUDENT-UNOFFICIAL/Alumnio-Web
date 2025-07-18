@@ -27,7 +27,7 @@ export function AlumniCard({
                         cursor-pointer transition duration-200"
                 onClick={() => setHidden(!hidden)}
             >
-                <div className="flex gap-5">
+                <div className="grid grid-flow-row lg:grid-flow-col gap-5">
                     <img 
                         src={
                             profile.UserInformation.profilePict ? 
@@ -35,7 +35,7 @@ export function AlumniCard({
                             baseUrl(`/uploads/images/${profile.UserInformation.profilePict}`)  : 
                             profilepict : 
                             profilepict
-                        } 
+                        }
                         alt={"Profile Pict"}
                         className="w-[100px] h-[100px] object-cover rounded-full"
                     />
@@ -54,23 +54,23 @@ export function AlumniCard({
                                 {profile.UserInformation.major.majorName}
                             </div>
                             <div className="rounded-full border dark:border-[#232325] border-blue-50 px-2 py-1">
-                                {profile.UserInformation.classOf != "" ? profile.UserInformation.classOf : "Unknown"}
+                                {profile.UserInformation.graduateOf != "" ? profile.UserInformation.graduateOf : "Unknown"}
                             </div>
                         </div>
                         <h2 className="text-md">{profile.UserInformation.bio}</h2>
                     </div>
                 </div>
                 <div className="flex gap-2">
-                    <button className="border dark:border-[#232325] border-blue-50 px-2 py-1 dark:bg-[#2b2b33] bg-white
+                    <a href={baseUrl(`/uploads/documents/${profile.UserInformation.curriculumVitae}`)} target="_blank" className="border dark:border-[#232325] border-blue-50 px-2 py-1 dark:bg-[#2b2b33] bg-white
                                         rounded-md flex gap-3 items-center hover:dark:bg-[#34343f] hover:bg-[#e3edfd] cursor-pointer">
                         <AiOutlinePicture />
                         Portofolio
-                    </button>
-                    <button className="border dark:border-[#232325] border-blue-50 px-2 py-1 dark:bg-[#2b2b33] bg-white
+                    </a>
+                    <a href={baseUrl(`/uploads/documents/${profile.UserInformation.curriculumVitae}`)} target="_blank" className="border dark:border-[#232325] border-blue-50 px-2 py-1 dark:bg-[#2b2b33] bg-white
                                         rounded-md flex gap-3 items-center hover:dark:bg-[#34343f] hover:bg-[#e3edfd] cursor-pointer">
                         <AiOutlineFileText />
                         CV
-                    </button>
+                    </a>
                 </div>
             </div>
             <div className={`px-10 py-5 grid grid-cols-1 lg:grid-cols-2 ${hidden ? "hidden" : ""}`}>

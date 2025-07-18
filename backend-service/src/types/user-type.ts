@@ -9,11 +9,12 @@ export type TUserWithInformation = {
     id?: number,
     userId?: number,
     fullname: string,
+    gender: "Male" | "Female",
     email: string,
     phone: string,
     address: string,
     bio: string,
-    classOf: string,
+    graduateOf: string,
     majorId: number,
     linkedinUrl?: string | null,
     curriculumVitae: string
@@ -34,4 +35,15 @@ export type TUser = {
     password?: string,
     role: number,
     UserInformation: TUserWithInformation | []
+}
+
+export type TXLSXUser = {
+    NIM: string,
+    Nama: string,
+    'Jenis Kelamin': 'L' | 'P',
+    Email: string,
+    HP: string,
+    Alamat: string,
+    Jurusan: string,
+    'Tahun Lulus': string
 }

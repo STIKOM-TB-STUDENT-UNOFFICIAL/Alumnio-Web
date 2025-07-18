@@ -7,7 +7,8 @@ export type TUserProfile =  {
     address: string,
     bio: string,
     linkedinUrl?: string,
-    profilePict?: string
+    profilePict?: string,
+    gender: "Male" | "Female",
 }
 
 export type TMajor = {
@@ -18,7 +19,7 @@ export type TMajor = {
 export type TUserInformation = {
     username: string,
     UserInformation: TUserProfile & {
-        classOf: string,
+        graduateOf: string,
         major: {
             id: number,
             majorName: string

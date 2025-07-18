@@ -1,4 +1,4 @@
-import { getUsers, patchUser, postUsers, uploadProfilePict } from "@/handlers/user-handler.ts"
+import { getUsers, patchUser, postUsers, uploadProfilePict, xlsUpload } from "@/handlers/user-handler.ts"
 import { Access, Authorization } from "@/middleware/authorization.ts"
 import { CreateUserSchema, FileUploadSchema, UserInformationModifySchema, UserRegisterSchema, UserResponseSchema } from "@/schemas/user-schema.ts"
 import { Hono } from "hono"
@@ -85,4 +85,9 @@ userRoute
     }),
     validator("form", FileUploadSchema),
     uploadProfilePict
+)
+.post(
+    "/create",
+    //Authorization([Access.ADMINISTRATOR]),
+    xlsUpload
 )

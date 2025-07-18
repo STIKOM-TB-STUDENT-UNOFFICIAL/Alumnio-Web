@@ -15,7 +15,7 @@ datasource db {
 
 model User {
   id              Int              @id @default(autoincrement()) @map("id_user")
-  username        String
+  username        String           @unique
   password        String
   role            Int
   WorkHistory     WorkHistory[]
@@ -29,11 +29,12 @@ model UserInformation {
   id              Int     @id @default(autoincrement()) @map("id_user_information")
   userId          Int     @unique
   fullname        String
+  gender          Gender  @default(Male) @map("gender")
   email           String  @default("")
   phone           String  @default("")
   address         String  @db.Text()
   bio             String  @default("")
-  classOf         String  @map("class_of")
+  graduateOf      String  @map("graduate_of")
   majorId         Int     @map("major_id")
   linkedinUrl     String? @map("linkedin_url")
   curriculumVitae String? @default("") @map("curriculum_vitae")
@@ -73,7 +74,7 @@ model Portfolio {
   description         String
   demoUrl             String?               @map("demo_url")
   sourceCode          String?               @map("source_code")
-  user                User @relation(fields: [userId], references: [id])
+  user                User                  @relation(fields: [userId], references: [id])
   PortfolioStack      PortfolioStack[]
   PortfolioAttachment PortfolioAttachment[]
 
@@ -96,4 +97,9 @@ model PortfolioStack {
   portfolio   Portfolio @relation(fields: [portfolioId], references: [id])
 
   @@map("portfolio_stacks")
+}
+
+enum Gender {
+  Male
+  Female
 }

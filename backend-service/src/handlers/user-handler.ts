@@ -1,6 +1,6 @@
 import { Access } from "@/middleware/authorization.ts";
 import { patchUserInformation } from "@/repositories/user-repository.ts";
-import { findAllUserService, findUserByIdService, newUserService, uploadProfilePictService } from "@/services/user-service.ts";
+import { findAllUserService, findUserByIdService, newUserService, uploadProfilePictService, xlsUserRegisterService } from "@/services/user-service.ts";
 import type { TTokenPayload } from "@/types/auth-type.ts";
 import type { TUser, TUserResponse, TUserWithInformation } from "@/types/user-type.ts";
 import { generateMeta } from "@/utils/generate-meta.ts";
@@ -68,6 +68,23 @@ export async function uploadProfilePict(c: Context){
         await uploadProfilePictService(sessionData.userId, (image as globalThis.File))
         const response: TUserResponse<[]> = {
             meta: generateMeta("SUCCESS", 200, "Successfuly upload profile image"),
+            data: []
+        }
+        return c.json(response)
+    }
+    catch(e){
+        throw new HTTPException(400, { message: (e as Error).message, cause: e})
+    }
+}
+
+export async function xlsUpload(c: Context){
+    try{
+        const { xlsxFile } = await c.req.parseBody()
+
+        await xlsUserRegisterService(xlsxFile as File)
+        
+        const response: TUserResponse<[]> = {
+            meta: generateMeta("SUCCESS", 200, "Successfuly create user from xlsx"),
             data: []
         }
         return c.json(response)

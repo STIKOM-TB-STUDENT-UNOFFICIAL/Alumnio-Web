@@ -13,6 +13,10 @@ const Access: TAccess[] = [
         authorization: [SessionRole.ADMINISTRATOR]
     },
     {
+        path: "/admin/dashboard/portfolio",
+        authorization: [SessionRole.ADMINISTRATOR]
+    },
+    {
         path: "/alumni/dashboard",
         authorization: [SessionRole.ALUMNI]
     },

@@ -8,8 +8,9 @@ export const UserWithInformationSchema = z.object({
     email: z.string(),
     phone: z.string(),
     address: z.string(),
+    gender: z.enum(["Male", "Female"]),
     bio: z.string(),
-    classOf: z.string(),
+    graduateOf: z.string(),
     majorId: z.number(),
     linkedinUrl: z.union([
         z.string(),
@@ -43,7 +44,7 @@ export const UserRegisterSchema = UserSchema.extend({
 export const UserInformationModifySchema = UserWithInformationSchema.extend({
     id: z.undefined(),
     userId: z.undefined(),
-    classOf: z.undefined(),
+    graduateOf: z.undefined(),
     majorId: z.undefined(),
     curriculumVitae: z.undefined()
 })

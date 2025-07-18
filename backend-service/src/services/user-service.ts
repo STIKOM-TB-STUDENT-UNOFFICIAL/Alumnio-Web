@@ -1,6 +1,9 @@
-import { findAllUser, findUserById, hasProfilePict, insertNewUser, patchUserInformation, updateProfilePict } from "@/repositories/user-repository.ts";
-import type { TUser, TUserWithInformationUpdateable } from "@/types/user-type.ts";
+import { findMajor, insertMajor } from "@/repositories/majors-repository.ts";
+import { findAllUser, findUserById, hasProfilePict, insertNewUser, patchUserInformation, updateProfilePict, upsertNewUser } from "@/repositories/user-repository.ts";
+import type { TUser, TUserWithInformationUpdateable, TXLSXUser } from "@/types/user-type.ts";
 import { getExtension } from "@/utils/get-extension.ts";
+import { readXLSX } from "@/utils/read-xlsx.ts";
+import { toTitleCase } from "@/utils/title-case.ts";
 import { generateUuid } from "@/utils/uuid.ts";
 import { unlinkSync, writeFileSync } from "fs";
 
@@ -44,4 +47,47 @@ export async function uploadProfilePictService(userId: number, image: globalThis
     const path = `./uploads/images/${newName}.${extension}`
     writeFileSync(path, new Uint8Array(await (image as File).arrayBuffer()))
     await updateProfilePict(userId, `${newName}.${extension}`)
+}
+
+export async function xlsUserRegisterService(xlsFile: globalThis.File){
+    const json: TXLSXUser[] = await readXLSX(xlsFile) as TXLSXUser[]
+
+    async function setMajor(){
+        const major = new Map<string, number>();
+
+        (await findMajor()).map((v) => {
+            major.set(v.majorName, v.id)
+        })
+        return major
+    }
+
+    let major = await setMajor()
+
+    const formattedUserPromise: Promise<TUser>[] = json.map(async (v) => {
+        if(!major.get(toTitleCase(v.Jurusan))){
+            await insertMajor(toTitleCase(v.Jurusan))
+            major = await setMajor()
+        }
+
+        return {
+            username: v.NIM,
+            password: `abc${v.NIM}`,
+            role: 1,
+            UserInformation: {
+                fullname: v.Nama,
+                gender: v["Jenis Kelamin"] == "L" ? "Male" : "Female",
+                email: v.Email,
+                phone: v.HP,
+                address: v.Alamat,
+                bio: "",
+                graduateOf: v["Tahun Lulus"],
+                majorId: major.get(toTitleCase(v.Jurusan))
+            }
+        } as TUser
+    })
+
+    const formattedUser = await Promise.all(formattedUserPromise)
+    formattedUser.map((v) => {
+        upsertNewUser(v)
+    })
 }

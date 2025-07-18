@@ -20,8 +20,9 @@ export function DragAndDropFiles(
         setFile?: React.Dispatch<React.SetStateAction<File | null>>
     }
 ){
-    const inputRef = useRef<HTMLInputElement>(null)
+    const inputRef = useRef<HTMLInputElement | null>(null)
     const [isDrag, setIsDrag] = useState(false)
+
     return (
         <div
             className={`border border-dashed cursor-pointer transition duration-300 
@@ -65,6 +66,9 @@ export function DragAndDropFiles(
                     const selectedFile = e.target.files?.[0]
                     if(selectedFile && setFile){
                         setFile(selectedFile)
+                        if(inputRef.current){
+                            inputRef.current.value = ""
+                        }
                     }
                 }}
             />

@@ -40,7 +40,7 @@ export async function findAllUser(
                                 }
                             },
                             {
-                                classOf: {
+                                graduateOf: {
                                     contains: q ? q : "",
                                     mode: "insensitive"
                                 }
@@ -123,8 +123,51 @@ export async function insertNewUser(user: TUser){
                     email: (user.UserInformation as TUserWithInformation).email,
                     phone: (user.UserInformation as TUserWithInformation).phone,
                     address: (user.UserInformation as TUserWithInformation).address,
+                    gender: (user.UserInformation as TUserWithInformation).gender,
                     bio: (user.UserInformation as TUserWithInformation).bio,
-                    classOf: (user.UserInformation as TUserWithInformation).classOf,
+                    graduateOf: (user.UserInformation as TUserWithInformation).graduateOf,
+                    majorId: (user.UserInformation as TUserWithInformation).majorId,
+                }
+            }
+        }
+    })
+}
+
+export async function upsertNewUser(user: TUser){
+    return await prisma.user.upsert({
+        where: {
+            username: user.username
+        },
+        create: {
+            username: user.username,
+            password: passwordHash(user.password ?? ""),
+            role: user.role,
+            UserInformation: {
+                create: {
+                    fullname: (user.UserInformation as TUserWithInformation).fullname,
+                    email: (user.UserInformation as TUserWithInformation).email,
+                    phone: (user.UserInformation as TUserWithInformation).phone,
+                    address: (user.UserInformation as TUserWithInformation).address,
+                    gender: (user.UserInformation as TUserWithInformation).gender,
+                    bio: (user.UserInformation as TUserWithInformation).bio,
+                    graduateOf: (user.UserInformation as TUserWithInformation).graduateOf,
+                    majorId: (user.UserInformation as TUserWithInformation).majorId,
+                }
+            }
+        },
+        update: {
+            username: user.username,
+            password: passwordHash(user.password ?? ""),
+            role: user.role,
+            UserInformation: {
+                update: {
+                    fullname: (user.UserInformation as TUserWithInformation).fullname,
+                    email: (user.UserInformation as TUserWithInformation).email,
+                    phone: (user.UserInformation as TUserWithInformation).phone,
+                    address: (user.UserInformation as TUserWithInformation).address,
+                    gender: (user.UserInformation as TUserWithInformation).gender,
+                    bio: (user.UserInformation as TUserWithInformation).bio,
+                    graduateOf: (user.UserInformation as TUserWithInformation).graduateOf,
                     majorId: (user.UserInformation as TUserWithInformation).majorId,
                 }
             }
