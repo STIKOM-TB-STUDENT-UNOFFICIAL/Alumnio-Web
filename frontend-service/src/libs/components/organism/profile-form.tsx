@@ -120,7 +120,7 @@ export function ProfileForm(): ReactNode {
                     />
                     <InputWithError 
                         type={"text"} 
-                        label="Linkedin"
+                        label="Linkedin (Optional)"
                         {...register("linkedinUrl")}
                     />
                 </div>
