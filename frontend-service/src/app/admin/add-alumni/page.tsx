@@ -13,11 +13,11 @@ export default function Index(): ReactNode {
                     <h3 className="text-3xl font-bold">Tambah Alumni</h3>
                     <h6 className="text-sm font-medium">Upload data alumni</h6>
                 </div>
-                <button className="bg-blue-600 disabled:bg-blue-200 px-3 py-2 rounded-md
+                <a href="/Template XLSX Alumnio.xlsx" target="_blank" className="bg-blue-600 disabled:bg-blue-200 px-3 py-2 rounded-md
                   dark:bg-blue-900 text-[#f7f7f8] flex items-center gap-2 text-sm cursor-pointer"
                 >
                     Download Template
-                </button>
+                </a>
             </div>
             <DragAndDropFiles
                 Icon={AiOutlineFileExcel}
