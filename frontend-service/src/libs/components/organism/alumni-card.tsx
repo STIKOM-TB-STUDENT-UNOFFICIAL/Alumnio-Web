@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from "react";
 import profilepict from "@/assets/481932188_17898877434116514_6989620279172715534_n.webp"
-import { AiOutlineFileText, AiOutlineMail, AiOutlinePhone, AiOutlinePicture } from "react-icons/ai";
+import { AiFillLinkedin, AiOutlineFileText, AiOutlineMail, AiOutlinePhone, AiOutlinePicture } from "react-icons/ai";
 import { FaBriefcase, FaMapMarkerAlt } from "react-icons/fa";
 import type { TUserInformation } from "@/types/user-profile-types";
 import { getDateFormat } from "@/utils/get-date-format";
@@ -91,6 +91,12 @@ export function AlumniCard({
                         <FaMapMarkerAlt />  
                         {profile.UserInformation.address ? profile.UserInformation.address : "Unknown"}
                     </h3>
+                    {profile.UserInformation.linkedinUrl != "" || profile.UserInformation.linkedinUrl ? (
+                        <h3 className="text-sm flex gap-2 items-center">
+                            <AiFillLinkedin /> 
+                            <a target="_blank" href={profile.UserInformation.linkedinUrl}>{profile.UserInformation.linkedinUrl}</a>
+                        </h3>
+                    ) : (<></>)}
                 </div>
                 <div className="flex flex-col gap-3 mt-5 lg:mt-0">
                     <h3 className="text-lg font-semibold flex gap-2 items-center mb-5">
