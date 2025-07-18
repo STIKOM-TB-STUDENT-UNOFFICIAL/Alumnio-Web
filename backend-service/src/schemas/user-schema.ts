@@ -8,7 +8,7 @@ export const UserWithInformationSchema = z.object({
     email: z.string(),
     phone: z.string(),
     address: z.string(),
-    gender: z.enum(["Male", "Female"]),
+    gender: z.enum(["Male", "Female"]).optional(),
     bio: z.string(),
     graduateOf: z.string(),
     majorId: z.number(),
