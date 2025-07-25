@@ -21,7 +21,7 @@ export function AdminPageAlumniView(){
         const result = await loadUsersService(getSession() as string, query, undefined, skip, take)
         if(result){
             setProfiles(result.profiles as TUserInformation[])
-            setTotal(Math.ceil(result.total ?? take / take))
+            setTotal(Math.ceil((result.total ?? take) / take))
         }
     }
 
@@ -110,7 +110,7 @@ export function AdminPageAlumniView(){
                 <button 
                     className={`bg-blue-600 disabled:bg-blue-200 px-3 py-2 rounded-md
                                 dark:bg-blue-900 text-[#f7f7f8] flex items-center gap-2
-                                text-sm cursor-pointer ${currentPage <= total ? "" : "hidden"}`}
+                                text-sm cursor-pointer ${currentPage < total ? "" : "hidden"}`}
                     onClick={() => pageUp()}
                 >
                     <AiOutlineArrowRight />

@@ -23,7 +23,7 @@ export async function getUsers(c: Context){
                 "SUCCESS", 
                 200, 
                 "Successfuly get all users", 
-                (sessionData.role == Access.ADMINISTRATOR ? await countAllUserService(q, take ? parseInt(take) : 5, skip ? parseInt(skip) : 0) : undefined)
+                (sessionData.role == Access.ADMINISTRATOR ? await countAllUserService() : undefined)
             ),
             data: users
         }

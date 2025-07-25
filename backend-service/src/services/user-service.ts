@@ -20,12 +20,8 @@ export async function findAllUserService(q: string, take: number, skip: number){
     })
 }
 
-export async function countAllUserService(q: string, take: number, skip: number){
-    return await countAllUser(
-        q,
-        take,
-        skip
-    )
+export async function countAllUserService(){
+    return await countAllUser()
 }
 
 export async function findAllUserServicePrint(major: string, q: string, take: number, skip: number){
