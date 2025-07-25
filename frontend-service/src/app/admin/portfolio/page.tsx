@@ -111,6 +111,9 @@ export default function Index(): ReactNode {
                     </div>
                 ))}
             </div>
+            {data?.portfolio.length == 0 ? (
+                <h4 className="text-center">Tidak ada data</h4>
+            ) : (<></>)}
         </div>
     )
 }

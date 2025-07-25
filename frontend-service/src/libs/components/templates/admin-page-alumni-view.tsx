@@ -4,23 +4,42 @@ import { loadUsersService } from "@/services/load-users-service";
 import type { TUserInformation } from "@/types/user-profile-types";
 import { getSession } from "@/utils/session";
 import { useEffect, useState } from "react";
-import { AiOutlinePrinter, AiOutlineSearch, AiOutlineUserAdd } from "react-icons/ai";
+import { AiOutlineArrowLeft, AiOutlineArrowRight, AiOutlinePrinter, AiOutlineSearch, AiOutlineUserAdd } from "react-icons/ai";
 import { Modals } from "../molecules/modals";
 import { PrintForm } from "../organism/print-form";
 
 export function AdminPageAlumniView(){
     const [profiles, setProfiles] = useState<TUserInformation[]>([] as TUserInformation[])
     const [q, setQ] = useState("")
+    const [skip, setSkip] = useState(0)
+    const [total, setTotal] = useState(0)
+    const [currentPage, setCurrentPage] = useState(1)
     const [printPrompt, setPrintPrompt] = useState(false)
+    const take = 100
 
     async function loadUserProfile(query: string) {
-        const userProfile = await loadUsersService(getSession() as string, query)
-        setProfiles(userProfile as TUserInformation[])
+        const result = await loadUsersService(getSession() as string, query, undefined, skip, take)
+        if(result){
+            setProfiles(result.profiles as TUserInformation[])
+            setTotal(Math.ceil(result.total ?? take / take))
+        }
     }
 
     useEffect(() => {
         loadUserProfile(q)
-    }, [q])
+    }, [q, skip])
+
+    useEffect(() => {
+        setSkip((currentPage - 1) * take)
+    }, [currentPage])
+
+    function pageUp(){
+        setCurrentPage(currentPage + 1)
+    }
+
+    function pageDown(){
+        setCurrentPage(currentPage - 1)
+    }
     
     return (
         <>
@@ -72,6 +91,31 @@ export function AdminPageAlumniView(){
             {profiles.map((v, i) => (
                 <AlumniCard profile={v} key={i} />
             ))}
+            <div className="flex justify-center gap-2">
+                <button 
+                    className={`bg-blue-600 disabled:bg-blue-200 px-3 py-2 rounded-md
+                                dark:bg-blue-900 text-[#f7f7f8] flex items-center gap-2
+                                text-sm cursor-pointer ${currentPage > 1 ? "" : "hidden"}`}
+                    onClick={() => pageDown()}
+                >
+                    <AiOutlineArrowLeft />
+                </button>
+                <button 
+                    className="bg-blue-600 disabled:bg-blue-200 px-3 py-2 rounded-md
+                                dark:bg-blue-900 text-[#f7f7f8] flex items-center gap-2
+                                text-sm cursor-pointer"
+                >
+                    { currentPage }
+                </button>
+                <button 
+                    className={`bg-blue-600 disabled:bg-blue-200 px-3 py-2 rounded-md
+                                dark:bg-blue-900 text-[#f7f7f8] flex items-center gap-2
+                                text-sm cursor-pointer ${currentPage <= total ? "" : "hidden"}`}
+                    onClick={() => pageUp()}
+                >
+                    <AiOutlineArrowRight />
+                </button>
+            </div>
         </>
     )
 }

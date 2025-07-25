@@ -83,6 +83,73 @@ export async function findAllUser(
     })
 }
 
+export async function countAllUser(
+    q: string | undefined,
+    take: number,
+    skip: number
+){
+    return await prisma.user.count({
+        where: {
+            role: Access.ALUMNI,
+            OR: [
+                {
+                    username: {
+                        contains: q ? q : ""
+                    }
+                },
+                {
+                    UserInformation: {
+                        OR: [
+                            {
+                                fullname: {
+                                    contains: q ? q : "",
+                                    mode: "insensitive"
+                                }
+                            },
+                            {
+                                graduateOf: {
+                                    contains: q ? q : "",
+                                    mode: "insensitive"
+                                }
+                            },
+                            {
+                                major: {
+                                    majorName: {
+                                        contains: q ? q : "",
+                                        mode: "insensitive"
+                                    }
+                                }
+                            },
+                        ]
+                    }
+                },
+                {
+                    WorkHistory: {
+                        some: {
+                            OR: [
+                                {
+                                    title: {
+                                        contains: q ? q : "",
+                                        mode: "insensitive"
+                                    }
+                                },
+                                {
+                                    company: {
+                                        contains: q ? q : "",
+                                        mode: "insensitive"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        take,
+        skip
+    })
+}
+
 export async function findAllUserForPrint(
     major: string,
     q: string | undefined,

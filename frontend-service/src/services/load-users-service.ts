@@ -10,7 +10,7 @@ export async function loadUsersService(
     skip: number = 0, 
     take: number = 100
 )
-: Promise<TUserInformation[] | undefined> 
+: Promise<{profiles: TUserInformation[], total: number | undefined} | undefined> 
 {
     try{
         const userProfile = await fetchJson<TUserInformationResponse, undefined>(
@@ -20,7 +20,10 @@ export async function loadUsersService(
                 "Authorization": `Bearer ${token}`
             }
         )
-        return userProfile.data
+        return {
+            profiles: userProfile.data, 
+            total: userProfile.meta.total ?? undefined
+        }
     }
     catch{
         toast("Gagal memuat informasi profile")

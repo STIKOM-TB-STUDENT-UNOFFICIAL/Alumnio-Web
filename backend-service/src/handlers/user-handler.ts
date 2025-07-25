@@ -1,6 +1,6 @@
 import { Access } from "@/middleware/authorization.ts";
 import { deleteAdministrator, getAdministrator, newAdministrator, patchAdministrator, patchUserInformation } from "@/repositories/user-repository.ts";
-import { findAllUserService, findAllUserServicePrint, findUserByIdService, newUserService, uploadProfilePictService, xlsUserRegisterService } from "@/services/user-service.ts";
+import { countAllUserService, findAllUserService, findAllUserServicePrint, findUserByIdService, newUserService, uploadProfilePictService, xlsUserRegisterService } from "@/services/user-service.ts";
 import type { TTokenPayload } from "@/types/auth-type.ts";
 import type { TUser, TUserResponse, TUserWithInformation } from "@/types/user-type.ts";
 import { generateMeta } from "@/utils/generate-meta.ts";
@@ -19,7 +19,12 @@ export async function getUsers(c: Context){
                     await findUserByIdService(sessionData.userId)
 
         const response: TUserResponse<typeof users> = {
-            meta: generateMeta("SUCCESS", 200, "Successfuly get all users"),
+            meta: generateMeta(
+                "SUCCESS", 
+                200, 
+                "Successfuly get all users", 
+                (sessionData.role == Access.ADMINISTRATOR ? await countAllUserService(q, take ? parseInt(take) : 5, skip ? parseInt(skip) : 0) : undefined)
+            ),
             data: users
         }
         return c.json(response)

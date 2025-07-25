@@ -8,12 +8,10 @@ import { baseUrl } from "@/utils/base-url";
 import { encodeBase64 } from "@/utils/base-64";
 
 export function AlumniCard({
-    profile,
-    key
+    profile
 }:
 {
-    profile: TUserInformation,
-    key: number
+    profile: TUserInformation
 }): ReactNode{
     const [hidden, setHidden] = useState(true)
 
@@ -21,7 +19,6 @@ export function AlumniCard({
         <div 
             className="flex flex-col my-5 w-full border dark:border-[#232325] border-blue-50 
                         rounded-lg overflow-hidden shadow-xs"
-            key={key}
         >
             <div className="flex flex-col lg:flex-row lg:justify-between gap-5 lg:gap-2 p-10    
                         lg:items-center w-full hover:dark:bg-[#313139] hover:bg-[#ebf3ff]
@@ -106,8 +103,8 @@ export function AlumniCard({
                         <FaBriefcase />
                         Work History
                     </h3>
-                    {profile.WorkHistory.map((v) => (
-                        <div className="border-l-1 dark:border-l-blue-900 border-l-blue-400 p-3">
+                    {profile.WorkHistory.map((v, i) => (
+                        <div className="border-l-1 dark:border-l-blue-900 border-l-blue-400 p-3" key={i}>
                             <h3 className="font-bold text-lg">{v.title}</h3>
                             <h3 className="text-md">{v.company}</h3>
                             <h3 className="text-sm">{getDateFormat(v.startDate)} - {getDateFormat(v.endDate)}</h3>

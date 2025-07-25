@@ -36,7 +36,8 @@ export type TUserInformationResponse = {
     meta: {
         status: "SUCCESS" | "FAILED",
         code: number,
-        message: string
+        message: string,
+        total?: number
     },
     data: TUserInformation[]
 }

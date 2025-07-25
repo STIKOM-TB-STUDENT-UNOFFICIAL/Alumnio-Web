@@ -1,5 +1,5 @@
 import { findMajor, insertMajor } from "@/repositories/majors-repository.ts";
-import { findAllUser, findAllUserForPrint, findUserById, hasProfilePict, insertNewUser, patchUserInformation, updateProfilePict, upsertNewUser } from "@/repositories/user-repository.ts";
+import { countAllUser, findAllUser, findAllUserForPrint, findUserById, hasProfilePict, insertNewUser, patchUserInformation, updateProfilePict, upsertNewUser } from "@/repositories/user-repository.ts";
 import type { TUser, TUserWithInformationUpdateable, TXLSXUser } from "@/types/user-type.ts";
 import { getExtension } from "@/utils/get-extension.ts";
 import { readXLSX } from "@/utils/read-xlsx.ts";
@@ -18,6 +18,14 @@ export async function findAllUserService(q: string, take: number, skip: number){
             WorkHistory: rest.WorkHistory.map(({id, userId, ...rst}) => rst)
         }
     })
+}
+
+export async function countAllUserService(q: string, take: number, skip: number){
+    return await countAllUser(
+        q,
+        take,
+        skip
+    )
 }
 
 export async function findAllUserServicePrint(major: string, q: string, take: number, skip: number){
