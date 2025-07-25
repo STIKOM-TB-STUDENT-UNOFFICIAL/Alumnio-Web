@@ -14,7 +14,7 @@ export default function Index(): ReactNode {
 
     async function loadUserProfile(query: string) {
         const userProfile = await loadUsersService(getSession() as string, query, major ? major : undefined, 0, take ? parseInt(take) : 100)
-        setProfiles(userProfile as TUserInformation[])
+        setProfiles(userProfile?.profiles as TUserInformation[])
     }
     
     useEffect(() => {

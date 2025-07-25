@@ -4,7 +4,7 @@ import { InputWithError } from "../molecules/input-with-error";
 import { loadProfileService } from "@/services/load-profile-service";
 import { getSession } from "@/utils/session";
 import type { TUserProfile } from "@/types/user-profile-types";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { UserProfileSchema } from "@/schema/user-profile-schema";
 import type z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -30,7 +30,8 @@ export function ProfileForm(): ReactNode {
         handleSubmit,
         register,
         formState: { errors },
-        reset
+        reset,
+        control
     } = useForm<z.infer<typeof UserProfileSchema>>({ resolver: zodResolver(UserProfileSchema) })
 
     useEffect(() => {
@@ -90,6 +91,7 @@ export function ProfileForm(): ReactNode {
                 </button>
             </div>
             <form onSubmit={handleSubmit(async (v) => {
+                console.log(v)
                 setLoad(true)
                 await patchProfileService(getSession() as string, v)
                 setLoad(false)
@@ -124,11 +126,20 @@ export function ProfileForm(): ReactNode {
                         {...register("linkedinUrl")}
                     />
                 </div>
-                <InputWithError 
-                    type={"text"}
-                    label="Bio"
-                    className="mt-4"
-                    {...register("bio")}
+                <Controller
+                    control={control}
+                    name="bio"
+                    defaultValue=""
+                    render={({ field }) => (
+                        <InputWithError 
+                            type="textarea"
+                            value={field.value}
+                            onChange={(e) => field.onChange(e.target.value)}
+                            label="Bio"
+                            name="bio"
+                            className="mt-4"
+                        />
+                    )}
                 />
                 <button className="dark:bg-blue-900 bg-blue-400 p-3 rounded-lg cursor-pointer my-5 " disabled={load}>
                     Perbarui
