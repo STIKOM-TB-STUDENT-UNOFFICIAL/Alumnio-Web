@@ -16,7 +16,7 @@ export type TCustomInput = Omit<
   label?: string;
   type: "text" | "password" | "email" | "date" | "checkbox" | "textarea";
   Icon?: ElementType;
-  value?: string;
+  value?: string | number;
   onChange?: (e: { target: { name?: string; value: string } }) => void;
 };
 
@@ -28,7 +28,7 @@ export function Input({ type = "text", className = "", Icon, ...rest }: TCustomI
   useEffect(() => {
     if (type === "textarea" && divRef.current && rest.value !== undefined) {
       if (divRef.current.innerText !== rest.value) {
-        divRef.current.innerText = rest.value;
+        divRef.current.innerText = rest.value.toString();
       }
     }
   }, [rest.value, type]);
