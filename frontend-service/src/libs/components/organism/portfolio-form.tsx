@@ -59,7 +59,17 @@ export function PortfolioForm(): ReactNode {
                                 <IoTrashOutline />
                             </button>
                         </div>
-                        <Carousel attachments={v.PortfolioAttachment as TPortfolioAttachment[]} id={v.id ?? -1} callback={loadPorfolio} />
+                        <Carousel 
+                            attachments={v.PortfolioAttachment as TPortfolioAttachment[]} 
+                            id={v.id ?? -1} 
+                            callback={() => 
+                                {
+                                    loadPorfolio()
+                                    savePortfolioService(getSession() as string, {
+                                        ...portfolio[i]
+                                    })
+                                }} 
+                        />
                         <InputWithError
                             type="text" 
                             value={v.title} 
@@ -71,7 +81,7 @@ export function PortfolioForm(): ReactNode {
                             }}
                         />
                         <InputWithError
-                            type="text"
+                            type="textarea"
                             value={v.description}
                             label="Description"
                             onChange={(e) => {
@@ -83,7 +93,7 @@ export function PortfolioForm(): ReactNode {
                         <InputWithError
                             type="text"
                             value={v.demoUrl}
-                            label="Project Link"
+                            label="Project Link (Optional)"
                             onChange={(e) => {
                                 const portfolioTemp = [...portfolio]
                                 portfolioTemp[i].demoUrl = e.target.value

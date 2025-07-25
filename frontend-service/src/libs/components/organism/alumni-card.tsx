@@ -5,6 +5,7 @@ import { FaBriefcase, FaMapMarkerAlt } from "react-icons/fa";
 import type { TUserInformation } from "@/types/user-profile-types";
 import { getDateFormat } from "@/utils/get-date-format";
 import { baseUrl } from "@/utils/base-url";
+import { encodeBase64 } from "@/utils/base-64";
 
 export function AlumniCard({
     profile,
@@ -19,7 +20,7 @@ export function AlumniCard({
     return (
         <div 
             className="flex flex-col my-5 w-full border dark:border-[#232325] border-blue-50 
-                        rounded-lg overflow-hidden shadow-sm"
+                        rounded-lg overflow-hidden shadow-xs"
             key={key}
         >
             <div className="flex flex-col lg:flex-row lg:justify-between gap-5 lg:gap-2 p-10    
@@ -61,16 +62,18 @@ export function AlumniCard({
                     </div>
                 </div>
                 <div className="flex gap-2">
-                    <a href={baseUrl(`/uploads/documents/${profile.UserInformation.curriculumVitae}`)} target="_blank" className="border dark:border-[#232325] border-blue-50 px-2 py-1 dark:bg-[#2b2b33] bg-white
+                    <a href={`/admin/portfolio?id=${encodeBase64((profile.id ?? -1).toString())}`} target="_blank" className="border dark:border-[#232325] border-blue-50 px-2 py-1 dark:bg-[#2b2b33] bg-white
                                         rounded-md flex gap-3 items-center hover:dark:bg-[#34343f] hover:bg-[#e3edfd] cursor-pointer">
                         <AiOutlinePicture />
                         Portofolio
                     </a>
-                    <a href={baseUrl(`/uploads/documents/${profile.UserInformation.curriculumVitae}`)} target="_blank" className="border dark:border-[#232325] border-blue-50 px-2 py-1 dark:bg-[#2b2b33] bg-white
-                                        rounded-md flex gap-3 items-center hover:dark:bg-[#34343f] hover:bg-[#e3edfd] cursor-pointer">
-                        <AiOutlineFileText />
-                        CV
-                    </a>
+                    {profile.UserInformation.curriculumVitae != "" ? (
+                        <a href={baseUrl(`/uploads/documents/${profile.UserInformation.curriculumVitae}`)} target="_blank" className="border dark:border-[#232325] border-blue-50 px-2 py-1 dark:bg-[#2b2b33] bg-white
+                                            rounded-md flex gap-3 items-center hover:dark:bg-[#34343f] hover:bg-[#e3edfd] cursor-pointer">
+                            <AiOutlineFileText />
+                            CV
+                        </a>
+                    ) : (<></>)}
                 </div>
             </div>
             <div className={`px-10 py-5 grid grid-cols-1 lg:grid-cols-2 ${hidden ? "hidden" : ""}`}>
@@ -91,7 +94,7 @@ export function AlumniCard({
                         <FaMapMarkerAlt />  
                         {profile.UserInformation.address ? profile.UserInformation.address : "Unknown"}
                     </h3>
-                    {profile.UserInformation.linkedinUrl != "" || profile.UserInformation.linkedinUrl ? (
+                    {profile.UserInformation.linkedinUrl != "" && profile.UserInformation.linkedinUrl ? (
                         <h3 className="text-sm flex gap-2 items-center">
                             <AiFillLinkedin /> 
                             <a target="_blank" href={profile.UserInformation.linkedinUrl}>{profile.UserInformation.linkedinUrl}</a>

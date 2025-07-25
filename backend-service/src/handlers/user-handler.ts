@@ -1,6 +1,6 @@
 import { Access } from "@/middleware/authorization.ts";
-import { patchUserInformation } from "@/repositories/user-repository.ts";
-import { findAllUserService, findUserByIdService, newUserService, uploadProfilePictService, xlsUserRegisterService } from "@/services/user-service.ts";
+import { deleteAdministrator, getAdministrator, newAdministrator, patchAdministrator, patchUserInformation } from "@/repositories/user-repository.ts";
+import { findAllUserService, findAllUserServicePrint, findUserByIdService, newUserService, uploadProfilePictService, xlsUserRegisterService } from "@/services/user-service.ts";
 import type { TTokenPayload } from "@/types/auth-type.ts";
 import type { TUser, TUserResponse, TUserWithInformation } from "@/types/user-type.ts";
 import { generateMeta } from "@/utils/generate-meta.ts";
@@ -11,10 +11,13 @@ import { HTTPException } from "hono/http-exception";
 export async function getUsers(c: Context){
     try{
         const sessionData = jwtDecode<TTokenPayload>(c.req.header("Authorization")?.split(" ")[1] as string)
-        const { skip, take, q } = c.req.query()
+        const { skip, take, q, major } = c.req.query()
         const users = sessionData.role == Access.ADMINISTRATOR ? 
-                    await findAllUserService(q, take ? parseInt(take) : 5, skip ? parseInt(skip) : 0) : 
+                    major ? 
+                        await findAllUserServicePrint(major, q, take ? parseInt(take) : 5, skip ? parseInt(skip) : 0) : 
+                        await findAllUserService(q, take ? parseInt(take) : 5, skip ? parseInt(skip) : 0) : 
                     await findUserByIdService(sessionData.userId)
+
         const response: TUserResponse<typeof users> = {
             meta: generateMeta("SUCCESS", 200, "Successfuly get all users"),
             data: users
@@ -85,6 +88,84 @@ export async function xlsUpload(c: Context){
         
         const response: TUserResponse<[]> = {
             meta: generateMeta("SUCCESS", 200, "Successfuly create user from xlsx"),
+            data: []
+        }
+        return c.json(response)
+    }
+    catch(e){
+        throw new HTTPException(400, { message: (e as Error).message, cause: e})
+    }
+}
+
+export async function getAdmin(c: Context){
+    try{
+        const administrator = await getAdministrator()
+        
+        const response: TUserResponse<typeof administrator> = {
+            meta: generateMeta("SUCCESS", 200, "Successfuly get administrator"),
+            data: administrator
+        }
+        return c.json(response)
+    }
+    catch(e){
+        throw new HTTPException(400, { message: (e as Error).message, cause: e})
+    }
+}
+
+export async function postAdmin(c: Context){
+    try{
+        const { username, password } = await c.req.json()
+
+        if(!username || !password){
+            throw new HTTPException(400, { message: "Bad Request" })
+        }
+
+        await newAdministrator(username, password)
+        
+        const response: TUserResponse<[]> = {
+            meta: generateMeta("SUCCESS", 200, "Successfuly post new admin"),
+            data: []
+        }
+        return c.json(response)
+    }
+    catch(e){
+        throw new HTTPException(400, { message: (e as Error).message, cause: e})
+    }
+}
+
+export async function patchAdmin(c: Context){
+    try{
+        const { userId, username, password } = await c.req.json()
+
+        if(!userId || !username){
+            throw new HTTPException(400, { message: "Bad Request" })
+        }
+
+        await patchAdministrator(userId, username, password)
+        
+        const response: TUserResponse<[]> = {
+            meta: generateMeta("SUCCESS", 200, "Successfuly patch admin"),
+            data: []
+        }
+        return c.json(response)
+    }
+    catch(e){
+        throw new HTTPException(400, { message: (e as Error).message, cause: e})
+    }
+}
+
+export async function deleteAdmin(c: Context){
+    try{
+        const { userId } = await c.req.json()
+
+        if(!userId){
+            throw new HTTPException(400, { message: "Bad Request" })
+        }
+
+        await deleteAdministrator(userId)
+        
+        const response: TUserResponse<[]> = {
+            meta: generateMeta("SUCCESS", 200, "Successfuly delete admin"),
             data: []
         }
         return c.json(response)

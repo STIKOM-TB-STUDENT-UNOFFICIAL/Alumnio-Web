@@ -3,18 +3,12 @@ import { baseUrl } from "@/utils/base-url";
 import { fetchJson } from "@/utils/fetch-json";
 import { toast } from "sonner";
 
-export async function loadUsersService(
-    token: string, 
-    q: string, 
-    major?: string, 
-    skip: number = 0, 
-    take: number = 100
-)
+export async function loadAdministratorService(token: string)
 : Promise<TUserInformation[] | undefined> 
 {
     try{
         const userProfile = await fetchJson<TUserInformationResponse, undefined>(
-            baseUrl(`/users?q=${q}&take=${take}&skip=${skip}${major? "&major="+major : ""}`),
+            baseUrl(`/users/admin`),
             "GET",
             {
                 "Authorization": `Bearer ${token}`
@@ -23,7 +17,7 @@ export async function loadUsersService(
         return userProfile.data
     }
     catch{
-        toast("Gagal memuat informasi profile")
+        toast("Gagal memuat informasi administrator")
         return
     }
 }

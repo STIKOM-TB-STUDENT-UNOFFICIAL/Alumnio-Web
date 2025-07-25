@@ -83,6 +83,84 @@ export async function findAllUser(
     })
 }
 
+export async function findAllUserForPrint(
+    major: string,
+    q: string | undefined,
+    take: number,
+    skip: number
+){
+    return await prisma.user.findMany({
+        include: {
+            UserInformation: {
+                include:{
+                    major: true
+                }
+            },
+            WorkHistory: {
+                orderBy: {
+                    endDate: "desc"
+                }
+            }
+        },
+        where: {
+            role: Access.ALUMNI,
+            UserInformation: {
+                major: {
+                    majorName: major
+                }
+            },
+            OR: [
+                {
+                    username: {
+                        contains: q ? q : ""
+                    }
+                },
+                {
+                    UserInformation: {
+                        OR: [
+                            {
+                                fullname: {
+                                    contains: q ? q : "",
+                                    mode: "insensitive"
+                                }
+                            },
+                            {
+                                graduateOf: {
+                                    contains: q ? q : "",
+                                    mode: "insensitive"
+                                }
+                            },
+                        ],
+                    }
+                },
+                {
+                    WorkHistory: {
+                        some: {
+                            OR: [
+                                {
+                                    title: {
+                                        contains: q ? q : "",
+                                        mode: "insensitive"
+                                    }
+                                },
+                                {
+                                    company: {
+                                        contains: q ? q : "",
+                                        mode: "insensitive"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        take,
+        skip
+    })
+}
+
+
 export async function findUserById(id: number){
     return await prisma.user.findFirst({
         where: {
@@ -90,6 +168,22 @@ export async function findUserById(id: number){
         },
         include: {
             UserInformation: true
+        }
+    })
+}
+
+export async function findUserByIdWithWorkExperience(id: number){
+    return await prisma.user.findFirst({
+        where: {
+            id
+        },
+        include: {
+            UserInformation: {
+                include: {
+                    major: true
+                }
+            },
+            WorkHistory: true
         }
     })
 }
@@ -253,5 +347,44 @@ export async function setupAdmin(){
             password: passwordHash("admin1234"),
             role: 0
         },
+    })
+}
+
+export async function getAdministrator(){
+    return await prisma.user.findMany({
+        where: {
+            role: Access.ADMINISTRATOR
+        }
+    })
+}
+
+export async function newAdministrator(username: string, password: string){
+    return await prisma.user.create({
+        data: {
+            role: Access.ADMINISTRATOR,
+            username,
+            password: passwordHash(password ?? `abc${username}`)
+        }
+    })
+}
+
+export async function patchAdministrator(userId: number, username: string, password: string){
+    return await prisma.user.update({
+        where: {
+            id: userId
+        },
+        data: {
+            role: Access.ADMINISTRATOR,
+            username,
+            ...(password ? { password: passwordHash(password ?? `abc${username}`) } : {})
+        }
+    })
+}
+
+export async function deleteAdministrator(userId: number){
+    return await prisma.user.delete({
+        where: {
+            id: userId
+        }
     })
 }

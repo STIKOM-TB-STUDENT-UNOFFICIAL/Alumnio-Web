@@ -17,7 +17,7 @@ export function Modals(
     }
 ): ReactNode{
     return (
-        <div className={`fixed top-0 left-0 w-full min-h-[100vh] bg-black/20 flex flex-col justify-center items-center ${!show ? "hidden" : ""}`}>
+        <div className={`fixed z-[200] top-0 left-0 w-full min-h-[100vh] bg-black/20 flex flex-col justify-center items-center ${!show ? "hidden" : ""}`}>
             <div className="min-w-[400px] dark:bg-[#2b2b33] bg-white text-gray-600 dark:text-[#dfdfe4] px-5 py-5 rounded-md">
                 <div className="flex justify-between items-center border-b-1 pb-3">
                     <h5>{title ?? "Untitled"}</h5>

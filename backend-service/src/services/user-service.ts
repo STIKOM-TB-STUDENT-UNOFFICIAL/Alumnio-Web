@@ -1,5 +1,5 @@
 import { findMajor, insertMajor } from "@/repositories/majors-repository.ts";
-import { findAllUser, findUserById, hasProfilePict, insertNewUser, patchUserInformation, updateProfilePict, upsertNewUser } from "@/repositories/user-repository.ts";
+import { findAllUser, findAllUserForPrint, findUserById, hasProfilePict, insertNewUser, patchUserInformation, updateProfilePict, upsertNewUser } from "@/repositories/user-repository.ts";
 import type { TUser, TUserWithInformationUpdateable, TXLSXUser } from "@/types/user-type.ts";
 import { getExtension } from "@/utils/get-extension.ts";
 import { readXLSX } from "@/utils/read-xlsx.ts";
@@ -9,6 +9,20 @@ import { unlinkSync, writeFileSync } from "fs";
 
 export async function findAllUserService(q: string, take: number, skip: number){
     return (await findAllUser(
+        q,
+        take,
+        skip
+    )).map(({password, role, ...rest}) => {
+        return {
+            ...rest,
+            WorkHistory: rest.WorkHistory.map(({id, userId, ...rst}) => rst)
+        }
+    })
+}
+
+export async function findAllUserServicePrint(major: string, q: string, take: number, skip: number){
+    return (await findAllUserForPrint(
+        major,
         q,
         take,
         skip
@@ -75,7 +89,7 @@ export async function xlsUserRegisterService(xlsFile: globalThis.File){
             role: 1,
             UserInformation: {
                 fullname: v.Nama,
-                gender: v["Jenis Kelamin"] == "L" ? "Male" : "Female",
+                gender: v["Jenis Kelamin"].toUpperCase() == "L" ? "Male" : "Female",
                 email: v.Email.toString(),
                 phone: v.HP.toString(),
                 address: v.Alamat,

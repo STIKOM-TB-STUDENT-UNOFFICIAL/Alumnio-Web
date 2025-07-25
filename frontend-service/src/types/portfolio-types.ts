@@ -1,3 +1,5 @@
+import type { TUserInformation } from "./user-profile-types"
+
 export type TPortfolioAttachment = {
     id: number,
     portfolioId: number,
@@ -29,4 +31,17 @@ export type TPortfolioResponse = {
         message: string
     },
     data: TPortfolio[]
+}
+
+export type TPortfolioUserResponse = {
+    success?: false,
+    meta: {
+        status: "SUCCESS" | "FAILED",
+        code: number,
+        message: string
+    },
+    data: {
+        user: TUserInformation,
+        portfolio: TPortfolio[]
+    }
 }

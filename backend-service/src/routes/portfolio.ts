@@ -1,4 +1,4 @@
-import { deletePortfolioAttachmentHandler, deletePortfolioHandler, getPortfolioHandler, inserPortfolioAttachmentHandler, patchPortfolioHandler, postPortfolioHandler } from "@/handlers/portfolio-handler.ts"
+import { deletePortfolioAttachmentHandler, deletePortfolioHandler, findPortfolioByUser, getPortfolioHandler, inserPortfolioAttachmentHandler, patchPortfolioHandler, postPortfolioHandler } from "@/handlers/portfolio-handler.ts"
 import { Access, Authorization } from "@/middleware/authorization.ts"
 import { deletePortfolio } from "@/repositories/portfolio-repository.ts"
 import { PortofolioSchema } from "@/schemas/portofolio-schema.ts"
@@ -37,4 +37,10 @@ portfolioRoute
 .delete(
     Authorization([Access.ALUMNI]),
     deletePortfolioAttachmentHandler
+)
+
+portfolioRoute
+.get(
+    "/user",
+    findPortfolioByUser
 )

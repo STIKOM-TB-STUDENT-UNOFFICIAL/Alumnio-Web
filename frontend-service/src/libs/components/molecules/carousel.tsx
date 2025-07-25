@@ -57,7 +57,7 @@ export function Carousel(
                         <img 
                             src={`${baseUrl("/uploads/images/")}${v.imageUrl}`} 
                             alt={`Img_${i}`} 
-                            className="my-5 w-full h-full rounded-md object-cover"
+                            className="rounded-md max-w-full max-h-full object-contain aspect-[16/9]"
                         />
                         <button
                             id={`${id}`}

@@ -1,4 +1,4 @@
-import { getUsers, patchUser, postUsers, uploadProfilePict, xlsUpload } from "@/handlers/user-handler.ts"
+import { deleteAdmin, getAdmin, getUsers, patchAdmin, patchUser, postAdmin, postUsers, uploadProfilePict, xlsUpload } from "@/handlers/user-handler.ts"
 import { Access, Authorization } from "@/middleware/authorization.ts"
 import { CreateUserSchema, FileUploadSchema, UserInformationModifySchema, UserRegisterSchema, UserResponseSchema } from "@/schemas/user-schema.ts"
 import { Hono } from "hono"
@@ -88,6 +88,26 @@ userRoute
 )
 .post(
     "/create",
-    //Authorization([Access.ADMINISTRATOR]),
+    Authorization([Access.ADMINISTRATOR]),
     xlsUpload
+)
+.get(
+    "/admin",
+    Authorization([Access.ADMINISTRATOR]),
+    getAdmin
+)
+.post(
+    "/admin",
+    Authorization([Access.ADMINISTRATOR]),
+    postAdmin
+)
+.patch(
+    "/admin",
+    Authorization([Access.ADMINISTRATOR]),
+    patchAdmin
+)
+.delete(
+    "/admin",
+    Authorization([Access.ADMINISTRATOR]),
+    deleteAdmin
 )

@@ -1,3 +1,6 @@
+import { Access } from "@/middleware/authorization.ts";
+import { getPortfolio } from "@/repositories/portfolio-repository.ts";
+import { findUserByIdWithWorkExperience } from "@/repositories/user-repository.ts";
 import { deleteAttachmentService, deletePortfolioService, getPortfolioService, newPortfolioService, patchPortfolioService, uploadAttachmentService } from "@/services/portfolio-service.ts";
 import type { TTokenPayload } from "@/types/auth-type.ts";
 import type { TPortfolio, TPortfolioResponse } from "@/types/portfolio-types.ts";
@@ -118,6 +121,44 @@ export async function deletePortfolioAttachmentHandler(c: Context){
         const response: TPortfolioResponse<[]> = {
             meta: generateMeta("SUCCESS", 200, "Successfuly delete portfolio attachment"),
             data: []
+        } 
+
+        return c.json(response)
+    }
+    catch{
+        throw new HTTPException(400, { message: "Bad Request" })
+    }
+}
+
+export async function findPortfolioByUser(c: Context){
+    try{
+        const { id } = c.req.query()
+
+        if(!id){
+            throw new HTTPException(400, { message: "Bad Request" })
+        }
+
+        if(isNaN(parseInt(id))){
+            throw new HTTPException(400, { message: "Bad Request" })
+        }
+
+        const user = await findUserByIdWithWorkExperience(parseInt(id))
+        if(!user){
+            throw new HTTPException(404, { message: "User Not Found" })
+        }
+        if(user.role === Access.ADMINISTRATOR){
+            throw new HTTPException(400, { message: "Bad Request" })
+        }
+        const portfolio = await getPortfolio(parseInt(id))
+
+        const composition = {
+            user,
+            portfolio
+        }
+
+        const response: TPortfolioResponse<typeof composition> = {
+            meta: generateMeta("SUCCESS", 200, "Successfuly delete portfolio attachment"),
+            data: composition
         } 
 
         return c.json(response)

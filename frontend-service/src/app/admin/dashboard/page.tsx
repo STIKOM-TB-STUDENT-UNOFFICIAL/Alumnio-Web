@@ -1,59 +1,25 @@
-import { Input } from "@/libs/components/atoms/input";
-import { AlumniCard } from "@/libs/components/organism/alumni-card";
-import { loadUsersService } from "@/services/load-users-service";
-import type { TUserInformation } from "@/types/user-profile-types";
-import { getSession } from "@/utils/session";
-import { useEffect, useState, type ReactNode } from "react";
-import { AiOutlineSearch, AiOutlineUserAdd } from "react-icons/ai";
+import { MenuBarAdmin } from "@/libs/components/molecules/menu-bar-admin";
+import { AdminPageAdministratorTable } from "@/libs/components/templates/admin-page-administrator-table";
+import { AdminPageAlumniTable } from "@/libs/components/templates/admin-page-alumni-table";
+import { AdminPageAlumniView } from "@/libs/components/templates/admin-page-alumni-view";
+import { AdminPageSettings } from "@/libs/components/templates/admin-page-settings";
+import { MenuContext } from "@/libs/context/menu-context";
+import { useState, type ReactNode } from "react";
 
 export default function Index(): ReactNode {
-    const [profiles, setProfiles] = useState<TUserInformation[]>([] as TUserInformation[])
-    const [q, setQ] = useState("")
-
-    async function loadUserProfile(query: string) {
-        const userProfile = await loadUsersService(getSession() as string, query)
-        setProfiles(userProfile as TUserInformation[])
-    }
-
-    useEffect(() => {
-        loadUserProfile(q)
-    }, [])
-
-    useEffect(() => {
-        loadUserProfile(q)
-    }, [q])
+    const [menu, setMenu] = useState(0)
 
     return (
         <div className="min-h-[100vh] max-w-[1280px] w-full">
-            <div className="flex justify-between mt-10">
-                <div className="block">
-                    <h3 className="text-3xl font-bold">Daftar Alumni</h3>
-                    <h6 className="text-sm font-medium">Lihat profil alumni</h6>
-                </div>
-                <div className="flex items-center">
-                    <a href="/admin/add-alumni" 
-                        className="bg-blue-600 disabled:bg-blue-200 px-3 py-2 rounded-md
-                                    dark:bg-blue-900 text-[#f7f7f8] flex items-center gap-2
-                                    text-sm"
-                    >
-                        <AiOutlineUserAdd />
-                        Tambah Alumni
-                    </a>
-                </div>
+            <div className="mt-5">
+                <MenuContext.Provider value={{menu, setMenu}}>
+                    <MenuBarAdmin />
+                </MenuContext.Provider>
             </div>
-            <Input
-                type="text"
-                Icon={AiOutlineSearch}
-                className="mt-5 lg:*:w-[400px]"
-                placeholder="Cari alumni berdasarkan nama dan nim"
-                onChange={(e) => {
-                    setQ(e.target.value)
-                }}
-                value={q}
-            />
-            {profiles.map((v, i) => (
-                <AlumniCard profile={v} key={i} />
-            ))}
+            { menu === 0 ? (<AdminPageAlumniView />) : 
+            menu === 1 ? (<AdminPageAlumniTable />) : 
+            menu === 2 ? (<AdminPageAdministratorTable />) : 
+            menu === 3 ? (<AdminPageSettings />) : (<></>) }
         </div>
     )
 }

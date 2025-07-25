@@ -17,6 +17,7 @@ export type TMajor = {
 }
 
 export type TUserInformation = {
+    id?: number,
     username: string,
     UserInformation: TUserProfile & {
         graduateOf: string,
