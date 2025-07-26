@@ -19,6 +19,7 @@ export function ProfilePictUploads(
             <DragAndDropFiles
                 setFile={setFile}
                 file={file}
+                accept=".jpg,.jpeg,.png,.webp,.gif,.bmp,.tiff,.tif,.svg"
             />
             <button 
                 className="w-full mt-3 dark:bg-blue-900 bg-blue-400 p-3 rounded-lg cursor-pointer"

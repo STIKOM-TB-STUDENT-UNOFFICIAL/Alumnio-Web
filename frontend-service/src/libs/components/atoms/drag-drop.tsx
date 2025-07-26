@@ -1,3 +1,4 @@
+import { isFileAccepted } from "@/utils/is-file-accepted"
 import { useRef, useState, type JSX } from "react"
 
 export function DragAndDropFiles(
@@ -8,6 +9,7 @@ export function DragAndDropFiles(
         IconClass = "",
         IconSize = 15,
         label,
+        accept = "*",
         ...rest
     }
     :
@@ -17,6 +19,7 @@ export function DragAndDropFiles(
         IconSize?: number,
         file?: File | null,
         label?: string,
+        accept?: string,
         setFile?: React.Dispatch<React.SetStateAction<File | null>>
     }
 ){
@@ -38,7 +41,9 @@ export function DragAndDropFiles(
                 const droppedFile = e.dataTransfer.files[0]
                 if(droppedFile){
                     if(setFile){
-                        setFile(droppedFile)
+                        if(isFileAccepted(droppedFile.name, accept)){
+                            setFile(droppedFile)
+                        }
                     }
                 }
             }}
@@ -62,6 +67,7 @@ export function DragAndDropFiles(
                 type="file"
                 ref={inputRef}
                 className="hidden"
+                accept={accept ? accept == "*" ? undefined : accept : undefined}
                 onChange={(e) => {
                     const selectedFile = e.target.files?.[0]
                     if(selectedFile && setFile){

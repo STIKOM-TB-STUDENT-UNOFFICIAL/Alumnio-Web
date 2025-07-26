@@ -34,6 +34,7 @@ export function CVForm(): ReactNode {
                 label="Upload your CV"
                 file={file}
                 setFile={setFile}
+                accept=".pdf,.doc,.docx"
             />
             <button
                 className="w-full mt-3 dark:bg-blue-900 bg-blue-400 p-3 rounded-lg cursor-pointer"

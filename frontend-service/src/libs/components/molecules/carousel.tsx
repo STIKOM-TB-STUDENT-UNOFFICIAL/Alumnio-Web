@@ -42,8 +42,10 @@ export function Carousel(
     }
 
     useEffect(() => {
-        uploadAttachment()
-        callback()
+        if(file){
+            uploadAttachment()
+            callback()
+        }
     }, [file])
 
     return (
@@ -75,6 +77,7 @@ export function Carousel(
                     <DragAndDropFiles
                         file={file}
                         setFile={setFile}
+                        accept=".jpg,.jpeg,.png,.webp,.gif,.bmp,.tiff,.tif,.svg"
                     />
                 </div>
             </div>

@@ -5,7 +5,7 @@ import { toast } from "sonner";
 
 export async function loadPortfolioService(token: string): Promise<TPortfolio[] | undefined> {
     try{
-        const userProfile = await fetchJson<TPortfolioResponse, undefined>(
+        const portfolio = await fetchJson<TPortfolioResponse, undefined>(
             baseUrl("/portfolio"),
             "GET",
             {
@@ -13,10 +13,10 @@ export async function loadPortfolioService(token: string): Promise<TPortfolio[] 
             }
         )
         
-        return userProfile.data
+        return portfolio.data
     }
     catch{
-        toast("Gagal memuat informasi profile")
+        toast("Gagal memuat informasi portfolio")
         return
     }
 }

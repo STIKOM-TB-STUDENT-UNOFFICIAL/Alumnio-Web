@@ -26,6 +26,7 @@ export default function Index(): ReactNode {
                 setFile={setFile}
                 label="Upload Excel File"
                 className="my-5"
+                accept=".xls,.xlsx"
             />
             <div className="flex justify-end gap-5">
                 <button 

@@ -105,8 +105,7 @@ export function PortfolioForm(): ReactNode {
                             onClick={() => {
                                 savePortfolioService(getSession() as string, {
                                     ...portfolio[i]
-                                })
-                                loadPorfolio()
+                                }).then(() => loadPorfolio())
                             }}
                         >
                             Simpan
