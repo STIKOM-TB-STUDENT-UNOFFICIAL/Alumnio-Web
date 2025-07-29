@@ -5,9 +5,10 @@ WORKDIR /app
 COPY . .
 
 RUN npm install
-RUN npm run build
 RUN rm .env
-RUN mv .env.docker .env
+RUN mv .env.docker .env.production
+RUN npm run build
+RUN ls
 
 FROM nginx:stable-alpine as production
 
