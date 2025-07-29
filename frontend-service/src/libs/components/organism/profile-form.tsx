@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
-import profilepict from "@/assets/481932188_17898877434116514_6989620279172715534_n.webp"
+import profilepict from "@/assets/default-user.png"
 import { InputWithError } from "../molecules/input-with-error";
 import { loadProfileService } from "@/services/load-profile-service";
 import { getSession } from "@/utils/session";
@@ -105,7 +105,7 @@ export function ProfileForm(): ReactNode {
                         />
                     <InputWithError 
                         type={"email"} 
-                        label="Email" 
+                        label="Email (Mohon email yang valid agar dapat dihubungi)" 
                         error={errors.email?.message}
                         {...register("email")}
                         />

@@ -21,6 +21,7 @@ model User {
   WorkHistory     WorkHistory[]
   UserInformation UserInformation?
   Portofolio      Portfolio[]
+  OTP             OTP[]
 
   @@map("users")
 }
@@ -97,6 +98,16 @@ model PortfolioStack {
   portfolio   Portfolio @relation(fields: [portfolioId], references: [id])
 
   @@map("portfolio_stacks")
+}
+
+model OTP {
+  id        Int      @id @default(autoincrement()) @map("id_otp")
+  otp       String
+  userId    Int @map("user_id")
+  expiredAt DateTime @map("expired_at")
+
+  User User @relation(fields: [userId], references: [id])
+  @@map("otp")
 }
 
 enum Gender {

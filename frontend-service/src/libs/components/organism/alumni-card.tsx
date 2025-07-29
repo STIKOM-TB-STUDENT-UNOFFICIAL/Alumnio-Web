@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from "react";
-import profilepict from "@/assets/481932188_17898877434116514_6989620279172715534_n.webp"
+import profilepict from "@/assets/default-user.png"
 import { AiFillLinkedin, AiOutlineFileText, AiOutlineMail, AiOutlinePhone, AiOutlinePicture } from "react-icons/ai";
 import { FaBriefcase, FaMapMarkerAlt } from "react-icons/fa";
 import type { TUserInformation } from "@/types/user-profile-types";

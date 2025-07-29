@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { useSearchParams } from "react-router-dom";
-import image from "@/assets/481932188_17898877434116514_6989620279172715534_n.webp"
+import image from "@/assets/default-user.png"
 import { AiOutlineMail, AiOutlinePhone } from "react-icons/ai";
 import { FaGraduationCap, FaMapMarkerAlt } from "react-icons/fa";
 import { CarouselShow } from "@/libs/components/molecules/carousel-show";

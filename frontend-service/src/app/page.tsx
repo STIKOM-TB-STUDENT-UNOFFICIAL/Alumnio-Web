@@ -90,6 +90,11 @@ export default function Index(): React.ReactNode{
                             error={errors.password?.message}
                         />
                         <Button className="mt-5 w-full">Sign In</Button>
+                        <div className="flex justify-center mt-3">
+                            <a href="/forgot-password">
+                                Lupa password
+                            </a>
+                        </div>
                     </form>
                 </div>
             </div>

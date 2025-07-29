@@ -19,6 +19,7 @@ import { workRoute } from './routes/work-history.ts'
 import { cvRoute } from './routes/cv-route.ts'
 import { portfolioRoute } from './routes/portfolio.ts'
 import { setupAdmin } from './repositories/user-repository.ts'
+import { forgotRoute } from './routes/forgot-route.ts'
 
 dotenv.config()
 
@@ -48,6 +49,7 @@ app.route("/majors", majorRoute)
 app.route("/work-histories", workRoute)
 app.route("/cv", cvRoute)
 app.route("/portfolio", portfolioRoute)
+app.route("/forgot", forgotRoute)
 // END ROUTE
 
 app.use('/ui', swaggerUI({ url: '/docs' }))

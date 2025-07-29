@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kode OTP</title>
+  <style>
+    body {
+      background-color: #111827;
+      color: #ffffff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      background-color: #1f2937;
+      border: 1px solid #374151;
+      border-radius: 16px;
+      padding: 32px 24px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      text-align: center;
+    }
+
+    .title {
+      font-size: 22px;
+      font-weight: 600;
+      color: #3b82f6; /* Biru terang */
+      margin-bottom: 12px;
+    }
+
+    .subtitle {
+      color: #d1d5db;
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+
+    .otp-box {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .digit {
+      background-color: #111827;
+      color: #60a5fa;
+      font-size: 22px;
+      font-weight: bold;
+      font-family: monospace;
+      width: 48px;
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      box-shadow: inset 0 0 5px rgba(255,255,255,0.05);
+    }
+
+    .info {
+      color: #9ca3af;
+      font-size: 14px;
+    }
+
+    .info strong {
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="title">Kode Verifikasi</div>
+    <div class="subtitle">Gunakan kode di bawah ini untuk memverifikasi identitas Anda</div>
+
+    <div class="otp-box">
+      <% otp.slice(0, 6).split('').forEach(char => { %>
+        <div class="digit"><%= char %></div>
+      <% }); %>
+    </div>
+
+    <div class="info">Kode ini berlaku selama <strong>60 menit</strong>.</div>
+  </div>
+</body>
+</html>
