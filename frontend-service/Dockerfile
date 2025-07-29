@@ -6,6 +6,8 @@ COPY . .
 
 RUN npm install
 RUN npm run build
+RUN rm .env
+RUN mv .env.docker .env
 
 FROM nginx:stable-alpine as production
 
