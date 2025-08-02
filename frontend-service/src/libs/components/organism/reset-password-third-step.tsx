@@ -19,7 +19,7 @@ export function ResetPasswordThirdStep(
         <div className="w-full border dark:border-[#313139] border-blue-50 rounded-lg px-4 py-5 bg-blue-50 dark:bg-[#232325]">
             <div className="flex flex-col items-center">
                 <MdOutlineVpnKey  size={40} />
-                <h2 className="text-2xl font-semibold mt-3">Buat Password Baru</h2>
+                <h2 className="text-2xl font-semibold mt-3 text-center">Buat Password Baru</h2>
                 <h5 className="text-sm text-center">Sesuaikan password baru anda</h5>
             </div>
             <div className="mt-10 mx-2">

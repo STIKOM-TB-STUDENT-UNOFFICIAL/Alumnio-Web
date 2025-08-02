@@ -24,7 +24,7 @@ export function ResetPasswordFinalStep(){
                 <div className="p-3 dark:bg-[#2b2b33] bg-white rounded-full my-3">
                     <IoCheckmarkCircleOutline  size={40} />
                 </div>
-                <h2 className="text-2xl font-semibold mt-3">Berhasil Mereset Password</h2>
+                <h2 className="text-2xl font-semibold mt-3 text-center">Berhasil Mereset Password</h2>
                 <h5 className="text-sm text-center">Password anda telah berhasil direset, silahkan login</h5>
                 <div className="p-3 dark:bg-[#2b2b33] bg-white rounded-full my-8">
                     <IoCheckmarkCircleOutline size={80} color="#46d27b" />
