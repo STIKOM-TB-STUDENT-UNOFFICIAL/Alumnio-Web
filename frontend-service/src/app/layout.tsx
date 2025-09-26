@@ -5,7 +5,7 @@ export default function Layout(): React.ReactNode{
     document.title = "Alumnio"
     
     return (
-        <div className="min-h-screen dark:bg-[#0f172a] bg-gray-50 text-gray-600 dark:text-[#dfdfe4] pb-30 transition duration-200">
+        <div className="min-h-screen dark:bg-clr-dark-a0 bg-gray-50 text-gray-800 dark:text-[#dfdfe4] pb-30 transition duration-200">
             <Navbar />
             <div className="px-10 flex justify-center">
                 <Outlet />

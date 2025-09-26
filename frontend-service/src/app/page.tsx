@@ -55,7 +55,7 @@ export default function Index(): React.ReactNode{
                         </div>
                     </div>
                 </div>
-                <div className="flex flex-col w-full bg-white dark:bg-[#1e293b] px-6 py-5 rounded-xl shadow-sm border-gray-200">
+                <div className="flex flex-col w-full bg-white dark:bg-clr-surface-tonal-a0-dark px-6 py-5 rounded-xl shadow-sm border-gray-200">
                     <h2 className="text-2xl font-semibold">Selamat Datang Kembali</h2>
                     <h6 className="text-md">Masuk untuk mengakses portal alumni Anda</h6>
                     <h6 className="mt-5 mb-2">Masuk Sebagai</h6>

@@ -22,7 +22,7 @@ export default function Button(
         <button
             name={rest.name}
             className={`bg-blue-600 disabled:bg-blue-200 disabled:text-gray-600 
-                dark:bg-blue-900 text-[#dfdfe4] disabled:cursor-not-allowed cursor-pointer 
+                dark:bg-blue-900 text-white disabled:cursor-not-allowed cursor-pointer 
                 rounded-md px-5 py-3 ${rest.className}`} 
             onClick={rest.onClick}
         >
