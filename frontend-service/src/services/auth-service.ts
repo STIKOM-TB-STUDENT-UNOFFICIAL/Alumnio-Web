@@ -37,7 +37,7 @@ export async function signInService(authData: TAuth){
         }
         setSession(auth.data.token)
         toast("Berhasil Login")
-        document.location.href = (authData.role == SessionRole.ADMINISTRATOR ? "/admin/dashboard" : "/alumni/dashboard")
+        document.location.href = (authData.role == SessionRole.ADMINISTRATOR ? "/admin/dashboard" : "/alumni/home")
     }
     catch{
         toast("Gagal login")

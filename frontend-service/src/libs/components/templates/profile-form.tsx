@@ -9,9 +9,9 @@ import { UserProfileSchema } from "@/schema/user-profile-schema";
 import type z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { patchProfileService } from "@/services/patch-profile-service";
-import { PasswordUpdateForm } from "./password-update-form";
+import { PasswordUpdateForm } from "@/libs/components/organism/password-update-form";
 import { Modals } from "../molecules/modals";
-import { ProfilePictUploads } from "./profile-pict-uploads";
+import { ProfilePictUploads } from "@/libs/components/organism/profile-pict-uploads";
 import { baseUrl } from "@/utils/base-url";
 
 export function ProfileForm(): ReactNode {
@@ -48,7 +48,8 @@ export function ProfileForm(): ReactNode {
     }, [profile, reset])
     
     return (
-        <div className="w-full border dark:border-[#232325] border-blue-50 p-5 rounded-lg my-5">
+    <>
+        <div className="w-full border dark:bg-[#1e293b] bg-white shadow-sm dark:border-[#232325] border-blue-50 p-5 rounded-lg my-5">
             <Modals 
                 show={modalShow} 
                 control={setModalShow}
@@ -145,7 +146,10 @@ export function ProfileForm(): ReactNode {
                     Perbarui
                 </button>
             </form>
+        </div>
+        <div className="w-full border dark:border-[#232325] border-blue-50 p-5 rounded-lg my-5 dark:bg-[#1e293b] bg-white shadow-sm">
             <PasswordUpdateForm />
         </div>
+    </>
     )
 }

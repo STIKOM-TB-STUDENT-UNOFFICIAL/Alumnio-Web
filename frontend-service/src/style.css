@@ -13,3 +13,79 @@
   }
   --animate-fade-in: fade-in 0.25s ease-out forwards;
 }
+
+@theme {
+  /* ========== Base Colors ========== */
+  --color-clr-dark-a0: #0f172a;   /* Dark background utama */
+  --color-clr-light-a0: #ffffff;  /* Light background utama */
+
+  /* ========== Primary (Blue) ========== */
+  --color-clr-primary-a0-light: #3b82f6;   /* Blue-500 */
+  --color-clr-primary-a10-light: #2563eb;  /* Blue-600 */
+  --color-clr-primary-a20-light: #1d4ed8;  /* Blue-700 */
+  --color-clr-primary-a30-light: #1e40af;  /* Blue-800 */
+  --color-clr-primary-a40-light: #1e3a8a;  /* Blue-900 */
+
+  --color-clr-primary-a0-dark: #60a5fa;    /* Blue-400 */
+  --color-clr-primary-a10-dark: #3b82f6;   /* Blue-500 */
+  --color-clr-primary-a20-dark: #2563eb;   /* Blue-600 */
+  --color-clr-primary-a30-dark: #1d4ed8;   /* Blue-700 */
+  --color-clr-primary-a40-dark: #1e40af;   /* Blue-800 */
+
+  /* ========== Surface ========== */
+  --color-clr-surface-a0-light: #ffffff;   /* Page bg */
+  --color-clr-surface-a10-light: #f9fafb;  /* Section bg */
+  --color-clr-surface-a20-light: #f3f4f6;  /* Card bg */
+  --color-clr-surface-a30-light: #e5e7eb;  /* Divider */
+
+  --color-clr-surface-a0-dark: #0f172a;    /* Page bg */
+  --color-clr-surface-a10-dark: #1e293b;   /* Section bg */
+  --color-clr-surface-a20-dark: #334155;   /* Card bg */
+  --color-clr-surface-a30-dark: #475569;   /* Divider */
+
+  /* ========== Tonal Surface (biru kebiruan lembut) ========== */
+  --color-clr-surface-tonal-a0-light: #eff6ff; /* Blue-50 */
+  --color-clr-surface-tonal-a10-light: #dbeafe; /* Blue-100 */
+  --color-clr-surface-tonal-a20-light: #bfdbfe; /* Blue-200 */
+
+  --color-clr-surface-tonal-a0-dark: #1e293b;
+  --color-clr-surface-tonal-a10-dark: #334155;
+  --color-clr-surface-tonal-a20-dark: #475569;
+
+  /* ========== Status Colors ========== */
+  /** Success */
+  --color-clr-success-a0-light: #22c55e;   /* Green-500 */
+  --color-clr-success-a10-light: #16a34a;  /* Green-600 */
+  --color-clr-success-a20-light: #15803d;  /* Green-700 */
+
+  --color-clr-success-a0-dark: #4ade80;    /* Green-400 */
+  --color-clr-success-a10-dark: #22c55e;   /* Green-500 */
+  --color-clr-success-a20-dark: #16a34a;   /* Green-600 */
+
+  /** Warning */
+  --color-clr-warning-a0-light: #f59e0b;   /* Amber-500 */
+  --color-clr-warning-a10-light: #d97706;  /* Amber-600 */
+  --color-clr-warning-a20-light: #b45309;  /* Amber-700 */
+
+  --color-clr-warning-a0-dark: #fbbf24;    /* Amber-400 */
+  --color-clr-warning-a10-dark: #f59e0b;   /* Amber-500 */
+  --color-clr-warning-a20-dark: #d97706;   /* Amber-600 */
+
+  /** Danger */
+  --color-clr-danger-a0-light: #ef4444;    /* Red-500 */
+  --color-clr-danger-a10-light: #dc2626;   /* Red-600 */
+  --color-clr-danger-a20-light: #b91c1c;   /* Red-700 */
+
+  --color-clr-danger-a0-dark: #f87171;     /* Red-400 */
+  --color-clr-danger-a10-dark: #ef4444;    /* Red-500 */
+  --color-clr-danger-a20-dark: #dc2626;    /* Red-600 */
+
+  /** Info */
+  --color-clr-info-a0-light: #3b82f6;      /* Blue-500 */
+  --color-clr-info-a10-light: #2563eb;     /* Blue-600 */
+  --color-clr-info-a20-light: #1d4ed8;     /* Blue-700 */
+
+  --color-clr-info-a0-dark: #60a5fa;       /* Blue-400 */
+  --color-clr-info-a10-dark: #3b82f6;      /* Blue-500 */
+  --color-clr-info-a20-dark: #2563eb;      /* Blue-600 */
+}

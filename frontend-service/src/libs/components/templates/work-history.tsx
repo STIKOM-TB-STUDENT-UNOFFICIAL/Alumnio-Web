@@ -90,7 +90,7 @@ export function WorkHistory(): ReactNode {
                         />
                         <InputWithError 
                             type={"text"} 
-                            label="Role"
+                            label="Posisi"
                             value={v.title}
                             onChange={(e) => {
                                 const hstr = [...history]

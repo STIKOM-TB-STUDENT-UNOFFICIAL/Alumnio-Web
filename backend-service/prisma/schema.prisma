@@ -110,6 +110,21 @@ model OTP {
   @@map("otp")
 }
 
+model JobOpportunity{
+  id Int @id @default(autoincrement()) @map("id_job_oportunities")
+  title String
+  company String
+  companyLogo String @map("company_logos")
+  location String
+  postedDate DateTime @map("posted_date")
+  mailContact String @map("mail_contact")
+  salary String
+  phoneContact String @map("phone_contact")
+  description String @db.Text
+
+  @@map("job_opportunities")
+}
+
 enum Gender {
   Male
   Female

@@ -20,6 +20,10 @@ const Access: TAccess[] = [
         path: "/alumni/dashboard",
         authorization: [SessionRole.ALUMNI]
     },
+    {
+        path: "/alumni/home",
+        authorization: [SessionRole.ALUMNI]
+    },
 ]
 
 export async function Middleware({ request }: LoaderFunctionArgs){
@@ -44,11 +48,11 @@ export async function Middleware({ request }: LoaderFunctionArgs){
     }
 
     if(sessionData && findAccess.authorization.length == 0){
-        return redirect(sessionData.role == SessionRole.ADMINISTRATOR ? "/admin/dashboard" : "/alumni/dashboard")
+        return redirect(sessionData.role == SessionRole.ADMINISTRATOR ? "/admin/dashboard" : "/alumni/home")
     }
 
     if(!findAccess.authorization.includes(sessionData.role)){
-        return redirect(sessionData.role == SessionRole.ADMINISTRATOR ? "/admin/dashboard" : "/alumni/dashboard")
+        return redirect(sessionData.role == SessionRole.ADMINISTRATOR ? "/admin/dashboard" : "/alumni/home")
     }
 
     return null

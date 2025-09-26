@@ -30,8 +30,8 @@ export default function Index(): React.ReactNode{
                 <div className="flex flex-col justify-center gap-10">
                     <div className="flex">
                         <div className="block">
-                            <div className="bg-blue-100 dark:bg-blue-900 p-2 rounded-md">
-                                <AiOutlineDatabase size={40} className="fill-blue-600 dark:fill-blue-100" />
+                            <div className="bg-sky-100 dark:bg-blue-900 p-2 rounded-md">
+                                <AiOutlineDatabase size={40} className="fill-blue-500 dark:fill-blue-100" />
                             </div>
                         </div>
                         <div className="max-w-[70rem] mx-5">
@@ -43,8 +43,8 @@ export default function Index(): React.ReactNode{
                     </div>
                     <div className="flex">
                         <div className="block">
-                            <div className="bg-blue-100 dark:bg-blue-900 p-2 rounded-md">
-                                <AiOutlineContainer size={40} className="fill-blue-600 dark:fill-blue-100" />
+                            <div className="bg-sky-100 dark:bg-blue-900 p-2 rounded-md">
+                                <AiOutlineContainer size={40} className="fill-blue-500 dark:fill-blue-100" />
                             </div>
                         </div>
                         <div className="max-w-[70rem] mx-5">
@@ -55,7 +55,7 @@ export default function Index(): React.ReactNode{
                         </div>
                     </div>
                 </div>
-                <div className="flex flex-col w-full bg-blue-50 dark:bg-[#232325] px-6 py-5 rounded-md">
+                <div className="flex flex-col w-full bg-white dark:bg-[#1e293b] px-6 py-5 rounded-xl shadow-sm border-gray-200">
                     <h2 className="text-2xl font-semibold">Selamat Datang Kembali</h2>
                     <h6 className="text-md">Masuk untuk mengakses portal alumni Anda</h6>
                     <h6 className="mt-5 mb-2">Masuk Sebagai</h6>

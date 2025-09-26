@@ -175,7 +175,11 @@ export async function findUserById(id: number){
             id
         },
         include: {
-            UserInformation: true
+            UserInformation: {
+                include: {
+                    major: true
+                }
+            }
         }
     })
 }

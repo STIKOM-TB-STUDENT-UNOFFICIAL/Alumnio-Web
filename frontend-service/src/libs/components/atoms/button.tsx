@@ -3,15 +3,21 @@ import type { ButtonHTMLAttributes, DetailedHTMLProps, ReactNode } from "react"
 export type ButtonClicked = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
 
 export type ButtonType = "primary" | "secondary" | "transparent"
+export type ButtonSize = "small" | "medium" | "large" | "huge"
 
 export type TButton = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & {
     children?: ReactNode | string
     className?: string,
+    size?: ButtonSize
 }
 
 export default function Button(
     {...rest} : TButton
 ){
+    if(!rest.size){
+        rest.size = "medium"
+    }
+
     return (
         <button
             name={rest.name}
