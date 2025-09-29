@@ -14,7 +14,7 @@ export default function JobCard(
 ): ReactNode{
     return (
         <div className="flex my-5 w-full border dark:border-[#1c1c3f] border-[#E5E7EB]
-                        rounded-lg overflow-hidden p-5 gap-2 items-start dark:bg-slate-800 bg-white shadow-sm">
+                        rounded-lg overflow-hidden p-5 gap-2 items-start dark:bg-clr-surface-a10-dark bg-white shadow-sm">
             <div className="grid grid-cols-[auto_1fr] gap-5 items-start">
                 <img
                     src={profilepict}

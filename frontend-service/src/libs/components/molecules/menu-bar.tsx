@@ -7,7 +7,7 @@ export function MenuBar(): ReactNode {
     const { menu, setMenu } = useContext(MenuContext)
 
     return (
-        <div className="w-full bg-white shadow-sm dark:bg-[#1e293b] text-gray-500 p-2 rounded-md sm:grid sm:grid-cols-2 lg:grid-cols-5 gap-1 hidden">
+        <div className="w-full shadow-sm bg-white dark:bg-[#1e293b] text-gray-500 dark:text-gray-200 p-2 rounded-md sm:grid sm:grid-cols-2 lg:grid-cols-5 gap-1 hidden">
             <div
                 className={`${menu == 0 ? 'bg-blue-100 text-blue-600 font-medium border-blue-500 dark:bg-[#0f172a]' : ''} p-2 rounded-sm flex justify-center items-center gap-2 cursor-pointer hover:text-blue-500 transition`}
                 onClick={() => setMenu(0)}

@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { loadWorkHistoriesService } from "@/services/load-work-histories-service";
 import { getSession } from "@/utils/session";
 import { postWorkHistoriesService } from "@/services/post-work-histories-service";
+import Button from "../atoms/button";
 
 const today = new Date().toISOString().split("T")[0];
 
@@ -22,13 +23,13 @@ export function WorkHistory(): ReactNode {
     }, [])
 
     return (
-        <div className="w-full border dark:border-[#232325] border-blue-50 p-5 rounded-lg my-5">
+        <div className="w-full bg-white dark:bg-[#1e293b] text-black dark:text-gray-200 shadow-sm p-5 rounded-lg my-5">
             <div className="flex justify-between items-center gap-2">
                 <div className="block">
                     <h4 className="text-2xl font-semibold">Riwayat Pekerjaan</h4>
                     <h6 className="text-sm">Sesuaikan pengalaman professional anda</h6>
                 </div>
-                <button
+                <Button
                     className="dark:bg-blue-900 bg-blue-400 px-4 py-2 rounded-lg cursor-pointer my-5 flex justify-center items-center gap-3"
                     onClick={() => {
                         const hstr = [...history]
@@ -46,7 +47,7 @@ export function WorkHistory(): ReactNode {
                 >
                     <AiOutlineFileAdd />
                     <h3 className="hidden lg:block">Tambah Pengalaman</h3>
-                </button>
+                </Button>
             </div>
             { history.map((v, i) => (
                 <div className={`w-full border dark:border-[#232325] border-blue-50 p-5 rounded-lg my-5 ${v.status == "DELETED" ? "hidden" : ""}`} key={i}>
@@ -54,8 +55,9 @@ export function WorkHistory(): ReactNode {
                         <h5 className="border dark:border-[#232325] border-blue-50 px-2 py-1 rounded-lg text-sm">
                             Pengalaman #{i + 1}
                         </h5>
-                        <button 
+                        <Button 
                             className="cursor-pointer"
+                            btntype="danger"
                             onClick={() => {
                                 const hstr = [...history]
                                 if(hstr[i].status != "NEW"){
@@ -71,7 +73,7 @@ export function WorkHistory(): ReactNode {
                             }}
                         >
                             <IoTrashOutline />
-                        </button>
+                        </Button>
                     </div>
                     <div className="grid grid-cols-1 lg:grid-cols-2 grid-flow-row-dense gap-5 mt-5">
                         <InputWithError 
@@ -168,8 +170,8 @@ export function WorkHistory(): ReactNode {
                     </div>
                 </div>
             ))}
-            <button
-                className="dark:bg-blue-900 w-full bg-blue-400 px-4 py-1 rounded-lg cursor-pointer my-5 flex justify-center items-center gap-3"
+            <Button
+                className="dark:bg-blue-900 w-full text-white bg-blue-400 px-4 py-1 rounded-lg cursor-pointer my-5 flex justify-center items-center gap-3"
                 onClick={async () => {
                     console.log(history)
                     await postWorkHistoriesService(getSession() as string, history)
@@ -179,7 +181,7 @@ export function WorkHistory(): ReactNode {
             >
                 <AiFillSave />
                 Simpan
-            </button>
+            </Button>
         </div>
     )
 }

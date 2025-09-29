@@ -14,7 +14,7 @@ export default function ProfilesCard(){
     return (
         <div 
             className="flex flex-col my-5 w-full border dark:border-[#232325] border-blue-50 
-                        rounded-lg overflow-hidden shadow-xs bg-sky-100 dark:bg-slate-800"
+                        rounded-lg overflow-hidden shadow-sm bg-clr-surface-tonal-a0-light dark:bg-slate-800"
         >
             <div className="grid md:grid-cols-[auto_1fr] md:items-center gap-5 md:gap-10 px-10 py-5   
                         items-center w-full"

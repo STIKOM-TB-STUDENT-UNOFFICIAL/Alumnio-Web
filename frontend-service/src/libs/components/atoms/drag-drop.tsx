@@ -1,5 +1,6 @@
 import { isFileAccepted } from "@/utils/is-file-accepted"
 import { useRef, useState, type JSX } from "react"
+import Button from "./button"
 
 export function DragAndDropFiles(
     {
@@ -79,9 +80,9 @@ export function DragAndDropFiles(
                 }}
             />
             {file ? file.name : "No File Selected"}
-            <button className="w-full mt-3 dark:bg-blue-900 bg-blue-400 p-3 rounded-lg cursor-pointer">
+            <Button className="w-full mt-3 dark:bg-blue-900 bg-blue-400 p-3 rounded-lg cursor-pointer">
                 Choose
-            </button>
+            </Button>
         </div>
     )
 }

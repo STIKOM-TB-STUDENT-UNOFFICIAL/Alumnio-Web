@@ -7,6 +7,7 @@ import { getSession } from "@/utils/session";
 import { baseUrl } from "@/utils/base-url";
 import { deletePortfolioAttachmentService } from "@/services/delete-portfolio-attachment-service";
 import type { TPortfolioAttachment } from "@/types/portfolio-types";
+import Button from "../atoms/button";
 
 export function Carousel(
     {
@@ -43,8 +44,7 @@ export function Carousel(
 
     useEffect(() => {
         if(file){
-            uploadAttachment()
-            callback()
+            uploadAttachment().then(() => callback())
         }
     }, [file])
 
@@ -61,7 +61,7 @@ export function Carousel(
                             alt={`Img_${i}`} 
                             className="rounded-md max-w-full max-h-full object-contain aspect-[16/9]"
                         />
-                        <button
+                        <Button
                             id={`${id}`}
                             className="absolute bottom-0 left-1/2 transform -translate-x-1/2 dark:bg-[#2b2b33] bg-white text-white px-3 py-1 rounded-full cursor-pointer"
                             onClick={async () => {
@@ -70,7 +70,7 @@ export function Carousel(
                             }}
                         >
                             <IoTrashOutline className="text-gray-600 dark:text-[#dfdfe4]" />
-                        </button>
+                        </Button>
                     </div>
                 ))}
                 <div className="min-w-[100%]">
