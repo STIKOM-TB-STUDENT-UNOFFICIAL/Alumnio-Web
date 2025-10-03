@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { AiOutlineArrowLeft, AiOutlineArrowRight, AiOutlinePrinter, AiOutlineSearch, AiOutlineUserAdd } from "react-icons/ai";
 import { Modals } from "../molecules/modals";
 import { PrintForm } from "../organism/print-form";
+import Button from "../atoms/button";
 
 export function AdminPageAlumniTable(){
     const [profiles, setProfiles] = useState<TUserInformation[]>([] as TUserInformation[])
@@ -49,7 +50,7 @@ export function AdminPageAlumniTable(){
             >
                 <PrintForm />
             </Modals>
-            <div className="flex justify-between mt-10">
+            <div className="flex justify-between">
                 <div className="block">
                     <h3 className="text-3xl font-bold">Tabel Alumni</h3>
                     <h6 className="text-sm font-medium">Lihat tabel alumni</h6>
@@ -75,18 +76,17 @@ export function AdminPageAlumniTable(){
                 }}
                 value={q}
             />
-            <button 
-                className="bg-blue-600 disabled:bg-blue-200 px-3 py-2 rounded-md
-                          dark:bg-blue-900 text-[#f7f7f8] flex items-center gap-2
+            <Button 
+                className="px-3 py-2 rounded-md text-[#f7f7f8] flex items-center gap-2
                             text-sm cursor-pointer mt-5"
+                btntype="success"
                 onClick={() => {
                     setPrintPrompt(true)
                 }}
                 
             >
                 <AiOutlinePrinter />
-                Print
-            </button>
+            </Button>
             <div className="overflow-x-auto text-xs rounded-2xl">
                 <table className="border-collapse border mt-5 w-[200rem]">
                     <thead className="bg-blue-50 dark:bg-[#232325] uppercase">

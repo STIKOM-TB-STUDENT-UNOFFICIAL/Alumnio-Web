@@ -57,7 +57,7 @@ export function AdminPageAdministratorTable(){
                     userName={patchOption?.username}
                 />
             </Modals>
-            <div className="flex justify-between mt-10">
+            <div className="flex justify-between">
                 <div className="block">
                     <h3 className="text-3xl font-bold">Tabel Administrator</h3>
                     <h6 className="text-sm font-medium">Lihat daftar administrator yang mengelola alumnio</h6>

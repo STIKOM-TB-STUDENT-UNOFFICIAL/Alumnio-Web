@@ -4,6 +4,7 @@ import { InputWithError } from "../molecules/input-with-error";
 import { useEffect, useState } from "react";
 import { loadMajorService } from "@/services/load-major-service";
 import { getSession } from "@/utils/session";
+import Button from "../atoms/button";
 
 export function PrintForm(){
     const [major, setMajor] = useState<TMajor[]>([])
@@ -60,7 +61,7 @@ export function PrintForm(){
                     setMajorS(e.target.value)
                 }}
             />
-            <button 
+            <Button 
                 className="bg-blue-600 disabled:bg-blue-200 px-3 py-2 rounded-md
                           dark:bg-blue-900 text-[#f7f7f8] flex items-center gap-2
                             text-sm cursor-pointer mt-5 w-full justify-center"
@@ -69,7 +70,7 @@ export function PrintForm(){
                 }}
             >
                 Print
-            </button>
+            </Button>
         </form>
     )
 }

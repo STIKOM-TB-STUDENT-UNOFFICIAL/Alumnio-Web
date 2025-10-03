@@ -32,6 +32,9 @@ export default function Button(
             case "danger":
                 bgColor = "bg-clr-danger-a10-light disabled:bg-clr-danger-a0-light"
                 break
+            case "success":
+                bgColor = "bg-clr-success-a10-light disabled:bg-clr-success-a0-light"
+                break
         }
     }
 

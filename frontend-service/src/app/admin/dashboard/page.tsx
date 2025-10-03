@@ -16,10 +16,12 @@ export default function Index(): ReactNode {
                     <MenuBarAdmin />
                 </MenuContext.Provider>
             </div>
-            { menu === 0 ? (<AdminPageAlumniView />) : 
-            menu === 1 ? (<AdminPageAlumniTable />) : 
-            menu === 2 ? (<AdminPageAdministratorTable />) : 
-            menu === 3 ? (<AdminPageSettings />) : (<></>) }
+            <div className="w-full bg-white dark:bg-[#1e293b] text-black dark:text-gray-200 shadow-sm p-5 rounded-lg my-5">
+                { menu === 0 ? (<AdminPageAlumniView />) : 
+                menu === 1 ? (<AdminPageAlumniTable />) : 
+                menu === 2 ? (<AdminPageAdministratorTable />) : 
+                menu === 3 ? (<AdminPageSettings />) : (<></>) }
+            </div>
         </div>
     )
 }

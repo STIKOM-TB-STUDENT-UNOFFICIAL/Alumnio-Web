@@ -18,10 +18,10 @@ export function AlumniCard({
     return (
         <div 
             className="flex flex-col my-5 w-full border dark:border-[#232325] border-blue-50 
-                        rounded-lg overflow-hidden shadow-xs"
+                        rounded-lg overflow-hidden shadow-sm"
         >
             <div className="flex flex-col lg:flex-row lg:justify-between gap-5 lg:gap-2 p-10    
-                        lg:items-center w-full hover:dark:bg-[#313139] hover:bg-[#ebf3ff]
+                        lg:items-center w-full bg-clr-surface-tonal-a10-light dark:bg-clr-surface-tonal-a10-dark hover:dark:bg-clr-surface-tonal-a20-dark hover:bg-clr-surface-tonal-a20-light
                         cursor-pointer transition duration-200"
                 onClick={() => setHidden(!hidden)}
             >

@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { NewPasswordSchema } from "@/schema/login-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { newPasswordService } from "@/services/auth-service";
+import Button from "../atoms/button";
 
 export function PasswordUpdateForm(){
     const {
@@ -28,9 +29,9 @@ export function PasswordUpdateForm(){
                     {...register("password")}
                     error={errors.password?.message}
                 />
-                <button className="dark:bg-blue-900 bg-blue-400 p-3 rounded-lg cursor-pointer my-5 ">
+                <Button className="rounded-lg cursor-pointer my-5 ">
                     Perbarui
-                </button>
+                </Button>
             </form>
         </>
     )
