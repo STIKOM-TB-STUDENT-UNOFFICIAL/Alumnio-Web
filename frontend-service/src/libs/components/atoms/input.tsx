@@ -62,7 +62,7 @@ export function Input({ type = "text", className = "", Icon, ...rest }: TCustomI
         </h6>
       )}
       <div
-        className={`flex w-full bg-white dark:bg-[#334155] border 
+        className={`flex w-full bg-clr-surface-a10-light dark:bg-[#334155] border 
           border-blue-50 dark:border-gray-600 rounded-md focus-within:ring 
           focus-within:ring-blue-400 dark:focus-within:ring dark:focus-within:ring-[#dfdfe4]`}
       >

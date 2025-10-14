@@ -22,6 +22,7 @@ model User {
   UserInformation UserInformation?
   Portofolio      Portfolio[]
   OTP             OTP[]
+  UserAnswer      UserAnswer[]
 
   @@map("users")
 }
@@ -103,29 +104,70 @@ model PortfolioStack {
 model OTP {
   id        Int      @id @default(autoincrement()) @map("id_otp")
   otp       String
-  userId    Int @map("user_id")
+  userId    Int      @map("user_id")
   expiredAt DateTime @map("expired_at")
 
   User User @relation(fields: [userId], references: [id])
+
   @@map("otp")
 }
 
-model JobOpportunity{
-  id Int @id @default(autoincrement()) @map("id_job_oportunities")
-  title String
-  company String
-  companyLogo String @map("company_logos")
-  location String
-  postedDate DateTime @map("posted_date")
-  mailContact String @map("mail_contact")
-  salary String
-  phoneContact String @map("phone_contact")
-  description String @db.Text
+model JobOpportunity {
+  id           Int      @id @default(autoincrement()) @map("id_job_oportunities")
+  title        String
+  company      String
+  companyLogo  String   @map("company_logos")
+  location     String
+  postedDate   DateTime @map("posted_date")
+  mailContact  String   @map("mail_contact")
+  salary       String
+  phoneContact String   @map("phone_contact")
+  description  String   @db.Text
 
   @@map("job_opportunities")
+}
+
+model Survey {
+  id         Int        @id @default(autoincrement()) @map("id_survey")
+  questions  String
+  surveyType SurveyType @map("survey_type")
+
+  QuestionAnswer QuestionAnswer[]
+  UserAnswer     UserAnswer[]
+
+  @@map("surveys")
+}
+
+model QuestionAnswer {
+  id       Int    @id @default(autoincrement()) @map("id_question_answer")
+  question String
+  surveyId Int
+  survey   Survey @relation(fields: [surveyId], references: [id])
+
+  UserAnswer UserAnswer[]
+
+  @@map("question_answers")
+}
+
+model UserAnswer {
+  id         Int @id @default(autoincrement()) @map("id_user_answer")
+  userId     Int
+  surveyId   Int
+  questionid Int
+
+  User           User           @relation(fields: [userId], references: [id])
+  Survey         Survey         @relation(fields: [surveyId], references: [id])
+  QuestionAnswer QuestionAnswer @relation(fields: [questionid], references: [id])
+
+  @@map("user_answers")
 }
 
 enum Gender {
   Male
   Female
+}
+
+enum SurveyType {
+  ALUMNI
+  GRADUATE_USER
 }

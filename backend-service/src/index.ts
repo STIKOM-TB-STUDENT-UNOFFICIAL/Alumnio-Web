@@ -17,9 +17,10 @@ import type { StatusCode } from 'hono/utils/http-status'
 import { setupUploadsDir } from './check-uploads-dir.ts'
 import { workRoute } from './routes/work-history.ts'
 import { cvRoute } from './routes/cv-route.ts'
-import { portfolioRoute } from './routes/portfolio.ts'
+import { portfolioRoute } from './routes/portfolio-route.ts'
 import { setupAdmin } from './repositories/user-repository.ts'
 import { forgotRoute } from './routes/forgot-route.ts'
+import { surveyRoute } from './routes/survey-route.ts'
 
 dotenv.config()
 
@@ -50,6 +51,7 @@ app.route("/work-histories", workRoute)
 app.route("/cv", cvRoute)
 app.route("/portfolio", portfolioRoute)
 app.route("/forgot", forgotRoute)
+app.route("/survey", surveyRoute)
 // END ROUTE
 
 app.use('/ui', swaggerUI({ url: '/docs' }))
