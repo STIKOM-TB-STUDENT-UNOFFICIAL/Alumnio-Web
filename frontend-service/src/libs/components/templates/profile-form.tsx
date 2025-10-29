@@ -13,6 +13,7 @@ import { PasswordUpdateForm } from "@/libs/components/organism/password-update-f
 import { Modals } from "../molecules/modals";
 import { ProfilePictUploads } from "@/libs/components/organism/profile-pict-uploads";
 import { baseUrl } from "@/utils/base-url";
+import Button from "../atoms/button";
 
 export function ProfileForm(): ReactNode {
     const [ profile, setProfile ] = useState<TUserProfile>({
@@ -142,9 +143,9 @@ export function ProfileForm(): ReactNode {
                         />
                     )}
                 />
-                <button className="dark:bg-blue-900 bg-blue-400 p-3 rounded-lg cursor-pointer my-5 " disabled={load}>
+                <Button className="dark:bg-blue-900 bg-blue-400 p-3 rounded-lg cursor-pointer my-5 " disabled={load}>
                     Perbarui
-                </button>
+                </Button>
             </form>
         </div>
         <div className="w-full border dark:border-[#232325] border-blue-50 p-5 rounded-lg my-5 dark:bg-[#1e293b] bg-white shadow-sm">

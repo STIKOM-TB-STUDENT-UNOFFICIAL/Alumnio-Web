@@ -44,6 +44,7 @@ export default function Button(
             className={`${bgColor} text-white disabled:cursor-not-allowed cursor-pointer 
                 rounded-md px-5 py-3 ${rest.className}`} 
             onClick={rest.onClick}
+            {...rest}
         >
             {rest.children}
         </button>

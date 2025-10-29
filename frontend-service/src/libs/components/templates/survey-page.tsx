@@ -1,47 +1,31 @@
-import { type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Input } from "../atoms/input";
 import Button from "../atoms/button";
-
-const questions = [
-    {
-        question: "ABCD",
-        answers: [
-            {
-                id: 0,
-                answer: "Abcdefg",
-                checked: false
-            },
-            {
-                id: 1,
-                answer: "Abcdefg",
-                checked: false
-            }
-        ]
-    },
-    {
-        question: "ABCD",
-        answers: [
-            {
-                id: 0,
-                answer: "Abcdefg",
-                checked: false
-            },
-            {
-                id: 1,
-                answer: "Abcdefg",
-                checked: false
-            }
-        ]
-    }
-]
+import { loadSurveyService } from "@/services/load-survey-service";
+import { getSession } from "@/utils/session";
+import type { TSurvey } from "@/types/survey-types";
+import { toast } from "sonner";
 
 export function SurveyPage(): ReactNode {
+    const [ survey, setSurvey ] = useState<TSurvey[]>([])
+    const [ isAnswering, setIsAnswering ] = useState(false)
+
+    useEffect(() => {
+        loadSurveyService(getSession() as string)
+            .then((v) => {
+                if(v){
+                    setSurvey(v)
+                    console.log(v)
+                }
+            })
+    }, [])
+
     return (
     <>
         <div className="w-full bg-white dark:bg-clr-surface-tonal-a0-dark text-black dark:text-gray-200 shadow-sm p-5 rounded-lg my-5">
             <h4 className="text-2xl font-semibold">Survey Pengguna Lulusan</h4>
             <h6 className="text-sm">Berikan penilaian tentang anda oleh perusahaan anda</h6>
-            <div className="w-full bg-clr-surface-tonal-a10-light dark:bg-clr-dark-a0 p-3 my-3 rounded-sm flex flex-col sm:flex-row gap-5">
+            <div className="w-full bg-clr-surface-tonal-a10-light dark:bg-clr-dark-a0 p-3 my-3 rounded-md flex flex-col sm:flex-row gap-5">
                 <Input 
                     type="text"
                     className="w-full"
@@ -55,22 +39,47 @@ export function SurveyPage(): ReactNode {
             <h4 className="text-2xl font-semibold">Survey Alumni</h4>
             <h6 className="text-sm">Berikan penilaian anda tentang kampus STIKOM Tunas Bangsa</h6>
             <div className="grid grid-flow-row mt-5 gap-2">
-                {questions.map((v, i) => (
+                { survey.map((v, i) => (
                     <div className="block" key={i}>
-                        <h6 className="font-semibold">{i + 1}. {v.question}</h6>
-                        {v.answers.map((v, j) => (
+                        <h6 className="font-semibold">{i + 1}. {v.questions}</h6>
+                        {v.Answer.map((w, j) => (
                             <div className="flex items-center gap-2" key={j}>
-                                <input 
-                                    type="radio" 
-                                    name="" id="" 
-                                    value={v.answer} 
-                                    checked={v.checked} 
+                                <input
+                                    type="radio"
+                                    id={`${w.id}`}
+                                    value={w.answer} 
+                                    checked={w.id == v.UserAnswer}
+                                    onClick={() => {
+                                        const temp = [...survey]
+                                        temp[i].UserAnswer = w.id
+                                        setSurvey(temp)
+                                        setIsAnswering(true)
+                                    }}
                                 />
-                                <h6>{v.answer}</h6>
+                                <label htmlFor={`${w.id}`}>{w.answer}</label>
                             </div>
                         ))}
                     </div>
                 ))}
+                <Button 
+                    disabled={!isAnswering}
+                    onClick={(ev) => {
+                        let fullAnswer = false
+
+                        survey.map((v) => {
+                            if(!v.UserAnswer || fullAnswer){
+                                fullAnswer = true
+                            }
+                        })
+
+                        if(fullAnswer){
+                            toast("Anda belum menjawab semua survey, silahkan periksa lagi")
+                            return
+                        }
+
+                        toast("Berhasil mengisi survey")
+                    }}
+                >Submit</Button>
             </div>
         </div>
     </>

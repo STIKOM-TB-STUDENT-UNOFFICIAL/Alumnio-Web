@@ -132,32 +132,32 @@ model Survey {
   questions  String
   surveyType SurveyType @map("survey_type")
 
-  QuestionAnswer QuestionAnswer[]
-  UserAnswer     UserAnswer[]
+  Answer     Answer[]
+  UserAnswer UserAnswer[]
 
   @@map("surveys")
 }
 
-model QuestionAnswer {
+model Answer {
   id       Int    @id @default(autoincrement()) @map("id_question_answer")
-  question String
+  answer   String
   surveyId Int
   survey   Survey @relation(fields: [surveyId], references: [id])
 
   UserAnswer UserAnswer[]
 
-  @@map("question_answers")
+  @@map("answers")
 }
 
 model UserAnswer {
-  id         Int @id @default(autoincrement()) @map("id_user_answer")
-  userId     Int
-  surveyId   Int
-  questionid Int
+  id       Int @id @default(autoincrement()) @map("id_user_answer")
+  userId   Int @map("user_id")
+  surveyId Int @map("survey_id")
+  answerId Int
 
-  User           User           @relation(fields: [userId], references: [id])
-  Survey         Survey         @relation(fields: [surveyId], references: [id])
-  QuestionAnswer QuestionAnswer @relation(fields: [questionid], references: [id])
+  User   User   @relation(fields: [userId], references: [id])
+  Survey Survey @relation(fields: [surveyId], references: [id])
+  Answer Answer @relation(fields: [answerId], references: [id])
 
   @@map("user_answers")
 }
