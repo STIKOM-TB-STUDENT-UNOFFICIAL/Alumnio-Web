@@ -16,8 +16,9 @@ export async function loadSurveyService(token: string)
         )
         return userProfile.data
     }
-    catch{
-        toast("Gagal memuat informasi administrator")
+    catch(e){
+        toast("Gagal memuat informasi survey")
+        console.log(e)
         return
     }
 }

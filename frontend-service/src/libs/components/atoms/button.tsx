@@ -7,13 +7,12 @@ export type ButtonSize = "small" | "medium" | "large" | "huge"
 
 export type TButton = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & {
     children?: ReactNode | string
-    className?: string,
     size?: ButtonSize,
     btntype?: ButtonType
 }
 
 export default function Button(
-    {...rest} : TButton
+    {className, ...rest} : TButton
 ){
     if(!rest.size){
         rest.size = "medium"
@@ -35,14 +34,17 @@ export default function Button(
             case "success":
                 bgColor = "bg-clr-success-a10-light disabled:bg-clr-success-a0-light"
                 break
+            default:
+                bgColor = "bg-blue-600 disabled:bg-blue-200 disabled:text-gray-600 dark:bg-blue-900"
         }
     }
+
+    const cn = `${bgColor} text-white disabled:cursor-not-allowed cursor-pointer rounded-md px-5 py-3 ${className}`
 
     return (
         <button
             name={rest.name}
-            className={`${bgColor} text-white disabled:cursor-not-allowed cursor-pointer 
-                rounded-md px-5 py-3 ${rest.className}`} 
+            className={cn} 
             onClick={rest.onClick}
             {...rest}
         >

@@ -5,12 +5,13 @@ import { loadSurveyService } from "@/services/load-survey-service";
 import { getSession } from "@/utils/session";
 import type { TSurvey } from "@/types/survey-types";
 import { toast } from "sonner";
+import { postSurveyAnswer } from "@/services/post-survey-answer";
 
 export function SurveyPage(): ReactNode {
     const [ survey, setSurvey ] = useState<TSurvey[]>([])
     const [ isAnswering, setIsAnswering ] = useState(false)
 
-    useEffect(() => {
+    function load(){
         loadSurveyService(getSession() as string)
             .then((v) => {
                 if(v){
@@ -18,6 +19,10 @@ export function SurveyPage(): ReactNode {
                     console.log(v)
                 }
             })
+    }
+
+    useEffect(() => {
+        load()
     }, [])
 
     return (
@@ -61,9 +66,14 @@ export function SurveyPage(): ReactNode {
                         ))}
                     </div>
                 ))}
+                { survey.length == 0 ? (
+                    <div className="flex justify-center items-center h-[10rem]">
+                        <h3>Tidak ada survey yang tersedia</h3>
+                    </div>
+                ) : (<></>)}
                 <Button 
                     disabled={!isAnswering}
-                    onClick={(ev) => {
+                    onClick={async () => {
                         let fullAnswer = false
 
                         survey.map((v) => {
@@ -77,7 +87,9 @@ export function SurveyPage(): ReactNode {
                             return
                         }
 
-                        toast("Berhasil mengisi survey")
+                        await postSurveyAnswer(getSession() as string, survey)
+                        setIsAnswering(false)
+                        load()
                     }}
                 >Submit</Button>
             </div>

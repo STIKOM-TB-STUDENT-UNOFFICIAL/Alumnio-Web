@@ -7,7 +7,8 @@ export type TSurvey = {
 }
 
 export type TAnswer = {
+    status?: "NO_CHANGES" | "CHANGED" | "DELETED" | "NEW"
     id: number,
     answer: string,
-    surveyId: number
+    surveyId: number,
 }

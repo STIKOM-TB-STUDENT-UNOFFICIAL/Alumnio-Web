@@ -76,7 +76,7 @@ export function AdminPageAdministratorTable(){
             </div>
             <div className="overflow-x-auto text-xs">
                 <table className="border-collapse border mt-5 w-full">
-                    <thead className="bg-blue-50 dark:bg-[#232325] uppercase">
+                    <thead className="bg-blue-50 dark:bg-slate-700 uppercase">
                         <tr>
                             <th className="border px-3 py-1">No</th>
                             <th className="border px-3 py-1">Username</th>

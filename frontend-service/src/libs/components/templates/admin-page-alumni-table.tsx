@@ -89,7 +89,7 @@ export function AdminPageAlumniTable(){
             </Button>
             <div className="overflow-x-auto text-xs rounded-2xl">
                 <table className="border-collapse border mt-5 w-[200rem]">
-                    <thead className="bg-blue-50 dark:bg-[#232325] uppercase">
+                    <thead className="bg-blue-50 dark:bg-slate-700 uppercase">
                         <tr>
                             <th className="border px-3 py-1">No</th>
                             <th className="border px-3 py-1">NIM</th>

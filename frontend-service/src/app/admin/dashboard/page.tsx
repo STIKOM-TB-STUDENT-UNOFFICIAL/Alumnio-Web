@@ -1,4 +1,5 @@
 import { MenuBarAdmin } from "@/libs/components/molecules/menu-bar-admin";
+import { AdminPageAdditional } from "@/libs/components/templates/admin-page-additional";
 import { AdminPageAdministratorTable } from "@/libs/components/templates/admin-page-administrator-table";
 import { AdminPageAlumniTable } from "@/libs/components/templates/admin-page-alumni-table";
 import { AdminPageAlumniView } from "@/libs/components/templates/admin-page-alumni-view";
@@ -20,7 +21,7 @@ export default function Index(): ReactNode {
                 { menu === 0 ? (<AdminPageAlumniView />) : 
                 menu === 1 ? (<AdminPageAlumniTable />) : 
                 menu === 2 ? (<AdminPageAdministratorTable />) : 
-                menu === 3 ? (<AdminPageSettings />) : (<></>) }
+                menu === 3 ? (<AdminPageSettings />) : (<AdminPageAdditional />) }
             </div>
         </div>
     )

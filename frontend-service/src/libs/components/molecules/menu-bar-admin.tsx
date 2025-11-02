@@ -1,7 +1,7 @@
 import { MenuContext } from "@/libs/context/menu-context";
 import { useContext, type ReactNode } from "react";
-import { AiOutlineContainer, AiOutlineFolderOpen, AiOutlineUser } from "react-icons/ai";
-import { FaBriefcase } from "react-icons/fa6";
+import { AiOutlineContainer, AiOutlineUser } from "react-icons/ai";
+import { FaBriefcase, FaGear } from "react-icons/fa6";
 
 export function MenuBarAdmin(): ReactNode {
     const { menu, setMenu } = useContext(MenuContext)
@@ -30,18 +30,18 @@ export function MenuBarAdmin(): ReactNode {
                 <h4 className="text-sm">Administrator List</h4>
             </div>
             <div
-                className={`${menu == 3 ? 'bg-blue-100 text-blue-600 font-medium border-blue-500 dark:bg-[#0f172a]' : ''} p-2 rounded-sm flex justify-center items-center gap-2 cursor-pointer hover:text-blue-500 transition`}
-                onClick={() => setMenu(3)}
-            >
-                <AiOutlineFolderOpen />
-                <h4 className="text-sm">Settings</h4>
-            </div>
-            <div
                 className={`${menu == 4 ? 'bg-blue-100 text-blue-600 font-medium border-blue-500 dark:bg-[#0f172a]' : ''} p-2 rounded-sm flex justify-center items-center gap-2 cursor-pointer hover:text-blue-500 transition`}
                 onClick={() => setMenu(4)}
             >
                 <AiOutlineContainer />
-                <h4 className="text-sm">Survey</h4>
+                <h4 className="text-sm">Lainnya</h4>
+            </div>
+            <div
+                className={`${menu == 3 ? 'bg-blue-100 text-blue-600 font-medium border-blue-500 dark:bg-[#0f172a]' : ''} p-2 rounded-sm flex justify-center items-center gap-2 cursor-pointer hover:text-blue-500 transition`}
+                onClick={() => setMenu(3)}
+            >
+                <FaGear />
+                <h4 className="text-sm">Settings</h4>
             </div>
         </div>
     )
