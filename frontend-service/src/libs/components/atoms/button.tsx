@@ -2,7 +2,7 @@ import type { ButtonHTMLAttributes, DetailedHTMLProps, ReactNode } from "react"
 
 export type ButtonClicked = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
 
-export type ButtonType = "primary" | "secondary" | "transparent" | "danger" | "success"
+export type ButtonType = "primary" | "secondary" | "transparent" | "danger" | "success" | "warning"
 export type ButtonSize = "small" | "medium" | "large" | "huge"
 
 export type TButton = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> & {
@@ -33,6 +33,9 @@ export default function Button(
                 break
             case "success":
                 bgColor = "bg-clr-success-a10-light disabled:bg-clr-success-a0-light"
+                break
+            case "warning":
+                bgColor = "bg-yellow-500 disabled:bg-yellow-200 text-white dark:bg-yellow-700"
                 break
             default:
                 bgColor = "bg-blue-600 disabled:bg-blue-200 disabled:text-gray-600 dark:bg-blue-900"

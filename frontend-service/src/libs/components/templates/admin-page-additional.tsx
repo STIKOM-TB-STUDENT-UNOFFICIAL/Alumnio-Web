@@ -13,7 +13,7 @@ export function AdminPageAdditional(){
                 <AiOutlineReconciliation size={75} />
                 <div className="sm:mx-5">
                     <h2 className="font-bold">Survey Alumni</h2>
-                    <div className="flex">
+                    <div className="flex mt-2">
                         <a href="/admin/survey" 
                             target="blank"
                             className="bg-blue-600 disabled:bg-blue-200 px-3 py-2 rounded-md
@@ -31,7 +31,7 @@ export function AdminPageAdditional(){
                 <AiOutlineAudit size={75} />
                 <div className="sm:mx-5">
                     <h2 className="font-bold">Survey Pengguna Lulusan</h2>
-                    <div className="flex">
+                    <div className="flex mt-2">
                         <a href="/admin/survey-pengguna-lulusan" 
                             target="blank"
                             className="bg-blue-600 disabled:bg-blue-200 px-3 py-2 rounded-md
@@ -48,7 +48,7 @@ export function AdminPageAdditional(){
                 <AiOutlineFileSearch size={75} />
                 <div className="sm:mx-5">
                     <h2 className="font-bold">Lowongan Pekerjaan</h2>
-                    <div className="flex">
+                    <div className="flex mt-2">
                         <a href="/admin/survey" 
                             target="blank"
                             className="bg-blue-600 disabled:bg-blue-200 px-3 py-2 rounded-md

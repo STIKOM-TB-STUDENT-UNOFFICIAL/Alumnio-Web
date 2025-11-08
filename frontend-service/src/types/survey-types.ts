@@ -3,12 +3,16 @@ export type TSurvey = {
     questions: string,
     surveyType: "ALUMNI" | "GRADUATE_USER",
     UserAnswer: number | undefined | null,
-    Answer: TAnswer[]
+    Answer: TAnswer[],
+    status?: "NO_CHANGES" | "CHANGED" | "DELETED" | "NEW"
 }
 
 export type TAnswer = {
-    status?: "NO_CHANGES" | "CHANGED" | "DELETED" | "NEW"
     id: number,
     answer: string,
     surveyId: number,
+    status?: "NO_CHANGES" | "CHANGED" | "DELETED" | "NEW"
+    _count?: {
+        UserAnswer: number
+    }
 }

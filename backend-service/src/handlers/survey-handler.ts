@@ -1,5 +1,5 @@
 import { Access } from "@/middleware/authorization.ts";
-import { getAlumniSurvey, setAnswerSurvey } from "@/services/survey-service.ts";
+import { getAlumniSurvey, setAnswerSurvey, statisticsService, updateSurveyService } from "@/services/survey-service.ts";
 import type { TTokenPayload } from "@/types/auth-type.ts";
 import { generateMeta } from "@/utils/generate-meta.ts";
 import { jwtDecode } from "@/utils/jwt.ts";
@@ -29,12 +29,43 @@ export async function PushSurvey(c: Context){
             c.req.header("Authorization")?.split(" ")[1] as string
         );
 
-        if(sessionData.role == Access.ALUMNI){
-            await setAnswerSurvey(await c.req.json(), sessionData.userId)
+        await setAnswerSurvey(await c.req.json(), sessionData.userId)
+
+        const result = {
+            meta: generateMeta("SUCCESS", 200, "Successfuly answering survey"),
+            data: []
         }
 
-        return c.json(await c.req.json());
+        return c.json(result);
     } catch {
+        throw new HTTPException(400, { message: "Bad Request" });
+    }
+}
+
+export async function UpdateSurvey(c: Context){
+    try {
+        await updateSurveyService(await c.req.json())
+
+        const result = {
+            meta: generateMeta("SUCCESS", 200, "Successfuly patch survey"),
+            data: []
+        }
+
+        return c.json(result);
+    } catch (e) {
+        throw new HTTPException(400, { message: "Bad Request" });
+    }
+}
+
+export async function Statistics(c: Context){
+    try {
+        const result = {
+            meta: generateMeta("SUCCESS", 200, "Successfuly patch survey"),
+            data: await statisticsService()
+        }
+
+        return c.json(result);
+    } catch (e) {
         throw new HTTPException(400, { message: "Bad Request" });
     }
 }

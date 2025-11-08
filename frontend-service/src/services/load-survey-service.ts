@@ -18,7 +18,6 @@ export async function loadSurveyService(token: string)
     }
     catch(e){
         toast("Gagal memuat informasi survey")
-        console.log(e)
         return
     }
 }

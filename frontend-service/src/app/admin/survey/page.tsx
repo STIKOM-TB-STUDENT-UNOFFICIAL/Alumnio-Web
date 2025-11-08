@@ -1,77 +1,98 @@
+import { MenuContext } from "@/libs/context/menu-context";
+import { MenuBarSurveyPage } from "@/libs/components/molecules/menu-bar-survey-page";
+import { useEffect, useState, type JSX, type ReactNode } from "react";
+import { SurveyEditor } from "./editor";
+import type { TSurvey } from "@/types/survey-types";
+import { SurveyEditorContext } from "@/libs/context/survey-editor-context";
 import Button from "@/libs/components/atoms/button";
-import { Input } from "@/libs/components/atoms/input";
-import { loadSurveyService } from "@/services/load-survey-service";
-import type { TAnswer, TSurvey } from "@/types/survey-types";
+import { patchSurveyService } from "@/services/patch-survey-service";
 import { getSession } from "@/utils/session";
-import { useEffect, useState, type ReactNode } from "react";
+import { loadSurveyService } from "@/services/load-survey-service";
+import { AiOutlineSave } from "react-icons/ai";
+import { SurveyStatistics } from "./statistics";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function Index(): ReactNode {
-    const [ survey, setSurvey ] = useState<TSurvey[]>([])
-    const [ isAnswering, setIsAnswering ] = useState(false)
+    const [menu, setMenu] = useState(0);
+    const [survey, setSurvey] = useState<TSurvey[]>([]);
+    const [isEdited, setIsEdited] = useState(false);
 
-    function load(){
-        loadSurveyService(getSession() as string)
-        .then((v) => {
-            if(v){
-                setSurvey(v.map((w) => {
-                    w.Answer = w.Answer.map((x) => {
-                        x.status = "NO_CHANGES"
-                        return x
+    function load() {
+        loadSurveyService(getSession() as string).then((v) => {
+            if (v) {
+                setSurvey(
+                    v.map((w) => {
+                        w.Answer = w.Answer.map((x) => {
+                            x.status = "NO_CHANGES";
+                            return x;
+                        });
+                        w.status = "NO_CHANGES";
+                        return w;
                     })
-                    return w
-                }))
-                console.log(v)
+                );
             }
-        })
+        });
     }
 
     useEffect(() => {
-        load()
-    }, [])
-    
+        load();
+    }, []);
+
     return (
         <div className="min-h-[100vh] max-w-[1280px] w-full py-10">
-            <div className="w-full bg-white dark:bg-[#1e293b] 
+            <div
+                className="w-full bg-white dark:bg-[#1e293b] 
                 rounded-lg overflow-hidden shadow-sm
                 px-10 py-10 gap-10"
             >
                 <h3 className="text-3xl font-bold mb-5">Survey Alumni</h3>
-                { survey.map((v, i) => (
-                    <div className="block bg-clr-surface-tonal-a10-light dark:bg-clr-surface-tonal-a10-dark p-4 rounded-md shadow-sm" key={i}>
-                        <h6 className="font-semibold">Pertanyaan ke {i + 1}</h6>
-                        <Input type="text" value={v.questions} />
-                        <h6 className="font-semibold mt-5">Daftar Jawaban</h6>
-                        <table className="w-full table-auto border-collapse border">
-                            <thead className="bg-blue-50 dark:bg-slate-700">
-                                <tr>
-                                    <th className="text-left border px-3 py-1">
-                                        No
-                                    </th>
-                                    <th className="text-left border px-3 py-1">
-                                        Jawaban
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {v.Answer.map((w, j) => (
-                                <tr>
-                                    <td className="border px-3 py-1">
-                                        {j + 1}
-                                    </td>
-                                    <td className="border px-3 py-1">{w.answer}</td>
-                                </tr>
-                            ))}
-                            </tbody>
-                        </table>
-                        <Button className="mt-5 w-full">Edit Jawaban</Button>
-                    </div>
-                ))}
-                { survey.length == 0 ? (
-                    <div className="flex justify-center items-center h-[10rem]">
-                        <h3>Tidak ada survey yang tersedia</h3>
-                    </div>
-                ) : (<></>)}
+                <div className="my-2">
+                    <MenuContext.Provider value={{ menu, setMenu }}>
+                        <MenuBarSurveyPage />
+                    </MenuContext.Provider>
+                </div>
+
+                <SurveyEditorContext.Provider
+                    value={{
+                        isEdited,
+                        survey,
+                        setIsEdited,
+                        setSurvey,
+                    }}
+                >
+                    {menu == 0 ? (
+                        <SurveyEditor />
+                    ) : (
+                        <SurveyStatistics />
+                    )}
+                </SurveyEditorContext.Provider>
+                
             </div>
+            {isEdited ? (
+                <div className="sticky bottom-5">
+                    <div className="flex justify-between my-5 bg-white dark:bg-[#1e293b] items-center p-2 shadow-lg rounded-md">
+                        <h4 className="mx-5">Simpan perubahan ?</h4>
+                        <Button
+                            btntype="success"
+                            className="flex items-center justify-center gap-3"
+                            onClick={async () => {
+                                await patchSurveyService(
+                                    getSession() as string,
+                                    survey
+                                );
+                                load();
+                                setIsEdited(false);
+                            }}
+                        >
+                            <AiOutlineSave />
+                            Simpan
+                        </Button>
+                    </div>
+                </div>
+            ) : (
+                <></>
+            )}
         </div>
-    )
+    );
 }
