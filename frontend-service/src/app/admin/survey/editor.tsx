@@ -290,7 +290,7 @@ export function SurveyEditor(): ReactNode {
                         setIsEdited(true);
                         temp.push({
                             id: -1,
-                            surveyType: "GRADUATE_USER",
+                            surveyType: "ALUMNI",
                             questions: "",
                             Answer: [],
                             status: "NEW",
