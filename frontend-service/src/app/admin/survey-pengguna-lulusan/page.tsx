@@ -19,7 +19,7 @@ export default function Index(): ReactNode {
     const [isEdited, setIsEdited] = useState(false);
 
     function load() {
-        loadUserGraduateSurvey(getSession() as string).then((v) => {
+        loadUserGraduateSurvey().then((v) => {
             if (v) {
                 setSurvey(
                     v.map((w) => {
