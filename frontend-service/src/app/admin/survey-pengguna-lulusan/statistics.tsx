@@ -5,7 +5,7 @@ import { Pie } from 'react-chartjs-2';
 
 const generateRandomColors = (count: number) => {
   const colors: string[] = [];
-  const hueStep = 360 / count;
+  const hueStep = 360 / count; // pastikan sebar rata di roda warna
 
   for (let i = 0; i < count; i++) {
     const hue = Math.floor((i * hueStep + Math.random() * hueStep * 0.3) % 360);
@@ -16,8 +16,6 @@ const generateRandomColors = (count: number) => {
 
   return colors;
 };
-
-
 
 export function SurveyStatistics(): ReactNode {
     const { survey, setSurvey } = useContext(SurveyEditorContext);

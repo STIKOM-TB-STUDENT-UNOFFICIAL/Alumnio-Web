@@ -116,9 +116,10 @@ model JobOpportunity {
   id           Int      @id @default(autoincrement()) @map("id_job_oportunities")
   title        String
   company      String
-  companyLogo  String   @map("company_logos")
+  companyLogo  String   @map("company_logos") @default("")
   location     String
-  postedDate   DateTime @map("posted_date")
+  postedDate   DateTime @map("posted_date") @default(now())
+  dueDate      DateTime @map("due_date")
   mailContact  String   @map("mail_contact")
   salary       String
   phoneContact String   @map("phone_contact")

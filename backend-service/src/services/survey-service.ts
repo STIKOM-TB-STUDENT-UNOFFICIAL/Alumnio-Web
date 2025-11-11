@@ -1,9 +1,9 @@
-import { deleteAnswer, deleteAnswerBySurveyId, deleteSurvey, getAlumniSurveyRepository, insertAnswer, insertSurvey, isAnswerAvailable, pruneUserAnswer, setAnswerSurveyRepository, statisticsUserAnswer, updateAnswer, updateSurvey } from "@/repositories/survey-repository.ts";
+import { deleteAnswer, deleteAnswerBySurveyId, deleteSurvey, getSurveyRepository, insertAnswer, insertSurvey, isAnswerAvailable, pruneUserAnswer, setAnswerSurveyRepository, statisticsUserAnswer, updateAnswer, updateSurvey } from "@/repositories/survey-repository.ts";
 import type { TAnswer, TSurvey } from "@/types/survey-type.ts";
 
 export async function getAlumniSurvey(userId?: number){
     if(userId){
-        const survey = await getAlumniSurveyRepository(userId)
+        const survey = await getSurveyRepository(userId)
         const tofilter = survey.map(
             (v) => {
             const res: Omit<typeof v, "UserAnswer"> & { UserAnswer?: number | null | typeof v.UserAnswer } = v
@@ -16,7 +16,11 @@ export async function getAlumniSurvey(userId?: number){
 
         return result
     }
-    return await getAlumniSurveyRepository()
+    return await getSurveyRepository()
+}
+
+export async function getGraduateUserSurvey(){
+    return await getSurveyRepository(undefined, "GRADUATE_USER")
 }
 
 export async function setAnswerSurvey(survey: TSurvey[], userId: number){
@@ -30,25 +34,33 @@ export async function setAnswerSurvey(survey: TSurvey[], userId: number){
     await Promise.all(result)
 }
 
-export async function processingAnswerUpdate(answer: TAnswer[]){
-    const result = answer.map(async (v) => {
-        switch(v.status){
-            case "NEW":
-                await pruneUserAnswer(v.id)
-                await insertAnswer(v.answer, v.surveyId)
-                break
-            case "CHANGED":
-                await pruneUserAnswer(v.id)
-                await updateAnswer(v.answer, v.surveyId, v.id)
-                break
-            case "DELETED":
-                await pruneUserAnswer(v.id)
-                await deleteAnswer(v.id)
-                break
+export async function setAnswerGraduateUserSurvey(survey: TSurvey[], userId: number){
+    const result = survey.map(async (v) => {
+        if(v.UserAnswer){
+            await setAnswerSurveyRepository(v.id, v.UserAnswer, userId)
         }
     })
 
-    return await Promise.all(result)
+    await Promise.all(result)
+}
+
+export async function processingAnswerUpdate(answer: TAnswer[]){
+    for(let i = 0; i < answer.length; i++){
+        switch(answer[i].status){
+            case "NEW":
+                await pruneUserAnswer(answer[i].id)
+                await insertAnswer(answer[i].answer, answer[i].surveyId)
+                break
+            case "CHANGED":
+                await pruneUserAnswer(answer[i].id)
+                await updateAnswer(answer[i].answer, answer[i].surveyId, answer[i].id)
+                break
+            case "DELETED":
+                await pruneUserAnswer(answer[i].id)
+                await deleteAnswer(answer[i].id)
+                break
+        }
+    }
 }
 
 export async function updateSurveyService(survey: TSurvey[]){

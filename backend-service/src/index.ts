@@ -21,6 +21,7 @@ import { portfolioRoute } from './routes/portfolio-route.ts'
 import { setupAdmin } from './repositories/user-repository.ts'
 import { forgotRoute } from './routes/forgot-route.ts'
 import { surveyRoute } from './routes/survey-route.ts'
+import { jobOpportunityRoute } from './routes/job-opportunity-route.ts'
 
 dotenv.config()
 
@@ -52,6 +53,7 @@ app.route("/cv", cvRoute)
 app.route("/portfolio", portfolioRoute)
 app.route("/forgot", forgotRoute)
 app.route("/survey", surveyRoute)
+app.route("/job-opportunity", jobOpportunityRoute)
 // END ROUTE
 
 app.use('/ui', swaggerUI({ url: '/docs' }))

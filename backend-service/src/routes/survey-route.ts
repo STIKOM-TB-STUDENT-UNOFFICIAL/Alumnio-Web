@@ -1,4 +1,4 @@
-import { GetSurvey, PushSurvey, Statistics, UpdateSurvey } from "@/handlers/survey-handler.ts";
+import { GetSurvey, GetUserGraduateSurvey, PushSurvey, PushUserGraduateSurvey, Statistics, UpdateSurvey } from "@/handlers/survey-handler.ts";
 import { Access, Authorization } from "@/middleware/authorization.ts";
 import { Hono } from "hono";
 
@@ -26,4 +26,14 @@ surveyRoute.get(
     "/stat",
     Authorization([Access.ADMINISTRATOR]),
     Statistics
+)
+
+surveyRoute.get(
+    "/graduate-user",
+    GetUserGraduateSurvey
+)
+
+surveyRoute.post(
+    "/graduate-user",
+    PushUserGraduateSurvey
 )

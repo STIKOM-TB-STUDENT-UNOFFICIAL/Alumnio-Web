@@ -1,6 +1,7 @@
 import { Access } from "@/middleware/authorization.ts";
-import { getAlumniSurvey, setAnswerSurvey, statisticsService, updateSurveyService } from "@/services/survey-service.ts";
+import { getAlumniSurvey, getGraduateUserSurvey, setAnswerGraduateUserSurvey, setAnswerSurvey, statisticsService, updateSurveyService } from "@/services/survey-service.ts";
 import type { TTokenPayload } from "@/types/auth-type.ts";
+import type { TSurvey } from "@/types/survey-type.ts";
 import { generateMeta } from "@/utils/generate-meta.ts";
 import { jwtDecode } from "@/utils/jwt.ts";
 import type { Context } from "hono";
@@ -12,9 +13,11 @@ export async function GetSurvey(c: Context) {
             c.req.header("Authorization")?.split(" ")[1] as string
         );
 
+        const { type } = c.req.query()
+
         const result = {
             meta: generateMeta("SUCCESS", 200, "Successfuly fetch survey"),
-            data: await getAlumniSurvey(sessionData.role != Access.ADMINISTRATOR ? sessionData.userId : undefined)
+            data: type == "GRADUATE_USER" ? await getGraduateUserSurvey() : await getAlumniSurvey(sessionData.role != Access.ADMINISTRATOR ? sessionData.userId : undefined)
         }
 
         return c.json(result);
@@ -52,7 +55,7 @@ export async function UpdateSurvey(c: Context){
         }
 
         return c.json(result);
-    } catch (e) {
+    } catch {
         throw new HTTPException(400, { message: "Bad Request" });
     }
 }
@@ -66,6 +69,39 @@ export async function Statistics(c: Context){
 
         return c.json(result);
     } catch (e) {
+        throw new HTTPException(400, { message: "Bad Request" });
+    }
+}
+
+export async function GetUserGraduateSurvey(c: Context) {
+    try {
+        const result = {
+            meta: generateMeta("SUCCESS", 200, "Successfuly patch survey"),
+            data: await getGraduateUserSurvey()
+        }
+
+        return c.json(result);
+    } catch {
+        throw new HTTPException(400, { message: "Bad Request" });
+    }
+}
+
+export async function PushUserGraduateSurvey(c: Context) {
+    try {
+        const body: {
+            data: TSurvey[],
+            userId: number
+        } = await c.req.json()
+
+        await setAnswerGraduateUserSurvey(body.data, body.userId)
+
+        const result = {
+            meta: generateMeta("SUCCESS", 200, "Successfuly answering survey"),
+            data: []
+        }
+
+        return c.json(result);
+    } catch {
         throw new HTTPException(400, { message: "Bad Request" });
     }
 }

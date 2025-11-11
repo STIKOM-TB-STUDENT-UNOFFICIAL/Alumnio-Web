@@ -16,7 +16,7 @@ export function ResetPasswordThirdStep(
     const { fctx, setFctx } = useContext(Fctx)
 
     return (
-        <div className="w-full border dark:border-[#313139] border-blue-50 rounded-lg px-4 py-5 bg-blue-50 dark:bg-[#232325]">
+        <div className="bg-white dark:bg-clr-surface-tonal-a0-dark text-black dark:text-gray-200 shadow-sm p-5 rounded-lg my-5">
             <div className="flex flex-col items-center">
                 <MdOutlineVpnKey  size={40} />
                 <h2 className="text-2xl font-semibold mt-3 text-center">Buat Password Baru</h2>

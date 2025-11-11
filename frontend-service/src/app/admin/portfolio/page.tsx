@@ -36,8 +36,8 @@ export default function Index(): ReactNode {
 
     return (
         <div className="min-h-[100vh] max-w-[1280px] w-full py-10">
-            <div className="grid w-full border dark:border-[#232325] 
-                border-blue-50 rounded-lg overflow-hidden shadow-xs
+            <div className="grid w-full bg-white dark:bg-clr-surface-a10-dark border dark:border-clr-surface-a10-dark 
+                border-blue-50 rounded-lg overflow-hidden shadow-sm
                 px-10 py-10 gap-10 lg:grid-cols-3"
             >
                 <img
@@ -82,15 +82,15 @@ export default function Index(): ReactNode {
                     </div>
                 </div>
                 <div className="flex justify-center items-center flex-col w-full lg:w-md">
-                    <h3>0</h3>
-                    <h5>Projects</h5>
+                    <h3>{data?.portfolio.length}</h3>
+                    <h5>Portfolio</h5>
                 </div>
             </div>
-            <h3 className="my-5 text-3xl font-semibold">🌟Project</h3>
+            <h3 className="my-5 text-3xl font-semibold">🌟 Portfolio</h3>
             <div className="grid grid-cols-1 lg:grid-cols-2 grid-flow-row-dense gap-2">
                 {data?.portfolio?.map((v) => (
-                    <div className="w-full border dark:border-[#232325] 
-                            border-blue-50 rounded-lg">
+                    <div className="w-full bg-white dark:bg-clr-surface-a10-dark border dark:border-clr-surface-a10-dark 
+                            border-blue-50 rounded-lg shadow-sm">
                         <CarouselShow attachments={v.PortfolioAttachment} />
                         <div className="my-2 px-10 mb-10">
                             <h4 className="text-xl font-semibold">{v.title}</h4>

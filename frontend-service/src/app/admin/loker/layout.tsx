@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import Navbar from "@/libs/components/molecules/navbar";
 
 export default function Layout(): React.ReactNode{
-    document.title = "Alumnio - Dashboard"
+    document.title = "Alumnio - Loker"
     
     return (
         <div className="min-h-screen dark:bg-[#0F172A] bg-gray-50 text-gray-800 dark:text-gray-50 pb-30 transition duration-200">

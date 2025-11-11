@@ -3,16 +3,13 @@ import { baseUrl } from "@/utils/base-url"
 import { fetchJson } from "@/utils/fetch-json"
 import { toast } from "sonner"
 
-export async function loadSurveyService(token: string)
+export async function loadUserGraduateSurvey()
 : Promise<TSurvey[] | undefined> 
 {
     try{
         const survey = await fetchJson<{ meta: object, data: TSurvey[] }, undefined>(
-            baseUrl(`/survey`),
-            "GET",
-            {
-                "Authorization": `Bearer ${token}`
-            }
+            baseUrl(`/survey/graduate-user`),
+            "GET"
         )
         return survey.data
     }

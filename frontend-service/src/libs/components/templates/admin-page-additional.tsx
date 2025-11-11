@@ -15,7 +15,7 @@ export function AdminPageAdditional(){
                     <h2 className="font-bold">Survey Alumni</h2>
                     <div className="flex mt-2">
                         <a href="/admin/survey" 
-                            target="blank"
+                            target="_blank"
                             className="bg-blue-600 disabled:bg-blue-200 px-3 py-2 rounded-md
                                         dark:bg-blue-900 text-[#f7f7f8] flex items-center gap-2
                                         text-sm"
@@ -33,7 +33,7 @@ export function AdminPageAdditional(){
                     <h2 className="font-bold">Survey Pengguna Lulusan</h2>
                     <div className="flex mt-2">
                         <a href="/admin/survey-pengguna-lulusan" 
-                            target="blank"
+                            target="_blank"
                             className="bg-blue-600 disabled:bg-blue-200 px-3 py-2 rounded-md
                                         dark:bg-blue-900 text-[#f7f7f8] flex items-center gap-2
                                         text-sm"
@@ -49,8 +49,8 @@ export function AdminPageAdditional(){
                 <div className="sm:mx-5">
                     <h2 className="font-bold">Lowongan Pekerjaan</h2>
                     <div className="flex mt-2">
-                        <a href="/admin/survey" 
-                            target="blank"
+                        <a href="/admin/loker" 
+                            target="_blank"
                             className="bg-blue-600 disabled:bg-blue-200 px-3 py-2 rounded-md
                                         dark:bg-blue-900 text-[#f7f7f8] flex items-center gap-2
                                         text-sm"

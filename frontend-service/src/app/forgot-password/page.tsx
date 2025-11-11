@@ -19,7 +19,7 @@ export default function Index(): ReactNode {
         otp: "",
         password: ""
     } as TFctx)
-    const [step, setStep] = useState(1)
+    const [step, setStep] = useState(4)
     
     return (
         <div className="min-h-[100vh] max-w-[1280px] w-full flex flex-col items-center">

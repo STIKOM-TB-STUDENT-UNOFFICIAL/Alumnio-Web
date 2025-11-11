@@ -29,7 +29,7 @@ export function PrintForm(){
         }}>
             <InputWithError 
                 type="text"
-                label="Banyak Data"
+                label="Total"
                 placeholder="100"
                 className="mb-2"
                 value={take}

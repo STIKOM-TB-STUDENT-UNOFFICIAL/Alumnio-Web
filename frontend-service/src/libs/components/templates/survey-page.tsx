@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Input } from "../atoms/input";
 import Button from "../atoms/button";
 import { loadSurveyService } from "@/services/load-survey-service";
@@ -7,9 +7,15 @@ import type { TSurvey } from "@/types/survey-types";
 import { toast } from "sonner";
 import { postSurveyAnswer } from "@/services/post-survey-answer";
 
+const token = getSession() as string
+const payload = token.split(".")[1]
+const payloadDecoded = JSON.parse(atob(payload.replace(/-/g, '+').replace(/_/g, '/')));
+const link = `${window.location.protocol}//${window.location.host}/survey?id=${btoa(payloadDecoded.userId)}`
+
 export function SurveyPage(): ReactNode {
     const [ survey, setSurvey ] = useState<TSurvey[]>([])
     const [ isAnswering, setIsAnswering ] = useState(false)
+    const refInput = useRef<HTMLInputElement>(null)
 
     function load(){
         loadSurveyService(getSession() as string)
@@ -34,10 +40,21 @@ export function SurveyPage(): ReactNode {
                 <Input 
                     type="text"
                     className="w-full"
+                    value={link}
                     label="Link survey pengguna lulusan"
+                    ref={refInput}
                     disabled
                 />
-                <Button>Salin</Button>
+                <Button onClick={() => {
+                    refInput.current?.select()
+                    refInput.current?.setSelectionRange(0, 99999)
+
+                    navigator.clipboard.writeText(refInput.current?.value as string)
+
+                    toast("Berhasil menyalin link survey")
+                }}>
+                    Salin
+                </Button>
             </div>
         </div>
         <div className="w-full bg-white dark:bg-[#1e293b] text-black dark:text-gray-200 shadow-sm p-5 rounded-lg my-5">

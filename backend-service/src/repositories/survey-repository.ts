@@ -1,9 +1,9 @@
 import { prisma } from "@/libs/db/index.ts";
 
-export async function getAlumniSurveyRepository(userId?: number){
+export async function getSurveyRepository(userId?: number, surveyType: "ALUMNI" | "GRADUATE_USER" = "ALUMNI"){
     return await prisma.survey.findMany({
         where: {
-            surveyType: "ALUMNI"
+            surveyType
         },
         
         include: {
@@ -14,13 +14,20 @@ export async function getAlumniSurveyRepository(userId?: number){
                     }
                 },
             } : {},
-            Answer: userId ? true : {
+            Answer: userId ? {
+                orderBy: {
+                    id: "asc"
+                }
+            } : {
                 include: {
                     _count: {
                         select: {
                             UserAnswer: true
                         }
                     }
+                },
+                orderBy: {
+                    id: "asc"
                 }
             }
         },

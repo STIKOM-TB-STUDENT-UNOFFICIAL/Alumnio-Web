@@ -7,10 +7,10 @@ import { SurveyEditorContext } from "@/libs/context/survey-editor-context";
 import Button from "@/libs/components/atoms/button";
 import { patchSurveyService } from "@/services/patch-survey-service";
 import { getSession } from "@/utils/session";
-import { loadSurveyService } from "@/services/load-survey-service";
 import { AiOutlineSave } from "react-icons/ai";
 import { SurveyStatistics } from "./statistics";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { loadUserGraduateSurvey } from "@/services/load-user-graduate-survey";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function Index(): ReactNode {
@@ -19,7 +19,7 @@ export default function Index(): ReactNode {
     const [isEdited, setIsEdited] = useState(false);
 
     function load() {
-        loadSurveyService(getSession() as string).then((v) => {
+        loadUserGraduateSurvey(getSession() as string).then((v) => {
             if (v) {
                 setSurvey(
                     v.map((w) => {
@@ -46,7 +46,7 @@ export default function Index(): ReactNode {
                 rounded-lg overflow-hidden shadow-sm
                 px-10 py-10 gap-10"
             >
-                <h3 className="text-3xl font-bold mb-5">Survey Alumni</h3>
+                <h3 className="text-3xl font-bold mb-5">Survey Pengguna Lulusan</h3>
                 <div className="my-2">
                     <MenuContext.Provider value={{ menu, setMenu }}>
                         <MenuBarSurveyPage />
