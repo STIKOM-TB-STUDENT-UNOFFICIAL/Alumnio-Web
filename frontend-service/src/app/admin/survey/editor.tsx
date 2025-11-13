@@ -22,13 +22,15 @@ export function SurveyEditor(): ReactNode {
             >
                 <div className="overflow-y-auto max-h-[80vh]">
                     <table className="w-full table-auto border-collapse">
+                        <tbody>
                         {survey[selectedSurveyIndex]?.Answer.map((v, i) => (
                             <tr
                                 className={
                                     v.status == "DELETED"
-                                        ? "bg-clr-danger-a10-light"
-                                        : ""
+                                        ? "bg-clr-danger-a10-light w-full"
+                                        : "w-full"
                                 }
+                                key={i}
                             >
                                 <td className="px-1 py-1">
                                     <Input
@@ -40,6 +42,7 @@ export function SurveyEditor(): ReactNode {
                                             temp[selectedSurveyIndex].Answer[
                                                 i
                                             ].answer = e.target.value;
+                                            temp[selectedSurveyIndex].Answer[i].status = temp[selectedSurveyIndex].Answer[i].status != "NEW" ? temp[selectedSurveyIndex].status != "DELETED" ? "CHANGED" : "DELETED" : "NEW"
                                             setSurvey(temp);
                                         }}
                                     />
@@ -83,6 +86,7 @@ export function SurveyEditor(): ReactNode {
                                 </td>
                             </tr>
                         ))}
+                        </tbody>
                     </table>
                     <div className="flex justify-end gap-2">
                         <Button

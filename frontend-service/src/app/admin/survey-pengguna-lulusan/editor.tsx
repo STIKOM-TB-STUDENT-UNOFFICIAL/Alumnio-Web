@@ -20,7 +20,7 @@ export function SurveyEditor(): ReactNode {
                 show={showEditAnswer}
                 control={setShowEditAnswer}
             >
-                <div className="overflow-y-auto max-h-[80vh]">
+                <div className="overflow-y-auto max-h-[80vh] md:w-[30rem]">
                     <table className="w-full table-auto border-collapse">
                         {survey[selectedSurveyIndex]?.Answer.map((v, i) => (
                             <tr
@@ -40,6 +40,7 @@ export function SurveyEditor(): ReactNode {
                                             temp[selectedSurveyIndex].Answer[
                                                 i
                                             ].answer = e.target.value;
+                                            temp[selectedSurveyIndex].Answer[i].status = temp[selectedSurveyIndex].Answer[i].status != "NEW" ? temp[selectedSurveyIndex].status != "DELETED" ? "CHANGED" : "DELETED" : "NEW"
                                             setSurvey(temp);
                                         }}
                                     />
