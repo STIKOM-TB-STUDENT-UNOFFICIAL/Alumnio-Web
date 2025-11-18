@@ -14,12 +14,12 @@ export async function patchJobOpportunityService(token: string, data: JobType): 
             },
             data
         )
-        toast("Berhasil membuat lowongan kerja baru")
+        toast("Berhasil mengubah lowongan kerja baru")
     }
     catch (e){
         console.log(e)
         console.log(data)
-        toast("Gagal membuat lowongan kerja baru")
+        toast("Gagal mengubah lowongan kerja baru")
         return
     }
 }
